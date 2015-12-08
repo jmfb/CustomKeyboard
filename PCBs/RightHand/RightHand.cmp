@@ -1,0 +1,311 @@
+Cmp-Mod V01 Created by CvPcb (2013-07-07 BZR 4022)-stable date = 11/1/2014 3:45:48 PM
+
+BeginCmp
+TimeStamp = /5455369B;
+Reference = P1;
+ValeurCmp = CONN_6;
+IdModule  = pin_array_3x2_inverted;
+EndCmp
+
+BeginCmp
+TimeStamp = /54553686;
+Reference = P2;
+ValeurCmp = CONN_10;
+IdModule  = PIN_ARRAY_5x2_INVERTED;
+EndCmp
+
+BeginCmp
+TimeStamp = /54553680;
+Reference = P3;
+ValeurCmp = CONN_10;
+IdModule  = PIN_ARRAY_5x2_INVERTED;
+EndCmp
+
+BeginCmp
+TimeStamp = /54553673;
+Reference = P4;
+ValeurCmp = CONN_10;
+IdModule  = PIN_ARRAY_5x2_INVERTED;
+EndCmp
+
+BeginCmp
+TimeStamp = /5455368E;
+Reference = P5;
+ValeurCmp = CONN_6;
+IdModule  = pin_array_3x2_inverted;
+EndCmp
+
+BeginCmp
+TimeStamp = /54553659;
+Reference = SW1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /54553629;
+Reference = SW2;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5455362F;
+Reference = SW3;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /54553635;
+Reference = SW4;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5455363B;
+Reference = SW5;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /54553605;
+Reference = SW6;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5455360B;
+Reference = SW7;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /54553611;
+Reference = SW8;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /54553617;
+Reference = SW9;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5455361D;
+Reference = SW10;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /545535E1;
+Reference = SW11;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /545535E7;
+Reference = SW12;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /545535ED;
+Reference = SW13;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /545535F3;
+Reference = SW14;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /545535F9;
+Reference = SW15;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /545535BD;
+Reference = SW16;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /545535C3;
+Reference = SW17;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /545535C9;
+Reference = SW18;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /545535CF;
+Reference = SW19;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /545535D5;
+Reference = SW20;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /545535DB;
+Reference = SW21;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /54553599;
+Reference = SW22;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5455359F;
+Reference = SW23;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /545535A5;
+Reference = SW24;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /545535AB;
+Reference = SW25;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /545535B1;
+Reference = SW26;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /545535B7;
+Reference = SW27;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /54553575;
+Reference = SW28;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5455357B;
+Reference = SW29;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /54553581;
+Reference = SW30;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /54553587;
+Reference = SW31;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5455358D;
+Reference = SW32;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /54553593;
+Reference = SW33;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /54553546;
+Reference = SW34;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /54553553;
+Reference = SW35;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5455355B;
+Reference = SW36;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /54553563;
+Reference = SW37;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /54553569;
+Reference = SW38;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5455356F;
+Reference = SW39;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+EndListe

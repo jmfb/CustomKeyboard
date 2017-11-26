@@ -65,8 +65,8 @@ difference()
 {
 	cube([width, height, depth]);
 
-	grooveHole(59, faceTop);
-	grooveHole(59, mountTop);
+	grooveHole(13, faceTop);
+	grooveHole(13, mountTop);
 	grooveHole(0, pcbTop);
 
 	hole(0, baseTop, edge, width, notchHeight, edge);
@@ -80,8 +80,11 @@ difference()
 	notchHole(notch7Left + notchWidth, notchSpacing);
 	notchHole(notch8Left + notchWidth, notchSpacing + edge);
 
-	sideNotch(0);
-	sideNotch(board);
+	//sideNotch(0);
 
-	hole(0, 0, 0, 59, pcbTop - edge, depth);
+	hole(0, pcbTop - edge, 0, 2 * edge, height, edge);
+//	hole(0, 0, edge, 2 * edge, pcbTop - edge, edge);
+	hole(0, pcbTop + 2 * edge, edge, 2 * edge, 2 * edge + groove, edge);
+
+	sideNotch(board);
 }

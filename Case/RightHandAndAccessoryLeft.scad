@@ -44,9 +44,9 @@ module hole(x, y, z, cx, cy, cz)
 	translate([x, y, z]) cube([cx, cy, cz]);
 }
 
-module grooveHole(x, y)
+module grooveHole(y, cx)
 {
-	hole(edge + x, y, 0, board - x, groove, edge);
+	hole(edge, y, 0, cx, groove, edge);
 }
 
 module notchHole(x, cx)
@@ -65,9 +65,9 @@ difference()
 {
 	cube([width, height, depth]);
 
-	grooveHole(59, faceTop);
-	grooveHole(59, mountTop);
-	grooveHole(0, pcbTop);
+	grooveHole(faceTop, board - 72);
+	grooveHole(mountTop, board - 72);
+	grooveHole(pcbTop, board);
 
 	hole(0, baseTop, edge, width, notchHeight, edge);
 	notchHole(0, notch1Left);
@@ -83,5 +83,5 @@ difference()
 	sideNotch(0);
 	sideNotch(board);
 
-	hole(0, 0, 0, 59, pcbTop - edge, depth);
+	hole(width - 72, 0, 0, 72, pcbTop - edge, depth);
 }

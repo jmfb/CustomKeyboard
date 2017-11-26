@@ -1,7 +1,7 @@
 board = 138;
 edge = 1.5;
 
-depth = 2 * edge;
+depth = 3 * edge;
 width = board + 2 * edge;
 
 groove = 1.5;
@@ -44,32 +44,35 @@ module hole(x, y, z, cx, cy, cz)
 	translate([x, y, z]) cube([cx, cy, cz]);
 }
 
-module grooveHole(x, y)
+module grooveHole(y)
 {
-	hole(edge + x, y, 0, board - x, groove, edge);
+	hole(edge, y, 0, board, groove, edge);
+	hole(edge, y, 2 * edge, board, groove, edge);
 }
 
 module notchHole(x, cx)
 {
-	hole(x, baseTop, 0, cx, notchHeight, edge);
+	hole(x, baseTop, edge, cx, notchHeight, edge);
 }
 
 module sideNotch(x)
 {
 	hole(x, 0, 0, 2 * edge, height, edge);
-	hole(x, 0, edge, 2 * edge, pcbTop - edge, edge);
-	hole(x, pcbTop + 2 * edge, edge, 2 * edge, 2 * edge + groove, edge);
+	hole(x, 0, 2 * edge, 2 * edge, height, edge);
+	hole(x, 0, edge, 2 * edge, 5, edge);
+	hole(x, 14, edge, 2 * edge, 5, edge);
 }
 
 difference()
 {
 	cube([width, height, depth]);
 
-	grooveHole(59, faceTop);
-	grooveHole(59, mountTop);
-	grooveHole(0, pcbTop);
+	grooveHole(faceTop);
+	grooveHole(mountTop);
+	grooveHole(pcbTop);
 
-	hole(0, baseTop, edge, width, notchHeight, edge);
+	hole(0, baseTop, 0, width, notchHeight, edge);
+	hole(0, baseTop, 2 * edge, width, notchHeight, edge);
 	notchHole(0, notch1Left);
 	notchHole(notch1Left + notchWidth, notchSpacing);
 	notchHole(notch2Left + notchWidth, notchSpacing);
@@ -82,6 +85,4 @@ difference()
 
 	sideNotch(0);
 	sideNotch(board);
-
-	hole(0, 0, 0, 59, pcbTop - edge, depth);
 }

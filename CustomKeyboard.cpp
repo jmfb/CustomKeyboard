@@ -16,6 +16,8 @@ const int numPadColumnCount = 4;
 const int rightHandColumnCount = 8;
 const int arrowKeyColumnCount = 3;
 
+const int hyperKey = 1000;
+
 //Left Hand: Row pins 0-5, Column pins 12-18
 int leftHandKeyMap[topRowCount][leftHandColumnCount] =
 {
@@ -24,7 +26,7 @@ int leftHandKeyMap[topRowCount][leftHandColumnCount] =
 	{ KEY_TAB,        KEY_Q,        KEY_W,        KEY_E,     KEY_R,  KEY_T,  0 },
 	{ KEY_CAPS_LOCK,  KEY_A,        KEY_S,        KEY_D,     KEY_F,  KEY_G,  0 },
 	{ KEY_LEFT_SHIFT, KEY_Z,        KEY_X,        KEY_C,     KEY_V,  KEY_B,  0 },
-	{ KEY_LEFT_CTRL,  KEY_LEFT_GUI, KEY_LEFT_ALT, KEY_SPACE, 0,      0,      0 }
+	{ KEY_LEFT_CTRL,  KEY_LEFT_GUI, KEY_LEFT_ALT, hyperKey,  0,      0,      0 }
 };
 
 //Numpad: Row pins 0-4, Column pins 19-22
@@ -87,7 +89,7 @@ void setup()
 		pinMode(rowPins[row], OUTPUT);
 		digitalWrite(rowPins[row], HIGH);
 	}
-	
+
 	for (int column = 0; column < columnCount; ++column)
 	{
 		pinMode(columnPins[column], INPUT);
@@ -95,7 +97,7 @@ void setup()
 	}
 
 	initializeKeyMap();
-	
+
 	delay(200);
 }
 
@@ -109,17 +111,19 @@ public:
 		modifiers = 0;
 		for (int key = 0; key < maxKeyCount; ++key)
 			keys[key] = 0;
+		hyper = false;
 	}
-	
+
 	void Scan()
 	{
 		for (int row = 0; row < rowCount; ++row)
 			ScanRow(row);
 	}
-	
+
 	bool operator!=(const KeyState& rhs) const
 	{
-		return modifiers != rhs.modifiers ||
+		return hyper != rhs.hyper ||
+			modifiers != rhs.modifiers ||
 			keys[0] != rhs.keys[0] ||
 			keys[1] != rhs.keys[1] ||
 			keys[2] != rhs.keys[2] ||
@@ -130,25 +134,32 @@ public:
 
 	void Transmit()
 	{
-		Keyboard.set_modifier(modifiers);
-		Keyboard.set_key1(keys[0]);
-		Keyboard.set_key2(keys[1]);
-		Keyboard.set_key3(keys[2]);
-		Keyboard.set_key4(keys[3]);
-		Keyboard.set_key5(keys[4]);
-		Keyboard.set_key6(keys[5]);
-		Keyboard.send_now();
+		if (hyper)
+		{
+			TranslateHyperKeys();
+		}
+		else
+		{
+			Keyboard.set_modifier(modifiers);
+			Keyboard.set_key1(keys[0]);
+			Keyboard.set_key2(keys[1]);
+			Keyboard.set_key3(keys[2]);
+			Keyboard.set_key4(keys[3]);
+			Keyboard.set_key5(keys[4]);
+			Keyboard.set_key6(keys[5]);
+			Keyboard.send_now();
+		}
 	}
 
-private:	
+private:
 	void ScanRow(int row)
 	{
 		digitalWrite(rowPins[row], LOW);
 		for (int column = 0; column < columnCount; ++column)
 			ScanKey(row, column);
-		digitalWrite(rowPins[row], HIGH);		
+		digitalWrite(rowPins[row], HIGH);
 	}
-	
+
 	void ScanKey(int row, int column)
 	{
 		int signal = digitalRead(columnPins[column]);
@@ -156,9 +167,15 @@ private:
 		if (isPressed)
 			PressKey(keyMap[row][column]);
 	}
-	
+
 	bool PressKey(int keyCode)
 	{
+		if (keyCode == hyperKey)
+		{
+			hyper = true;
+			return true;
+		}
+
 		if (keyCode == KEY_LEFT_GUI ||
 			keyCode == KEY_RIGHT_GUI ||
 			keyCode == KEY_LEFT_SHIFT ||
@@ -171,7 +188,7 @@ private:
 			modifiers |= keyCode;
 			return true;
 		}
-		
+
 		for (int key = 0; key < maxKeyCount; ++key)
 		{
 			if (keys[key] == 0)
@@ -183,9 +200,44 @@ private:
 		return false;
 	}
 
+	void TranslateHyperKeys()
+	{
+		for (int key = 0; key < maxKeyCount; ++key)
+		{
+			uint8_t keyCode = keys[key];
+			if (keyCode != 0)
+			{
+				TranslateHyperKey(keyCode);
+			}
+		}
+	}
+
+	void TranslateHyperKey(uint8_t keyCode)
+	{
+		#define HYPER(from, to) case static_cast<uint8_t>(from): SendHyperKey(to); break
+		switch (keyCode)
+		{
+		HYPER(KEY_SPACE, KEY_BACKSPACE);
+		HYPER(KEY_TAB, KEY_ENTER);
+		HYPER(KEY_ESC, KEY_CAPS_LOCK);
+		HYPER(KEY_S, '['); HYPER(KEY_L, ']');
+		HYPER(KEY_D, '('); HYPER(KEY_K, ')');
+		HYPER(KEY_F, '{'); HYPER(KEY_J, '}');
+		HYPER(KEY_G, '<'); HYPER(KEY_H, '>');
+		}
+		#undef HYPER
+	}
+
+	void SendHyperKey(int code)
+	{
+		Keyboard.press(code);
+		Keyboard.release(code);
+	}
+
 private:
 	uint8_t modifiers;
 	uint8_t keys[maxKeyCount];
+	bool hyper;
 };
 
 void loop()

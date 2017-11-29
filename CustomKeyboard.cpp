@@ -24,7 +24,7 @@ int leftHandKeyMap[topRowCount][leftHandColumnCount] =
 	{ KEY_ESC,        KEY_F1,       KEY_F2,       KEY_F3,    KEY_F4, KEY_F5, 0 },
 	{ KEY_TILDE,      KEY_1,        KEY_2,        KEY_3,     KEY_4,  KEY_5,  KEY_6 },
 	{ KEY_TAB,        KEY_Q,        KEY_W,        KEY_E,     KEY_R,  KEY_T,  0 },
-	{ KEY_CAPS_LOCK,  KEY_A,        KEY_S,        KEY_D,     KEY_F,  KEY_G,  0 },
+	{ 0            ,  KEY_A,        KEY_S,        KEY_D,     KEY_F,  KEY_G,  0 },
 	{ KEY_LEFT_SHIFT, KEY_Z,        KEY_X,        KEY_C,     KEY_V,  KEY_B,  0 },
 	{ KEY_LEFT_CTRL,  KEY_LEFT_GUI, KEY_LEFT_ALT, hyperKey,  0,      0,      0 }
 };

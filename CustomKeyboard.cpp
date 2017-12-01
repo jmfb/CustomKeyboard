@@ -18,6 +18,25 @@ const int arrowKeyColumnCount = 3;
 
 const int hyperKey = 1000;
 
+class HyperKey
+{
+public:
+	HyperKey()
+		: keyCode(0), shift(false)
+	{
+	}
+
+	HyperKey(int keyCode, bool shift)
+		: keyCode(keyCode), shift(shift)
+	{
+	}
+
+	int keyCode;
+	bool shift;
+};
+
+const HyperKey none;
+
 //Left Hand: Row pins 0-5, Column pins 12-18
 int leftHandKeyMap[topRowCount][leftHandColumnCount] =
 {
@@ -27,6 +46,28 @@ int leftHandKeyMap[topRowCount][leftHandColumnCount] =
 	{ 0            ,  KEY_A,        KEY_S,        KEY_D,     KEY_F,  KEY_G,  0 },
 	{ KEY_LEFT_SHIFT, KEY_Z,        KEY_X,        KEY_C,     KEY_V,  KEY_B,  0 },
 	{ KEY_LEFT_CTRL,  KEY_LEFT_GUI, KEY_LEFT_ALT, hyperKey,  0,      0,      0 }
+};
+
+const HyperKey hyperCapsLock(KEY_CAPS_LOCK, false);
+const HyperKey hyperEnter(KEY_ENTER, false);
+const HyperKey hyperBackspace(KEY_BACKSPACE, false);
+const HyperKey hyperLeftSquareBrace(KEY_LEFT_BRACE, false);
+const HyperKey hyperRightSquareBrace(KEY_RIGHT_BRACE, false);
+const HyperKey hyperLeftCurlyBrace(KEY_LEFT_BRACE, true);
+const HyperKey hyperRightCurlyBrace(KEY_RIGHT_BRACE, true);
+const HyperKey hyperLeftParenthesis(KEY_9, true);
+const HyperKey hyperRightParenthesis(KEY_0, true);
+const HyperKey hyperLeftAngleBrace(KEY_COMMA, true);
+const HyperKey hyperRightAngleBrace(KEY_PERIOD, true);
+
+HyperKey leftHandHyperKeyMap[topRowCount][leftHandColumnCount] =
+{
+	{ hyperCapsLock, none, none,                 none,                 none,                none,                none },
+	{ none,          none, none,                 none,                 none,                none,                none },
+	{ hyperEnter,    none, none,                 none,                 none,                none,                none },
+	{ none,          none, hyperLeftSquareBrace, hyperLeftParenthesis, hyperLeftCurlyBrace, hyperLeftAngleBrace, none },
+	{ none,          none, none,                 none,                 none,                none,                none },
+	{ none,          none, none,                 none,                 none,                none,                none }
 };
 
 //Numpad: Row pins 0-4, Column pins 19-22
@@ -40,6 +81,16 @@ int numPadKeyMap[topRowCount][numPadColumnCount] =
 	{ 0,            0,            0,              0 }
 };
 
+HyperKey numPadHyperKeyMap[topRowCount][numPadColumnCount] =
+{
+	{ none, none, none, none },
+	{ none, none, none, none },
+	{ none, none, none, none },
+	{ none, none, none, none },
+	{ none, none, none, none },
+	{ none, none, none, none }
+};
+
 //Right Hand: Row pins 6-11, Column pins 12-19
 int rightHandKeyMap[bottomRowCount][rightHandColumnCount] =
 {
@@ -49,6 +100,16 @@ int rightHandKeyMap[bottomRowCount][rightHandColumnCount] =
 	{ 0,     KEY_H,  KEY_J,  KEY_K,  KEY_L,     KEY_SEMICOLON,  KEY_QUOTE,       KEY_ENTER },
 	{ 0,     0,      KEY_N,  KEY_M,  KEY_COMMA, KEY_PERIOD,     KEY_SLASH,       KEY_RIGHT_SHIFT },
 	{ 0,     0,      0,      0,      KEY_SPACE, KEY_RIGHT_ALT,  KEY_MENU,        KEY_RIGHT_CTRL }
+};
+
+HyperKey rightHandHyperKeyMap[bottomRowCount][rightHandColumnCount] =
+{
+	{ none, none,                 none,                 none,                  none,                  none, none, none },
+	{ none, none,                 none,                 none,                  none,                  none, none, none },
+	{ none, none,                 none,                 none,                  none,                  none, none, none },
+	{ none, hyperRightAngleBrace, hyperRightCurlyBrace, hyperRightParenthesis, hyperRightSquareBrace, none, none, none },
+	{ none, none,                 none,                 none,                  none,                  none, none, none },
+	{ none, none,                 none,                 none,                  hyperBackspace,        none, none, none }
 };
 
 //Arrow Keys: Row pins 6-10, Column pins 20-22
@@ -62,44 +123,15 @@ int arrowKeyKeyMap[bottomRowCount][arrowKeyColumnCount] =
 	{ 0,               0,               0 }
 };
 
-int keyMap[rowCount][columnCount];
-
-void initializeKeyMap()
+HyperKey arrowKeyHyperKeyMap[bottomRowCount][arrowKeyColumnCount] =
 {
-	for (int row = 0; row < topRowCount; ++row)
-	{
-		for (int column = 0; column < leftHandColumnCount; ++column)
-			keyMap[row][column] = leftHandKeyMap[row][column];
-		for (int column = 0; column < numPadColumnCount; ++column)
-			keyMap[row][column + leftHandColumnCount] = numPadKeyMap[row][column];
-	}
-	for (int row = 0; row < bottomRowCount; ++row)
-	{
-		for (int column = 0; column < rightHandColumnCount; ++column)
-			keyMap[row + topRowCount][column] = rightHandKeyMap[row][column];
-		for (int column = 0; column < arrowKeyColumnCount; ++column)
-			keyMap[row + topRowCount][column + rightHandColumnCount] = arrowKeyKeyMap[row][column];
-	}
-}
-
-void setup()
-{
-	for (int row = 0; row < rowCount; ++row)
-	{
-		pinMode(rowPins[row], OUTPUT);
-		digitalWrite(rowPins[row], HIGH);
-	}
-
-	for (int column = 0; column < columnCount; ++column)
-	{
-		pinMode(columnPins[column], INPUT);
-		digitalWrite(columnPins[column], HIGH);
-	}
-
-	initializeKeyMap();
-
-	delay(200);
-}
+	{ none, none, none },
+	{ none, none, none },
+	{ none, none, none },
+	{ none, none, none },
+	{ none, none, none },
+	{ none, none, none }
+};
 
 class PressedKey
 {
@@ -120,7 +152,7 @@ public:
 	}
 	bool operator!=(const PressedKey& other) const
 	{
-		return row != other.row || column != other.column;
+		return !operator==(other);
 	}
 
 	int row;
@@ -150,6 +182,19 @@ public:
 			for (int column = 0; column < columnCount; ++column)
 				result.keys[row][column] = keys[row][column] && other.keys[row][column];
 		return result;
+	}
+
+	bool operator==(const KeyState& other) const
+	{
+		for (int row = 0; row < rowCount; ++row)
+			for (int column = 0; column < columnCount; ++column)
+				if (keys[row][column] != other.keys[row][column])
+					return false;
+		return true;
+	}
+	bool operator!=(const KeyState& other) const
+	{
+		return !operator==(other);
 	}
 
 	bool IsPressed(const PressedKey& pressedKey) const
@@ -217,22 +262,36 @@ public:
 			PressNewKeys(previousPressedKeys, keyState);
 	}
 
-	bool operator!=(const PressedKeys& other) const
+	bool operator==(const PressedKeys& other) const
 	{
 		if (count != other.count)
-			return true;
+			return false;
 		for (int index = 0; index < count; ++index)
 			if (keys[index] != other.keys[index])
-				return true;
-		return false;
+				return false;
+		return true;
+	}
+	bool operator!=(const PressedKeys& other) const
+	{
+		return !operator==(other);
+	}
+
+	int GetKeyCode(int index) const
+	{
+		return GetKeyCode(keys[index].row, keys[index].column);
+	}
+
+	HyperKey GetHyperKey(int index) const
+	{
+		return GetHyperKey(keys[index].row, keys[index].column);
 	}
 
 private:
 	void HoldPreviousKeys(const PressedKeys& previousPressedKeys, const KeyState& keyState)
 	{
 		for (int index = 0; index < previousPressedKeys.count; ++index)
-			if (keyState.IsPressed(previousPressedKeys[index]))
-				Press(previousPressedKeys[index]);
+			if (keyState.IsPressed(previousPressedKeys.keys[index]))
+				Press(previousPressedKeys.keys[index]);
 	}
 
 	void PressNewKeys(const PressedKeys& previousPressedKeys, const KeyState& keyState)
@@ -263,8 +322,36 @@ private:
 			keys[count++] = key;
 	}
 
-private:
+	static int GetKeyCode(int row, int column)
+	{
+		if (row < topRowCount)
+		{
+			if (column < leftHandColumnCount)
+				return leftHandKeyMap[row][column];
+			return numPadKeyMap[row][column - leftHandColumnCount];
+		}
+		if (column < rightHandColumnCount)
+			return rightHandKeyMap[row - topRowCount][column];
+		return arrowKeyKeyMap[row - topRowCount][column - rightHandColumnCount];
+	}
+
+	static HyperKey GetHyperKey(int row, int column)
+	{
+		if (row < topRowCount)
+		{
+			if (column < leftHandColumnCount)
+				return leftHandHyperKeyMap[row][column];
+			return numPadHyperKeyMap[row][column - leftHandColumnCount];
+		}
+		if (column < rightHandColumnCount)
+			return rightHandHyperKeyMap[row - topRowCount][column];
+		return arrowKeyHyperKeyMap[row - topRowCount][column - rightHandColumnCount];
+	}
+
+public:
 	int count;
+
+private:
 	PressedKey keys[maxKeyCount];
 };
 
@@ -285,9 +372,32 @@ public:
 		int nextKey = 0;
 		for (int index = 0; index < pressedKeys.count; ++index)
 		{
-			int keyCode = pressedKeys.GetKeyCode(index);
-			// TODO: Left off here (GetKeyCode doesn't exist, count isn't public)
+			if (hyper)
+			{
+				HyperKey hyperKey = pressedKeys.GetHyperKey(index);
+				hyperShift = hyperKey.shift;
+				keys[nextKey++] = static_cast<uint8_t>(hyperKey.keyCode);
+			}
+			else
+			{
+				int keyCode = pressedKeys.GetKeyCode(index);
+				if (keyCode == hyperKey)
+				{
+					hyper = true;
+					continue;
+				}
+
+				if (IsModifier(keyCode))
+				{
+					modifiers |= keyCode;
+					continue;
+				}
+
+				keys[nextKey++] = static_cast<uint8_t>(keyCode);
+			}
 		}
+		if (hyperShift)
+			modifiers |= KEY_LEFT_SHIFT;
 	}
 
 	void Transmit() const
@@ -303,9 +413,44 @@ public:
 	}
 
 private:
+	static bool IsModifier(int keyCode)
+	{
+		switch (keyCode)
+		{
+		case KEY_LEFT_GUI:
+		case KEY_RIGHT_GUI:
+		case KEY_LEFT_SHIFT:
+		case KEY_RIGHT_SHIFT:
+		case KEY_LEFT_ALT:
+		case KEY_RIGHT_ALT:
+		case KEY_LEFT_CTRL:
+		case KEY_RIGHT_CTRL:
+			return true;
+		}
+		return false;
+	}
+
+private:
 	uint8_t modifiers;
 	uint8_t keys[maxKeyCount];
 };
+
+void setup()
+{
+	for (int row = 0; row < rowCount; ++row)
+	{
+		pinMode(rowPins[row], OUTPUT);
+		digitalWrite(rowPins[row], HIGH);
+	}
+
+	for (int column = 0; column < columnCount; ++column)
+	{
+		pinMode(columnPins[column], INPUT);
+		digitalWrite(columnPins[column], HIGH);
+	}
+
+	delay(200);
+}
 
 void loop()
 {
@@ -313,172 +458,16 @@ void loop()
 	static KeyState previousKeyState;
 	static PressedKeys previousPressedKeys;
 	KeyState keyState = stableScanner.Scan();
-	if (keyState != previousKeyState)
-	{
-		previousKeyState = keyState;
-		PressedKeys pressedKeys;
-		pressedKeys.Scan(previousPressedKeys, keyState);
-		if (pressedKeys != previousPressedKeys)
-		{
-			previousPressedKeys = pressedKeys;
-			KeyReport keyReport;
-			keyReport.Translate(pressedKeys);
-			keyReport.Transmit();
-			delay(2);
-		}
-	}
+	if (keyState == previousKeyState)
+		return;
+	previousKeyState = keyState;
+	PressedKeys pressedKeys;
+	pressedKeys.Scan(previousPressedKeys, keyState);
+	if (pressedKeys == previousPressedKeys)
+		return;
+	previousPressedKeys = pressedKeys;
+	KeyReport keyReport;
+	keyReport.Translate(pressedKeys);
+	keyReport.Transmit();
+	delay(2);
 }
-
-#if 0
-const int maxKeyCount = 6;
-
-class KeyState
-{
-public:
-	KeyState()
-	{
-		modifiers = 0;
-		for (int key = 0; key < maxKeyCount; ++key)
-			keys[key] = 0;
-		hyper = false;
-	}
-
-	void Scan()
-	{
-		for (int row = 0; row < rowCount; ++row)
-			ScanRow(row);
-	}
-
-	bool operator!=(const KeyState& rhs) const
-	{
-		return hyper != rhs.hyper ||
-			modifiers != rhs.modifiers ||
-			keys[0] != rhs.keys[0] ||
-			keys[1] != rhs.keys[1] ||
-			keys[2] != rhs.keys[2] ||
-			keys[3] != rhs.keys[3] ||
-			keys[4] != rhs.keys[4] ||
-			keys[5] != rhs.keys[5];
-	}
-
-	void Transmit()
-	{
-		if (hyper)
-		{
-			TranslateHyperKeys();
-		}
-		else
-		{
-			Keyboard.set_modifier(modifiers);
-			Keyboard.set_key1(keys[0]);
-			Keyboard.set_key2(keys[1]);
-			Keyboard.set_key3(keys[2]);
-			Keyboard.set_key4(keys[3]);
-			Keyboard.set_key5(keys[4]);
-			Keyboard.set_key6(keys[5]);
-			Keyboard.send_now();
-		}
-	}
-
-private:
-	void ScanRow(int row)
-	{
-		digitalWrite(rowPins[row], LOW);
-		for (int column = 0; column < columnCount; ++column)
-			ScanKey(row, column);
-		digitalWrite(rowPins[row], HIGH);
-	}
-
-	void ScanKey(int row, int column)
-	{
-		int signal = digitalRead(columnPins[column]);
-		bool isPressed = signal == LOW;
-		if (isPressed)
-			PressKey(keyMap[row][column]);
-	}
-
-	bool PressKey(int keyCode)
-	{
-		if (keyCode == hyperKey)
-		{
-			hyper = true;
-			return true;
-		}
-
-		if (keyCode == KEY_LEFT_GUI ||
-			keyCode == KEY_RIGHT_GUI ||
-			keyCode == KEY_LEFT_SHIFT ||
-			keyCode == KEY_RIGHT_SHIFT ||
-			keyCode == KEY_LEFT_ALT ||
-			keyCode == KEY_RIGHT_ALT ||
-			keyCode == KEY_LEFT_CTRL ||
-			keyCode == KEY_RIGHT_CTRL)
-		{
-			modifiers |= keyCode;
-			return true;
-		}
-
-		for (int key = 0; key < maxKeyCount; ++key)
-		{
-			if (keys[key] == 0)
-			{
-				keys[key] = static_cast<uint8_t>(keyCode);
-				return true;
-			}
-		}
-		return false;
-	}
-
-	void TranslateHyperKeys()
-	{
-		for (int key = 0; key < maxKeyCount; ++key)
-		{
-			uint8_t keyCode = keys[key];
-			if (keyCode != 0)
-			{
-				TranslateHyperKey(keyCode);
-			}
-		}
-	}
-
-	void TranslateHyperKey(uint8_t keyCode)
-	{
-		#define HYPER(from, to) case static_cast<uint8_t>(from): SendHyperKey(to); break
-		switch (keyCode)
-		{
-		HYPER(KEY_SPACE, KEY_BACKSPACE);
-		HYPER(KEY_TAB, KEY_ENTER);
-		HYPER(KEY_ESC, KEY_CAPS_LOCK);
-		HYPER(KEY_S, '['); HYPER(KEY_L, ']');
-		HYPER(KEY_D, '('); HYPER(KEY_K, ')');
-		HYPER(KEY_F, '{'); HYPER(KEY_J, '}');
-		HYPER(KEY_G, '<'); HYPER(KEY_H, '>');
-		}
-		#undef HYPER
-	}
-
-	void SendHyperKey(int code)
-	{
-		Keyboard.press(code);
-		Keyboard.release(code);
-	}
-
-private:
-	uint8_t modifiers;
-	uint8_t keys[maxKeyCount];
-	bool hyper;
-};
-
-void loop()
-{
-	static KeyState keyState;
-	KeyState newKeyState;
-	newKeyState.Scan();
-	if (newKeyState != keyState)
-	{
-		keyState = newKeyState;
-		keyState.Transmit();
-		delay(2);
-	}
-}
-#endif

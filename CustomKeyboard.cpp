@@ -101,6 +101,235 @@ void setup()
 	delay(200);
 }
 
+class PressedKey
+{
+public:
+	PressedKey()
+		: row(0), column(0)
+	{
+	}
+
+	PressedKey(int row, int column)
+		: row(row), column(column)
+	{
+	}
+
+	bool operator==(const PressedKey& other) const
+	{
+		return row == other.row && column == other.column;
+	}
+	bool operator!=(const PressedKey& other) const
+	{
+		return row != other.row || column != other.column;
+	}
+
+	int row;
+	int column;
+};
+
+class KeyState
+{
+public:
+	KeyState()
+	{
+		for (int row = 0; row < rowCount; ++row)
+			for (int column = 0; column < columnCount; ++column)
+				keys[row][column] = false;
+	}
+
+	void Scan()
+	{
+		for (int row = 0; row < rowCount; ++row)
+			ScanRow(row);
+	}
+
+	KeyState operator&&(const KeyState& other) const
+	{
+		KeyState result;
+		for (int row = 0; row < rowCount; ++row)
+			for (int column = 0; column < columnCount; ++column)
+				result.keys[row][column] = keys[row][column] && other.keys[row][column];
+		return result;
+	}
+
+	bool IsPressed(const PressedKey& pressedKey) const
+	{
+		return keys[pressedKey.row][pressedKey.column];
+	}
+
+private:
+	void ScanRow(int row)
+	{
+		digitalWrite(rowPins[row], LOW);
+		for (int column = 0; column < columnCount; ++column)
+			ScanKey(row, column);
+		digitalWrite(rowPins[row], HIGH);
+	}
+
+	void ScanKey(int row, int column)
+	{
+		int signal = digitalRead(columnPins[column]);
+		bool isPressed = signal == LOW;
+		keys[row][column] = isPressed;
+	}
+
+private:
+	bool keys[rowCount][columnCount];
+};
+
+const int debounceCount = 3;
+
+class StableScanner
+{
+public:
+	StableScanner()
+	{
+		nextIndex = 0;
+	}
+
+	KeyState Scan()
+	{
+		int index = nextIndex;
+		nextIndex = (nextIndex + 1) % debounceCount;
+		keyState[index].Scan();
+		return keyState[0] && keyState[1] && keyState[2];
+	}
+
+private:
+	int nextIndex;
+	KeyState keyState[debounceCount];
+};
+
+const int maxKeyCount = 6;
+
+class PressedKeys
+{
+public:
+	PressedKeys()
+		: count(0)
+	{
+	}
+
+	void Scan(const PressedKeys& previousPressedKeys, const KeyState& keyState)
+	{
+		HoldPreviousKeys(previousPressedKeys, keyState);
+		if (count < maxKeyCount)
+			PressNewKeys(previousPressedKeys, keyState);
+	}
+
+	bool operator!=(const PressedKeys& other) const
+	{
+		if (count != other.count)
+			return true;
+		for (int index = 0; index < count; ++index)
+			if (keys[index] != other.keys[index])
+				return true;
+		return false;
+	}
+
+private:
+	void HoldPreviousKeys(const PressedKeys& previousPressedKeys, const KeyState& keyState)
+	{
+		for (int index = 0; index < previousPressedKeys.count; ++index)
+			if (keyState.IsPressed(previousPressedKeys[index]))
+				Press(previousPressedKeys[index]);
+	}
+
+	void PressNewKeys(const PressedKeys& previousPressedKeys, const KeyState& keyState)
+	{
+		for (int row = 0; row < rowCount; ++row)
+			for (int column = 0; column < columnCount; ++column)
+				DetectPressedKey(keyState, row, column);
+	}
+
+	void DetectPressedKey(const KeyState& keyState, int row, int column)
+	{
+		PressedKey pressedKey(row, column);
+		if (keyState.IsPressed(pressedKey) && !IsPressed(pressedKey))
+			Press(pressedKey);
+	}
+
+	bool IsPressed(const PressedKey& key) const
+	{
+		for (int index = 0; index < count; ++index)
+			if (keys[index] == key)
+				return true;
+		return false;
+	}
+
+	void Press(const PressedKey& key)
+	{
+		if (count < maxKeyCount)
+			keys[count++] = key;
+	}
+
+private:
+	int count;
+	PressedKey keys[maxKeyCount];
+};
+
+class KeyReport
+{
+public:
+	KeyReport()
+	{
+		modifiers = 0;
+		for (int key = 0; key < maxKeyCount; ++key)
+			keys[key] = 0;
+	}
+
+	void Translate(const PressedKeys& pressedKeys)
+	{
+		bool hyper = false;
+		bool hyperShift = false;
+		int nextKey = 0;
+		for (int index = 0; index < pressedKeys.count; ++index)
+		{
+			int keyCode = pressedKeys.GetKeyCode(index);
+			// TODO: Left off here (GetKeyCode doesn't exist, count isn't public)
+		}
+	}
+
+	void Transmit() const
+	{
+		Keyboard.set_modifier(modifiers);
+		Keyboard.set_key1(keys[0]);
+		Keyboard.set_key2(keys[1]);
+		Keyboard.set_key3(keys[2]);
+		Keyboard.set_key4(keys[3]);
+		Keyboard.set_key5(keys[4]);
+		Keyboard.set_key6(keys[5]);
+		Keyboard.send_now();
+	}
+
+private:
+	uint8_t modifiers;
+	uint8_t keys[maxKeyCount];
+};
+
+void loop()
+{
+	static StableScanner stableScanner;
+	static KeyState previousKeyState;
+	static PressedKeys previousPressedKeys;
+	KeyState keyState = stableScanner.Scan();
+	if (keyState != previousKeyState)
+	{
+		previousKeyState = keyState;
+		PressedKeys pressedKeys;
+		pressedKeys.Scan(previousPressedKeys, keyState);
+		if (pressedKeys != previousPressedKeys)
+		{
+			previousPressedKeys = pressedKeys;
+			KeyReport keyReport;
+			keyReport.Translate(pressedKeys);
+			keyReport.Transmit();
+			delay(2);
+		}
+	}
+}
+
+#if 0
 const int maxKeyCount = 6;
 
 class KeyState
@@ -252,3 +481,4 @@ void loop()
 		delay(2);
 	}
 }
+#endif

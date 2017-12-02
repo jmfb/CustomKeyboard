@@ -1,6 +1,8 @@
 #include "MockArduino.h"
 #include <stdexcept>
 #include <string>
+#include <algorithm>
+#include <iostream>
 using namespace std;
 
 KeyboardSingleton Keyboard;
@@ -15,6 +17,12 @@ void AreEqual(Type expected, Type actual, const string& name)
 			"Expected " + to_string(expected) +
 			", Actual " + to_string(actual) +
 			".");
+}
+
+void Assert(bool condition, const string& name)
+{
+	if (!condition)
+		throw runtime_error("Assert failed! " + name);
 }
 
 void delay(int milliseconds)
@@ -47,8 +55,14 @@ KeyboardReport::KeyboardReport()
 {
 }
 
-KeyboardReport::KeyboardReport(uint8_t modifiers, uint8_t key1, uint8_t key2, uint8_t key3, uint8_t key4, uint8_t key5, uint8_t key6)
-	: modifiers(modifiers), key1(key1), key2(key2), key3(key3), key4(key4), key5(key5), key6(key6)
+KeyboardReport::KeyboardReport(int modifiers, int key1, int key2, int key3, int key4, int key5, int key6)
+	: modifiers(static_cast<uint8_t>(modifiers)),
+	key1(static_cast<uint8_t>(key1)),
+	key2(static_cast<uint8_t>(key2)),
+	key3(static_cast<uint8_t>(key3)),
+	key4(static_cast<uint8_t>(key4)),
+	key5(static_cast<uint8_t>(key5)),
+	key6(static_cast<uint8_t>(key6))
 {
 }
 
@@ -86,6 +100,7 @@ void MockArduino::Initialize()
 	pinModes.clear();
 	pinSignals.clear();
 	keyboardReports.clear();
+	pressedKeys.clear();
 }
 
 void MockArduino::Delay(int milliseconds)
@@ -105,8 +120,21 @@ void MockArduino::DigitalWrite(int pin, int signal)
 
 int MockArduino::DigitalRead(int pin)
 {
-	//TODO:
-	return HIGH;
+	Assert(pin >= 12 && pin <= 22, "Reads must only be on column pins 12-22.");
+	int row = 0;
+	int rowCount = 0;
+	for (auto& pinSignal : pinSignals)
+	{
+		if (pinSignal.first < 12 && pinSignal.second == LOW)
+		{
+			row = pinSignal.first;
+			++rowCount;
+		}
+	}
+	Assert(rowCount == 1, "There must be exactly one active row when scanning columns.");
+	return find(pressedKeys.begin(), pressedKeys.end(), make_tuple(row, pin)) == pressedKeys.end() ?
+		HIGH :
+		LOW;
 }
 
 void MockArduino::KeyboardCallback(uint8_t modifiers, uint8_t key1, uint8_t key2, uint8_t key3, uint8_t key4, uint8_t key5, uint8_t key6)
@@ -137,7 +165,32 @@ void MockArduino::AssertPinSignals(const vector<int>& expected)
 
 void MockArduino::AssertKeyboardReports(const vector<KeyboardReport>& expected)
 {
-	AreEqual(expected.size(), keyboardReports.size(), "Keyboard Report Count");
-	for (auto index = 0; index < expected.size(); ++index)
-		AreEqual(expected[index], keyboardReports[index], "KeyboardReport[" + to_string(index) + "]");
+	try
+	{
+		AreEqual(expected.size(), keyboardReports.size(), "Keyboard Report Count");
+		for (auto index = 0; index < expected.size(); ++index)
+			AreEqual(expected[index], keyboardReports[index], "KeyboardReport[" + to_string(index) + "]");
+	}
+	catch (...)
+	{
+		cout << "Actual Keyboard Report\n";
+		for (auto& report : keyboardReports)
+			cout << to_string(report) << '\n';
+		throw;
+	}
+}
+
+void MockArduino::PressKey(int row, int column)
+{
+	pressedKeys.emplace(row, column);
+}
+
+void MockArduino::ReleaseKey(int row, int column)
+{
+	pressedKeys.erase(make_tuple(row, column));
+}
+
+void MockArduino::ClearPressedKeys()
+{
+	pressedKeys.clear();
 }

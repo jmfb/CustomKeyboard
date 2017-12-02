@@ -410,6 +410,19 @@ public:
 		Keyboard.set_key5(keys[4]);
 		Keyboard.set_key6(keys[5]);
 		Keyboard.send_now();
+		delay(2);
+	}
+
+	bool operator==(const KeyReport& other) const
+	{
+		for (int index = 0; index < maxKeyCount; ++index)
+			if (keys[index] != other.keys[index])
+				return false;
+		return modifiers == other.modifiers;
+	}
+	bool operator!=(const KeyReport& other) const
+	{
+		return !operator==(other);
 	}
 
 private:
@@ -457,6 +470,7 @@ void loop()
 	static StableScanner stableScanner;
 	static KeyState previousKeyState;
 	static PressedKeys previousPressedKeys;
+	static KeyReport previousKeyReport;
 	KeyState keyState = stableScanner.Scan();
 	if (keyState == previousKeyState)
 		return;
@@ -468,6 +482,8 @@ void loop()
 	previousPressedKeys = pressedKeys;
 	KeyReport keyReport;
 	keyReport.Translate(pressedKeys);
+	if (keyReport == previousKeyReport)
+		return;
+	previousKeyReport = keyReport;
 	keyReport.Transmit();
-	delay(2);
 }

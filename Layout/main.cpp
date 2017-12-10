@@ -1,7 +1,12 @@
 #include <iostream>
 #include <vector>
 #include <memory>
+#include <string>
 using namespace std;
+
+const double tops[] = { 10, 38, 57, 76, 95, 114 };
+const double dsubSpace = 12;
+const double keyHole = 14;
 
 class Element
 {
@@ -10,6 +15,7 @@ public:
 	virtual bool IsPlate() const { return false; }
 	virtual double KeyPadding() const { return 0; }
 	virtual double Width() const = 0;
+	virtual string Name() const { return ""; }
 };
 
 class Spacer : public Element
@@ -37,15 +43,17 @@ public:
 class Key : public Element
 {
 public:
-	Key(double ratio)
-		: ratio(ratio)
+	Key(double ratio, string name = "")
+		: ratio(ratio), name(name)
 	{
 	}
 	bool IsKey() const final { return true; }
 	double KeyPadding() const final { return (Width() - 14) / 2; }
 	double Width() const final { return ratio * 19; }
+	string Name() const final { return name; }
 private:
 	double ratio;
+	string name;
 };
 
 class Row
@@ -66,6 +74,24 @@ public:
 		}
 		return left;
 	}
+	void PrintPcbPositions(double top) const
+	{
+		cout << name << ", top = " << top << '\n';
+		auto width = PrintPcbPositionsAndReturnWidth();
+		cout << "(width = " << width << ")\n\n";
+	}
+	double PrintPcbPositionsAndReturnWidth() const
+	{
+		auto left = 0.0;
+		for (auto element : elements)
+		{
+			if (element->IsKey())
+				cout << "  " << element->Name() << " = " << (left + element->KeyPadding() + (keyHole / 2)) << '\n';
+			left += element->Width();
+		}
+		return left;
+	}
+
 	void PrintKeyLeftsAndRowWidth() const
 	{
 		cout << name << " = [";
@@ -119,10 +145,13 @@ inline void Board(string name, T... boardRows)
 {
 	vector<Row> rows{ boardRows... };
 	cout << "Board " << name << '\n';
+	auto rowIndex = 0;
 	for (auto& row : rows)
-		row.PrintKeyLeftsAndRowWidth();
-	for (auto& row : rows)
-		row.PrintFacePlate();
+		row.PrintPcbPositions(tops[rowIndex++] + dsubSpace + (keyHole / 2));
+	// for (auto& row : rows)
+	// 	row.PrintKeyLeftsAndRowWidth();
+	// for (auto& row : rows)
+	// 	row.PrintFacePlate();
 	cout << '\n';
 }
 
@@ -131,72 +160,72 @@ int main()
 	Board("Left Hand",
 		MakeRow("Function Row",
 			outerEdge, padding,
-			Key{ 1 },
+			Key{ 1, "M1" },
 			padding, innerEdge, padding,
-			Key{ 1 }, Key{ 1 }, Key{ 1 }, Key{ 1 },
+			Key{ 1, "N1" }, Key{ 1, "N2" }, Key{ 1, "N3" }, Key{ 1, "N4" },
 			padding, innerEdge, padding,
-			Key{ 1 }, Key{ 1 }, Key{ 1 },
+			Key{ 1, "PRINT" }, Key{ 1, "SCROLL" }, Key{ 1, "PAUSE" },
 			padding, innerEdge, padding,
-			Key{ 1 },
+			Key{ 1, "ESC" },
 			padding,
 			Spacer{ Key{ 1 }.Width() - padding.Width() * 2 },
 			padding,
-			Key{ 1 }, Key{ 1 }, Key{ 1 }, Key{ 1 }, Key{ 1 },
+			Key{ 1, "F1" }, Key{ 1, "F2" }, Key{ 1, "F3" }, Key{ 1, "F4" }, Key{ 1, "F5" },
 			padding,
 			Spacer{ Key{ 1.5 }.Width() - Key{ 1 }.Width() - padding.Width() * 2 },
 			padding,
-			Key{ 1 },
+			Key{ 1, "L1" },
 			padding, outerEdge),
 		MakeRow("Row 1",
 			outerEdge, padding,
-			Key{ 1 },
+			Key{ 1, "M2" },
 			padding, innerEdge, padding,
-			Key{ 1 }, Key{ 1 }, Key{ 1 }, Key{ 1 },
+			Key{ 1, "NUM_MINUS" }, Key{ 1, "NUM_MUL" }, Key{ 1, "NUM_DIV" }, Key{ 1, "NUM_LOCK" },
 			padding, innerEdge, padding,
-			Key{ 1 }, Key{ 1 }, Key{ 1 },
+			Key{ 1, "INSERT" }, Key{ 1, "HOME" }, Key{ 1, "PAGE_UP" },
 			padding, innerEdge, padding,
-			Key{ 1 }, Key{ 1 }, Key{ 1 }, Key{ 1 }, Key{ 1 }, Key{ 1 }, Key{ 1 }, Key{ 1.5 },
+			Key{ 1, "BACKTICK" }, Key{ 1, "1" }, Key{ 1, "2" }, Key{ 1, "3" }, Key{ 1, "4" }, Key{ 1, "5" }, Key{ 1, "6" }, Key{ 1.5, "L2" },
 			padding, outerEdge),
 		MakeRow("Row 2",
 			outerEdge, padding,
-			Key{ 1 },
+			Key{ 1, "M3" },
 			padding, innerEdge, padding,
-			Key{ 1 }, Key{ 1 }, Key{ 1 }, Key{ 1 },
+			Key{ 1, "NUM_PLUS" }, Key{ 1, "NUM_7" }, Key{ 1, "NUM_8" }, Key{ 1, "NUM_9" },
 			padding, innerEdge, padding,
-			Key{ 1 }, Key{ 1 }, Key{ 1 },
+			Key{ 1, "DELETE" }, Key{ 1, "END" }, Key{ 1, "PAGE_DOWN" },
 			padding, innerEdge, padding,
-			Key{ 1.5 }, Key{ 1 }, Key{ 1 }, Key{ 1 }, Key{ 1 }, Key{ 1 }, Key{ 2 },
+			Key{ 1.5, "TAB" }, Key{ 1, "Q" }, Key{ 1, "W" }, Key{ 1, "E" }, Key{ 1, "R" }, Key{ 1, "T" }, Key{ 2, "L3" },
 			padding, outerEdge),
 		MakeRow("Row 3",
 			outerEdge, padding,
-			Key{ 1 },
+			Key{ 1, "M4" },
 			padding, innerEdge, padding,
-			Key{ 1 }, Key{ 1 }, Key{ 1 }, Key{ 1 },
+			Key{ 1, "NUM_PLUS" }, Key{ 1, "NUM_4" }, Key{ 1, "NUM_5" }, Key{ 1, "NUM_6" },
 			padding, Spacer{ innerEdge.Width() * 2 + Key{ 1 }.Width() * 3 + padding.Width() * 2 }, padding,
-			Key{ 1.75 }, Key{ 1 }, Key{ 1 }, Key{ 1 }, Key{ 1 }, Key{ 1 }, Key{ 1.75 },
+			Key{ 1.75, "CAPS_LOCK" }, Key{ 1, "A" }, Key{ 1, "S" }, Key{ 1, "D" }, Key{ 1, "F" }, Key{ 1, "G" }, Key{ 1.75, "L4" },
 			padding, outerEdge),
 		MakeRow("Row 4",
 			outerEdge, padding,
-			Key{ 1 },
+			Key{ 1, "M5" },
 			padding, innerEdge, padding,
-			Key{ 1 }, Key{ 1 }, Key{ 1 }, Key{ 1 },
+			Key{ 1, "NUM_ENTER" }, Key{ 1, "NUM_1" }, Key{ 1, "NUM_2" }, Key{ 1, "NUM_3" },
 			padding, innerEdge, Spacer{ Key{ 1 }.Width() }, padding,
-			Key{ 1 },
+			Key{ 1, "UP" },
 			padding, Spacer{ Key{ 1 }.Width() }, innerEdge, padding,
-			Key{ 2.25 }, Key{ 1 }, Key{ 1 }, Key{ 1 }, Key{ 1 }, Key{ 1 }, Key{ 1.25 },
+			Key{ 2.25, "LEFT_SHIFT" }, Key{ 1, "Z" }, Key{ 1, "X" }, Key{ 1, "C" }, Key{ 1, "V" }, Key{ 1, "B" }, Key{ 1.25, "L5" },
 			padding, outerEdge),
 		MakeRow("Row 5",
 			outerEdge, padding,
-			Key{ 1 },
+			Key{ 1, "M5" },
 			padding, innerEdge, padding,
-			Key{ 1 }, Key{ 1 }, Key{ 1 }, Key{ 1 },
+			Key{ 1, "NUM_ENTER" }, Key{ 1, "NUM_PERIOD" }, Key{ 2, "NUM_0" },
 			padding, innerEdge, padding,
-			Key{ 1 }, Key{ 1 }, Key{ 1 },
+			Key{ 1, "LEFT" }, Key{ 1, "DOWN" }, Key{ 1, "RIGHT" },
 			padding, innerEdge, padding,
-			Key{ 1.25 }, Key{ 1.25 }, Key{ 1.25 }, Key{ 1.5 }, Key{ 2.25 }, Key{ 1 },
+			Key{ 1.25, "LEFT_CTRL" }, Key{ 1.25, "LEFT_WIN" }, Key{ 1.25, "LEFT_ALT" }, Key{ 1.5, "LEFT_HYPER" }, Key{ 2.25, "LEFT_SPACE" }, Key{ 1, "L6" },
 			padding, outerEdge)
 	);
-
+#if 0
 	Board("Right Hand",
 		MakeRow("Function Row",
 			outerEdge, padding,
@@ -259,6 +288,6 @@ int main()
 			Key{ 1 },
 			padding, outerEdge)
 	);
-
+#endif
 	return 0;
 }

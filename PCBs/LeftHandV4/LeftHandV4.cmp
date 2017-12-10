@@ -1,0 +1,584 @@
+Cmp-Mod V01 Created by CvPcb (2013-07-07 BZR 4022)-stable date = 12/10/2017 1:53:47 AM
+
+BeginCmp
+TimeStamp = /5A2CA8C7;
+Reference = CAPS_LOCK1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA7D7;
+Reference = KEY_1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA7E6;
+Reference = KEY_2;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA7F5;
+Reference = KEY_3;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA804;
+Reference = KEY_4;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA813;
+Reference = KEY_5;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA822;
+Reference = KEY_6;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA8D6;
+Reference = KEY_A1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA97B;
+Reference = KEY_B1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA7C8;
+Reference = KEY_BACKTICK1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA95D;
+Reference = KEY_C1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA8F4;
+Reference = KEY_D1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA6F6;
+Reference = KEY_DELETE1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA741;
+Reference = KEY_DOWN1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA88B;
+Reference = KEY_E1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA705;
+Reference = KEY_END1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA75F;
+Reference = KEY_ESC1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA76E;
+Reference = KEY_F1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA77D;
+Reference = KEY_F2;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA78C;
+Reference = KEY_F3;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA79B;
+Reference = KEY_F4;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA7AA;
+Reference = KEY_F5;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA903;
+Reference = KEY_F6;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA912;
+Reference = KEY_G1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA6D8;
+Reference = KEY_HOME1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA6C9;
+Reference = KEY_INSERT1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA7B9;
+Reference = KEY_L1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA831;
+Reference = KEY_L2;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA8B8;
+Reference = KEY_L3;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA921;
+Reference = KEY_L4;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA98A;
+Reference = KEY_L5;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA9E4;
+Reference = KEY_L6;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA732;
+Reference = KEY_LEFT1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA36A;
+Reference = KEY_M1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA516;
+Reference = KEY_M2;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA525;
+Reference = KEY_M3;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA534;
+Reference = KEY_M4;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA543;
+Reference = KEY_M5;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA552;
+Reference = KEY_M6;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA561;
+Reference = KEY_N1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA570;
+Reference = KEY_N2;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA57F;
+Reference = KEY_N3;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA58E;
+Reference = KEY_N4;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA714;
+Reference = KEY_PAGE_DOWN1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA6E7;
+Reference = KEY_PAGE_UP1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA6BA;
+Reference = KEY_PAUSE1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA69C;
+Reference = KEY_PRINT1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA86D;
+Reference = KEY_Q1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA89A;
+Reference = KEY_R1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA750;
+Reference = KEY_RIGHT1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA8E5;
+Reference = KEY_S1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA6AB;
+Reference = KEY_SCROLL1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA8A9;
+Reference = KEY_T1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA85E;
+Reference = KEY_TAB1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA723;
+Reference = KEY_UP1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA96C;
+Reference = KEY_V1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA87C;
+Reference = KEY_W1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA94E;
+Reference = KEY_X1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA93F;
+Reference = KEY_Z1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA9B7;
+Reference = LEFT_ALT1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA999;
+Reference = LEFT_CONTROL1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA84F;
+Reference = LEFT_DSUB1;
+ValeurCmp = DB25;
+IdModule  = DB25FD;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA9C6;
+Reference = LEFT_HYPER1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA930;
+Reference = LEFT_SHIFT1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA9D5;
+Reference = LEFT_SPACE1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA9A8;
+Reference = LEFT_WIN1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA68D;
+Reference = NUM_0;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA651;
+Reference = NUM_1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA660;
+Reference = NUM_2;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA66F;
+Reference = NUM_3;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA615;
+Reference = NUM_4;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA624;
+Reference = NUM_5;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA633;
+Reference = NUM_6;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA5E8;
+Reference = NUM_7;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA5F7;
+Reference = NUM_8;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA606;
+Reference = NUM_9;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA5BB;
+Reference = NUM_DIV1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA642;
+Reference = NUM_ENTER1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA5CA;
+Reference = NUM_LOCK1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA59D;
+Reference = NUM_MINUS1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA5AC;
+Reference = NUM_MUL1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA67E;
+Reference = NUM_PERIOD1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2CA5D9;
+Reference = NUM_PLUS1;
+ValeurCmp = SW_DIODE;
+IdModule  = SW_DIODE;
+EndCmp
+
+EndListe

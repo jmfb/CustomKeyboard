@@ -1,0 +1,24 @@
+Cmp-Mod V01 Created by CvPcb (2013-07-07 BZR 4022)-stable date = 12/11/2017 2:00:17 AM
+
+BeginCmp
+TimeStamp = /5A2E3695;
+Reference = J1;
+ValeurCmp = DB25;
+IdModule  = DB25FD;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2E3681;
+Reference = J2;
+ValeurCmp = DB25;
+IdModule  = DB25FD;
+EndCmp
+
+BeginCmp
+TimeStamp = /5A2E3668;
+Reference = T1;
+ValeurCmp = TEENSY20;
+IdModule  = TEENSY20;
+EndCmp
+
+EndListe

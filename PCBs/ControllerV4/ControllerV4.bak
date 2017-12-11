@@ -1,0 +1,81 @@
+EESchema Schematic File Version 2
+LIBS:power
+LIBS:device
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:special
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+LIBS:Keyboard
+LIBS:ControllerV4-cache
+EELAYER 27 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date "11 dec 2017"
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L TEENSY20 T?
+U 1 1 5A2E3668
+P 3800 2550
+F 0 "T?" H 3800 1950 60  0000 C CNN
+F 1 "TEENSY20" H 3800 1950 60  0000 C CNN
+F 2 "~" H 3800 1950 60  0000 C CNN
+F 3 "~" H 3800 1950 60  0000 C CNN
+	1    3800 2550
+	1    0    0    -1  
+$EndComp
+$Comp
+L DB25 J?
+U 1 1 5A2E3681
+P 5600 4800
+F 0 "J?" H 5650 6150 70  0000 C CNN
+F 1 "DB25" H 5550 3450 70  0000 C CNN
+F 2 "" H 5600 4800 60  0000 C CNN
+F 3 "" H 5600 4800 60  0000 C CNN
+	1    5600 4800
+	1    0    0    -1  
+$EndComp
+$Comp
+L DB25 J?
+U 1 1 5A2E3695
+P 2450 4850
+F 0 "J?" H 2500 6200 70  0000 C CNN
+F 1 "DB25" H 2400 3500 70  0000 C CNN
+F 2 "" H 2450 4850 60  0000 C CNN
+F 3 "" H 2450 4850 60  0000 C CNN
+	1    2450 4850
+	1    0    0    -1  
+$EndComp
+$EndSCHEMATC

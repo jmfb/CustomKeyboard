@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by CvPcb (2013-07-07 BZR 4022)-stable date = 12/10/2017 1:53:47 AM
+Cmp-Mod V01 Created by PcbNew date = 12/12/2017 12:06:44 AM
 
 BeginCmp
 TimeStamp = /5A2CA8C7;
@@ -200,7 +200,7 @@ BeginCmp
 TimeStamp = /5A2CA8B8;
 Reference = KEY_L3;
 ValeurCmp = SW_DIODE;
-IdModule  = SW_DIODE;
+IdModule  = SW2_DIODE_R;
 EndCmp
 
 BeginCmp
@@ -424,7 +424,7 @@ BeginCmp
 TimeStamp = /5A2CA999;
 Reference = LEFT_CONTROL1;
 ValeurCmp = SW_DIODE;
-IdModule  = SW_DIODE;
+IdModule  = SW_DIODE_RTOP;
 EndCmp
 
 BeginCmp
@@ -445,28 +445,28 @@ BeginCmp
 TimeStamp = /5A2CA930;
 Reference = LEFT_SHIFT1;
 ValeurCmp = SW_DIODE;
-IdModule  = SW_DIODE;
+IdModule  = SW2_DIODE_L;
 EndCmp
 
 BeginCmp
 TimeStamp = /5A2CA9D5;
 Reference = LEFT_SPACE1;
 ValeurCmp = SW_DIODE;
-IdModule  = SW_DIODE;
+IdModule  = SW2_DIODE_L;
 EndCmp
 
 BeginCmp
 TimeStamp = /5A2CA9A8;
 Reference = LEFT_WIN1;
 ValeurCmp = SW_DIODE;
-IdModule  = SW_DIODE;
+IdModule  = SW_DIODE_RTOP;
 EndCmp
 
 BeginCmp
 TimeStamp = /5A2CA68D;
 Reference = NUM_0;
 ValeurCmp = SW_DIODE;
-IdModule  = SW_DIODE;
+IdModule  = SW2_DIODE_R;
 EndCmp
 
 BeginCmp
@@ -543,7 +543,7 @@ BeginCmp
 TimeStamp = /5A2CA642;
 Reference = NUM_ENTER1;
 ValeurCmp = SW_DIODE;
-IdModule  = SW_DIODE;
+IdModule  = SW2_DIODE_L;
 EndCmp
 
 BeginCmp
@@ -578,7 +578,7 @@ BeginCmp
 TimeStamp = /5A2CA5D9;
 Reference = NUM_PLUS1;
 ValeurCmp = SW_DIODE;
-IdModule  = SW_DIODE;
+IdModule  = SW2_DIODE_L;
 EndCmp
 
 EndListe

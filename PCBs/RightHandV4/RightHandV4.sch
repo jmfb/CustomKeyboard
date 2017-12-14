@@ -32,6 +32,7 @@ LIBS:atmel
 LIBS:contrib
 LIBS:valves
 LIBS:Keyboard
+LIBS:RightHandV4-cache
 EELAYER 25 0
 EELAYER END
 $Descr A3 16535 11693
@@ -2238,7 +2239,7 @@ Wire Wire Line
 	16700 4550 16700 4500
 Connection ~ 15750 4550
 Wire Wire Line
-	650  5650 8150 5650
+	650  5650 16700 5650
 Wire Wire Line
 	1500 5650 1500 5600
 Connection ~ 650  4550
@@ -2263,8 +2264,6 @@ Connection ~ 6250 5650
 Wire Wire Line
 	8150 5650 8150 5600
 Connection ~ 7200 5650
-Wire Wire Line
-	8200 5650 16700 5650
 Wire Wire Line
 	12900 5650 12900 5600
 Wire Wire Line
@@ -3492,4 +3491,5 @@ Connection ~ 12050 2750
 Wire Wire Line
 	12250 1050 12250 6300
 Connection ~ 12250 6300
+Connection ~ 8150 5650
 $EndSCHEMATC

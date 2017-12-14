@@ -146,10 +146,10 @@ inline void Board(string name, T... boardRows)
 	vector<Row> rows{ boardRows... };
 	cout << "Board " << name << '\n';
 	auto rowIndex = 0;
-	for (auto& row : rows)
-		row.PrintPcbPositions(tops[rowIndex++] + dsubSpace + (keyHole / 2));
 	// for (auto& row : rows)
-	// 	row.PrintKeyLeftsAndRowWidth();
+	// 	row.PrintPcbPositions(tops[rowIndex++] + dsubSpace + (keyHole / 2));
+	for (auto& row : rows)
+		row.PrintKeyLeftsAndRowWidth();
 	// for (auto& row : rows)
 	// 	row.PrintFacePlate();
 	cout << '\n';

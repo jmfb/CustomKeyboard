@@ -2,7 +2,7 @@ depth = 1.5;
 edge = 3;
 baseSpacing = edge + 3 + 1;
 pcbLeftWidth = 343.5;
-pcbRightWidth = 371;
+pcbRightWidth = 372;
 pcbHeight = 150;
 leftWidth = pcbLeftWidth + 2 * baseSpacing;
 rightWidth = pcbRightWidth + 2 * baseSpacing;
@@ -14,6 +14,9 @@ pieceSpacing = 3;
 screwPadding = 10.5;
 dsubWidth = 55;
 notchOffset = 2 * edge + depth;
+keyHoleSize = 14;
+converterHeight = 67;
+converterWidth = 130.5;
 
 module notch(x, y, cx, cy) {
     translate([x, y, 0])
@@ -76,9 +79,6 @@ module handBase(width, horizontalMiddle) {
 }
 
 module converter() {
-    converterHeight = 67;
-    converterWidth = 130.5;
-    
     module converterBase() {
         module horizontalNotch(left, top) {
             notch(left, top, notchBig, notchLittle);
@@ -125,6 +125,51 @@ module converter() {
     converterBase();
 }
 
+module converter2() {
+    centerX = converterWidth / 2;
+    centerY = converterHeight / 2;
+
+    holeRadius = 2;
+    
+    module hole(x, y) {
+        translate([x, y])
+        cylinder(depth, d = holeRadius * 2, $fn = 12);
+    }
+    
+    module bar(xc, yc, rz) {
+        barWidth = 20.4;
+        barHeight = holeRadius * 2;
+        
+        translate([xc, yc, 0])
+        rotate([0, 0, rz])
+        translate([-barWidth / 2, -barHeight / 2, 0])
+        cube([barWidth, barHeight, depth]);
+    }
+
+    module fluxCapacitor() {
+        holeRadius = 2;
+        centerHoleX = 57.5;
+        epsilon = 0.3;
+
+        hole(centerHoleX, centerY);
+        hole(29.1, centerY);
+        hole(49.5, centerY);
+        hole(77 + epsilon, 14 - epsilon);
+        hole(77 + epsilon, converterHeight - 14 + epsilon);
+        hole(57.5 + 5.66, centerY - 5.66);
+        hole(57.5 + 5.66, centerY + 5.66);
+        
+        bar(39.3, centerY);
+        bar(centerHoleX + 12.87, centerY - 12.87, -45);
+        bar(centerHoleX + 12.87, centerY + 12.87, 45);
+    }
+
+    difference() {
+        converter();
+        fluxCapacitor();
+    }
+}
+
 module rightHandFace() {
     difference() {
         handBase(rightWidth, rightWidth - 179);
@@ -163,15 +208,79 @@ module leftHandFace() {
 }
 
 module key(x, y) {
-    notch(x, y, 14, 14);
+    notch(x, y, keyHoleSize, keyHoleSize);
 }
 
-//TODO: mounting plate cutouts for 2, 2.25, 2.75 key stabilizers
+module keys(xs, y) {
+    for (x = xs) {
+        key(x, y);
+    }
+}
+
+module key2(x, y) {
+    stabilizerWidth = 23.8;
+    centerX = x + keyHoleSize / 2;
+    centerY = y + keyHoleSize / 2;
+    
+    sideWidth = 6.65;
+    sideHeight = 12.3;
+    
+    key(x, y);
+    notch(
+        centerX + stabilizerWidth / 2 - sideWidth / 2,
+        centerY - 5.53,
+        sideWidth,
+        sideHeight);
+    notch(
+        centerX - stabilizerWidth / 2 - sideWidth / 2,
+        centerY - 5.53,
+        sideWidth,
+        sideHeight);
+    notch(
+        centerX + stabilizerWidth / 2 + sideWidth / 2,
+        centerY - 2.3,
+        0.875,
+        2.8);
+    notch(
+        centerX - stabilizerWidth / 2 - sideWidth / 2 - 0.875,
+        centerY - 2.3,
+        0.875,
+        2.8);
+    notch(
+        centerX + stabilizerWidth / 2 - 1.5,
+        centerY + 6.77,
+        3,
+        1.2);
+    notch(
+        centerX - stabilizerWidth / 2 - 1.5,
+        centerY + 6.77,
+        3,
+        1.2);
+    notch(
+        centerX + keyHoleSize / 2,
+        centerY - 4.73,
+        1.575,
+        10.7);
+    notch(
+        centerX - keyHoleSize / 2 - 1.575,
+        centerY - 4.73,
+        1.575,
+        10.7);
+}
+
+module key2vertical(x, y) {
+    centerX = x + keyHoleSize / 2;
+    centerY = y + keyHoleSize / 2;
+    translate([centerX, centerY])
+    rotate([0, 0, -90])
+    translate([-centerX, -centerY, 0])
+    key2(x, y);
+}
 
 module rightHandMount() {
     difference() {
         cube([pcbRightWidth, pcbHeight, depth]);
-        notch(pcbRightWidth - 61 - 55, 0, 55, 1);
+        notch(pcbRightWidth - 61 - 55, 0, 55, 11);
         standoff(3.5, 3.5);
         standoff(pcbRightWidth - 3.5, 3.5);
         standoff(3.5, pcbHeight - 3.5);
@@ -180,106 +289,33 @@ module rightHandMount() {
         standoff(pcbRightWidth - 172, pcbHeight - 3.5);
         standoff(pcbRightWidth - 172, 95);
         
-        key(10, 10 + 12);
-        key(29, 10 + 12);
-        key(67, 10 + 12);
-        key(86, 10 + 12);
-        key(105, 10 + 12);
-        key(124, 10 + 12);
-        key(143, 10 + 12);
-        key(162, 10 + 12);
-        key(181, 10 + 12);
-        key(205, 10 + 12);
-        key(224, 10 + 12);
-        key(243, 10 + 12);
-        key(267, 10 + 12);
-        key(286, 10 + 12);
-        key(305, 10 + 12);
-        key(324, 10 + 12);
-        key(348, 10 + 12);
-        
-		key(19.5, 38 + 12);
-		key(48, 38 + 12);
-		key(67, 38 + 12);
-		key(86, 38 + 12);
-		key(105, 38 + 12);
-		key(124, 38 + 12);
-		key(143, 38 + 12);
-		key(171.5, 38 + 12);
-		key(205, 38 + 12);
-		key(224, 38 + 12);
-		key(243, 38 + 12);
-		key(267, 38 + 12);
-		key(286, 38 + 12);
-		key(305, 38 + 12);
-		key(324, 38 + 12);
-		key(348, 38 + 12);
+        keys([10, 29, 67, 86, 105, 124, 143, 162, 181, 205, 224, 243, 267, 286, 305, 324, 348], 22);
 
-		key(14.75, 57 + 12);
-		key(38.5, 57 + 12);
-		key(57.5, 57 + 12);
-		key(76.5, 57 + 12);
-		key(95.5, 57 + 12);
-		key(114.5, 57 + 12);
-		key(133.5, 57 + 12);
-		key(152.5, 57 + 12);
-		key(176.25, 57 + 12);
-		key(205, 57 + 12);
-		key(224, 57 + 12);
-		key(243, 57 + 12);
-		key(267, 57 + 12);
-		key(286, 57 + 12);
-		key(305, 57 + 12);
-		key(324, 57 + 9.5 + 12);
-		key(348, 57 + 12);
+        keys([48, 67, 86, 105, 124, 143, 205, 224, 243, 267, 286, 305, 324, 348], 50);
+		key2(19.5, 50); //r3
+		key2(171.5, 50); //backspace
 
-		key(17.125, 76 + 12);
-		key(43.25, 76 + 12);
-		key(62.25, 76 + 12);
-		key(81.25, 76 + 12);
-		key(100.25, 76 + 12);
-		key(119.25, 76 + 12);
-		key(138.25, 76 + 12);
-		key(169.125, 76 + 12);
-		key(267, 76 + 12);
-		key(286, 76 + 12);
-		key(305, 76 + 12);
-		key(348, 76 + 12);
+        keys([14.75, 38.5, 57.5, 76.5, 95.5, 114.5, 133.5, 152.5, 176.25, 205, 224, 243, 267, 286, 305, 348], 69);
+		key2vertical(324, 78.5); //plus
 
-		key(21.875, 95 + 12);
-		key(52.75, 95 + 12);
-		key(71.75, 95 + 12);
-		key(90.75, 95 + 12);
-		key(109.75, 95 + 12);
-		key(128.75, 95 + 12);
-		key(164.375, 95 + 12);
-		key(224, 95 + 12);
-		key(267, 95 + 12);
-		key(286, 95 + 12);
-		key(305, 95 + 12);
-		key(324, 95 + 9.5 + 12);
-		key(348, 95 + 12);
+        keys([17.125, 43.25, 62.25, 81.25, 100.25, 119.25, 138.25, 267, 286, 305, 348], 88);
+		key2(169.125, 88); //enter
 
-		key(10, 114 + 12);
-		key(40.875, 114 + 12);
-		key(78.875, 114 + 12);
-		key(107.375, 114 + 12);
-		key(131.125, 114 + 12);
-		key(154.875, 114 + 12);
-		key(178.625, 114 + 12);
-		key(205, 114 + 12);
-		key(224, 114 + 12);
-		key(243, 114 + 12);
-		key(276.5, 114 + 12);
-		key(305, 114 + 12);
-		key(348, 114 + 12);
+        keys([52.75, 71.75, 90.75, 109.75, 128.75, 224, 267, 286, 305, 348], 107);
+		key2(21.875, 107); //r6
+		key2(164.375, 107); //shift
+		key2vertical(324, 116.5); //enter
+
+        keys([10, 78.875, 107.375, 131.125, 154.875, 178.625, 205, 224, 243, 305, 348], 126);
+		key2(40.875, 126); //space
+		key2(276.5, 126); //0
     }
 }
 
 module leftHandMount() {
     difference() {
         cube([pcbLeftWidth, pcbHeight, depth]);
-        notch(61, 0, 55, 1);
+        notch(61, 0, 55, 11);
         standoff(3.5, 3.5);
         standoff(pcbLeftWidth - 3.5, 3.5);
         standoff(3.5, pcbHeight - 3.5);
@@ -288,106 +324,40 @@ module leftHandMount() {
         standoff(172, pcbHeight - 3.5);
         standoff(pcbLeftWidth - 172, 95);
 
-		key(10, 10 + 12);
-		key(34, 10 + 12);
-		key(53, 10 + 12);
-		key(72, 10 + 12);
-		key(91, 10 + 12);
-		key(115, 10 + 12);
-		key(134, 10 + 12);
-		key(153, 10 + 12);
-		key(177, 10 + 12);
-		key(215, 10 + 12);
-		key(234, 10 + 12);
-		key(253, 10 + 12);
-		key(272, 10 + 12);
-		key(291, 10 + 12);
-		key(319.5, 10 + 12);
+        keys([10, 34, 53, 72, 91, 115, 134, 153, 177, 215, 234, 253, 272, 291, 319.5], 22);
 
-		key(10, 38 + 12);
-		key(34, 38 + 12);
-		key(53, 38 + 12);
-		key(72, 38 + 12);
-		key(91, 38 + 12);
-		key(115, 38 + 12);
-		key(134, 38 + 12);
-		key(153, 38 + 12);
-		key(177, 38 + 12);
-		key(196, 38 + 12);
-		key(215, 38 + 12);
-		key(234, 38 + 12);
-		key(253, 38 + 12);
-		key(272, 38 + 12);
-		key(291, 38 + 12);
-		key(314.75, 38 + 12);
+        keys([10, 34, 53, 72, 91, 115, 134, 153, 177, 196, 215, 234, 253, 272, 291, 314.75], 50);
 
-		key(10, 57 + 12);
-		key(34, 57 + 9.5 + 12);
-		key(53, 57 + 12);
-		key(72, 57 + 12);
-		key(91, 57 + 12);
-		key(115, 57 + 12);
-		key(134, 57 + 12);
-		key(153, 57 + 12);
-		key(181.75, 57 + 12);
-		key(205.5, 57 + 12);
-		key(224.5, 57 + 12);
-		key(243.5, 57 + 12);
-		key(262.5, 57 + 12);
-		key(281.5, 57 + 12);
-		key(310, 57 + 12);
+        keys([10, 53, 72, 91, 115, 134, 153, 181.75, 205.5, 224.5, 243.5, 262.5, 281.5], 69);
+		key2vertical(34, 57 + 9.5 + 12); //plus
+		key2(310, 57 + 12); //l3
 
-		key(10, 76 + 12);
-		key(53, 76 + 12);
-		key(72, 76 + 12);
-		key(91, 76 + 12);
-		key(184.125, 76 + 12);
-		key(210.25, 76 + 12);
-		key(229.25, 76 + 12);
-		key(248.25, 76 + 12);
-		key(267.25, 76 + 12);
-		key(286.25, 76 + 12);
-		key(312.375, 76 + 12);
+        keys([10, 53, 72, 91, 184.125, 210.25, 229.25, 248.25, 267.25, 286.25, 312.375], 88);
 
-		key(10, 95 + 12);
-		key(34, 95 + 9.5 + 12);
-		key(53, 95 + 12);
-		key(72, 95 + 12);
-		key(91, 95 + 12);
-		key(134, 95 + 12);
-		key(188.875, 95 + 12);
-		key(219.75, 95 + 12);
-		key(238.75, 95 + 12);
-		key(257.75, 95 + 12);
-		key(276.75, 95 + 12);
-		key(295.75, 95 + 12);
-		key(317.125, 95 + 12);
+        keys([10, 53, 72, 91, 134, 219.75, 238.75, 257.75, 276.75, 295.75, 317.125], 107);
+		key2vertical(34, 95 + 9.5 + 12); //enter
+		key2(188.875, 95 + 12); //shift
 
-		key(10, 114 + 12);
-		key(53, 114 + 12);
-		key(81.5, 114 + 12);
-		key(115, 114 + 12);
-		key(134, 114 + 12);
-		key(153, 114 + 12);
-		key(179.375, 114 + 12);
-		key(203.125, 114 + 12);
-		key(226.875, 114 + 12);
-		key(253, 114 + 12);
-		key(288.625, 114 + 12);
-		key(319.5, 114 + 12);
+        keys([10, 53, 115, 134, 153, 179.375, 203.125, 226.875, 253, 319.5], 126);
+		key2(81.5, 114 + 12); //0
+		key2(288.625, 114 + 12); //space
     }
 }
 
-projection() {
+module everything() {
     rightHandFace();
     translate([rightWidth + pieceSpacing, 0, 0])
     leftHandFace();
     translate([14 + pieceSpacing, 54 + pieceSpacing, 0])
     converter();
     translate([590, 54 + pieceSpacing, 0])
-    converter();
+    converter2();
     translate([0, height + pieceSpacing, 0])
     rightHandMount();
     translate([pcbRightWidth + pieceSpacing, height + pieceSpacing, 0])
     leftHandMount();
+}
+
+projection() {
+    everything();
 }

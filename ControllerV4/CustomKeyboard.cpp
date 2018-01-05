@@ -244,6 +244,17 @@ private:
 		for (int column = 0; column < columnCount; ++column)
 			ScanKey(row, column);
 		digitalWrite(rowPins[row], HIGH);
+
+		//Due to the length of the wires in the circuit with both boards connected
+		//we need to wait a bit for the signal to stabilize for a row before moving
+		//on to the next row.  Otherwise, a pressed key in the first column for row
+		//X will appear pressed on the immediate scan for row X + 1.  Best example
+		//is the Escape key (first row 0, first column 12) will cause phantom key
+		//presses for Tilde (second row 1, first column 12).  This occurs for most,
+		//yet oddly not all, keys in the first column and only the first row in the
+		//second column.  I am sure this is a well known electrical circuit phenomenon
+		//but I have no clue what it is or even what words to use to search for it.
+		delay(1);
 	}
 
 	void ScanKey(int row, int column)

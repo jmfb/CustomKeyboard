@@ -107,7 +107,6 @@ TEST_METHOD(DoNotRegisterKeysPressedForFewerThanThreeScans)
 	Loop(2);
 	mockArduino.ReleaseKey(0, 12);
 	Loop(1);
-	mockArduino.AssertDelays({});
 	mockArduino.AssertKeyboardReports({});
 }
 
@@ -115,7 +114,6 @@ TEST_METHOD(RegisterStableKey)
 {
 	mockArduino.PressKey(0, 12);
 	Loop(3);
-	mockArduino.AssertDelays({ 2 });
 	mockArduino.AssertKeyboardReports({
 		{ 0, KEY_ESC }
 	});
@@ -131,7 +129,6 @@ TEST_METHOD(RetainKeyPressOrder)
 	ReleaseKey(0, 12);
 	ReleaseKey(0, 15);
 	ReleaseKey(0, 14);
-	mockArduino.AssertDelays({ 2, 2, 2, 2, 2, 2, 2, 2 });
 	mockArduino.AssertKeyboardReports({
 		{ 0, KEY_ESC },
 		{ 0, KEY_ESC, KEY_F1 },
@@ -154,7 +151,6 @@ TEST_METHOD(HyperKeyLayout)
 	ReleaseKey(2, 12);
 	ReleaseKey(5, 15);
 	ReleaseKey(0, 12);
-	mockArduino.AssertDelays({ 2, 2, 2, 2 });
 	mockArduino.AssertKeyboardReports({
 		{ 0, KEY_ESC },
 		{ 0, KEY_ESC, KEY_ENTER },
@@ -172,7 +168,6 @@ TEST_METHOD(HyperShift)
 	ReleaseKey(3, 17);
 	ReleaseKey(2, 12);
 	ReleaseKey(3, 16);
-	mockArduino.AssertDelays({ 2, 2, 2, 2, 2, 2 });
 	mockArduino.AssertKeyboardReports({
 		{ KEY_LEFT_SHIFT, KEY_LEFT_BRACE },
 		{ 0, KEY_LEFT_BRACE, KEY_ENTER },
@@ -188,7 +183,6 @@ TEST_METHOD(ConsecutiveHyperKeysMappedToSameOriginalKey)
 	PressKey(5, 15); //Hyper Key
 	PressKey(3, 16); //F => {
 	PressKey(3, 14); //S => [
-	mockArduino.AssertDelays({ 2, 2 });
 	mockArduino.AssertKeyboardReports({
 		{ KEY_LEFT_SHIFT, KEY_LEFT_BRACE },
 		//Not sure if OS keyboard driver supports this.

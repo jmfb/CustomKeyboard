@@ -96,4 +96,20 @@ Cherry PCB mounted stabilizers were added.  Two sets of translucent keycaps were
 
 ### Lessons Learned
 
- - None yet.  Still making this version.
+ - D-Sub connector height measurement was imprecise and pushed the faceplate up about 1mm.  Filing it down took part of the edge off, but using a micrometer will yield better wall/faceplate height measurements.
+ - Using the washers on the screw/standoff connections was impractical due to the small size of the washers, the inconvenient location of the screws (near walls or central to the board and under the mounting plate).  The screw/standoff premise is solid though and made a very sturdy and professional looking case.
+ - The location of the D-Sub connectors on the boards was inconvenient for placement near monitors.  I think the outside edge would make the most sense for the next version.
+ - More keys was a bad idea.  The inner row keys ended up getting pressed by accident too often and ruined the tactile feel for finding my position on the keyboard without looking.  While there was potential for adding useful keys (left hand enter, backspace, right hand tab, escape) the opposite was experienced.  The extra left hand board made it difficult to find home for my left hand (naturally always seeking leftmost position).  The extra numpad and outer macro keys filled out the keyboard but were too out of the way to add anything useful to them (it was more burdensome to try to figure out what to assign to the keys).  I am not sure about how I feel about the hyper key near the spacebar because of the other things that made typing difficult.  I do still think a hyperkey or two is a good idea.
+ - The offboard teensy and extra cabling has the benefit of keeping a single cable going to each board but uncovered a problem with wiring resistance that was solved with a delay in the controller logic during rowscan to allow the signals in the lines to stabilize (which was taking at least one extra clock cycle and causing phantom keypresses in the first two columns of the scan matrix).
+ - I didn't glue down the wristpad on this one because I was tired of buying more and more wristpads.  However, they slip around too much otherwise.  They need to be fixed to the keyboard case.  Sewing the edge flap down did make them look much better than the glued end of cut off end.
+ - I think the Cherry MX Green switches were cool for a while but in the end not as nice to type on.  Going back to the blue switches from V2 felt amazingly good by comparison.
+ - The mix of blue and green LEDs was kind of cool but I don't love it.  I think short of RGB LEDs I will stick with a single color.  Probably green but blue was fine too.  The SIP sockets rock.
+ - Having the CapsLock key back was a mistake - definitely never use it and every time it is pressed was an accidental hit.  I might leave it off next time.  Would the overall look suffer though?
+ - The flux capacitor design in the connector board was basically invisible because of the clear faceplate.  However, the top leg did provide a hole through to the teensy reset button which came in handy.  Might just keep that hole.
+ - The cherry stabilizers worked out great.  Clean fit into PCB, perfect cutout for mounting plate.  There was one resistor that was close to a support bar.
+ - Pro-tip: prior to soldering the keys onto the PCB make sure all key pins went through.  One pin had bent down and I didn't discover it until half of the keys were soldered.  That meant I was almost fucked.  I ended up shoving a bit of wire through the hole and drenching it in solder hoping that surface tension would pull enough solder down the wire to make the connection to the bent pin.  It worked, but had it not I don't know what I would have done.
+ - A few more screws in certain locations would make the faceplate more stable (at least on the right hand board).
+
+## V5
+
+TODO

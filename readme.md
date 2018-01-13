@@ -112,4 +112,40 @@ Cherry PCB mounted stabilizers were added.  Two sets of translucent keycaps were
 
 ## V5
 
-TODO
+### Left Hand
+
+ - Getting rid of left hand accessory board (arrows and numpad).
+ - Getting rid of outside column macro keys (M1-6) and inside column macro keys (L1-6).
+ - Removing the caps lock key.  Could have left it for looks and mapped it to a hyper key or something, but not worth the mistakes.
+ - Keeping the left hyper key.
+ - Moving D-Sub connector to left edge at the top.
+ - Using a total of 7 screw holes to build case.
+ - Total of 35 keys (2 2+ keys) with max row width being 7.5 keys (bottom row).
+
+### Right Hand
+
+ - Getting rid of outside column macro keys (M1-6) and inside column macro keys (R1-7).
+ - Keeping numpad macro keys (N1-4).
+ - Keeping right hyper key and right windows key.
+ - Moving D-Sub connector to right edge at the top.
+ - Using a total of 15 screw holes to build case.
+ - Total of 75 keys (7 2+ keys) with max row width being 9 keys (bottom row, excluding accessory keys).
+
+### Connector Board
+
+ - Reusing design from V4.  Will be able to use the same PCB.
+ - Leaving a hole in the faceplate for the Teensy reset button.
+ - Using a total of 4 screw holes to build case.
+
+### General Updates
+
+ - Fixing case wall height to take into account micrometer measurements for D-Sub connectors (10.3mm vs. previous measurement of 9.5mm).
+ - Using 10mm F/F standoffs to connect PCB to faceplate (a 0.3mm gap will exist, should be fine).
+ - Not using washers in any part of screw assembly (too small and can't get in most spots).
+ - Using same color LED for all keys (green).
+ - Going back to Cherry MX Blue switches.
+ - Plan on getting custom DCS row 6 keycaps for hyper keys (left is 1.5, right is 1.75) and space keys (both 2.25).
+
+### Lessons Learned
+
+ - None.  Still building this version.

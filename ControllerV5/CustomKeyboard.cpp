@@ -50,7 +50,7 @@ const HyperKey none;
 //Left Hand: Row pins 0-5, Column pins 12-18
 int leftHandKeyMap[topRowCount][leftHandColumnCount] =
 {
-	{ KEY_ESC,        0,            KEY_F1,       KEY_F2,        KEY_F3,    KEY_F4, 0 },
+	{ KEY_ESC,        0,            KEY_F1,       KEY_F2,        KEY_F3,    KEY_F4, KEY_F5 },
 	{ KEY_TILDE,      KEY_1,        KEY_2,        KEY_3,         KEY_4,     KEY_5,  KEY_6 },
 	{ KEY_TAB,        KEY_Q,        KEY_W,        KEY_E,         KEY_R,     KEY_T,  0 },
 	{ 0,              KEY_A,        KEY_S,        KEY_D,         KEY_F,     KEY_G,  0 },

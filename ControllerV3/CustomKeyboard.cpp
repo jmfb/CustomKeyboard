@@ -38,7 +38,7 @@ public:
 const HyperKey none;
 
 //Left Hand: Row pins 0-5, Column pins 12-18
-int leftHandKeyMap[topRowCount][leftHandColumnCount] =
+unsigned int leftHandKeyMap[topRowCount][leftHandColumnCount] =
 {
 	{ KEY_ESC,        KEY_F1,       KEY_F2,       KEY_F3,    KEY_F4, KEY_F5, 0 },
 	{ KEY_TILDE,      KEY_1,        KEY_2,        KEY_3,     KEY_4,  KEY_5,  KEY_6 },
@@ -71,7 +71,7 @@ HyperKey leftHandHyperKeyMap[topRowCount][leftHandColumnCount] =
 };
 
 //Numpad: Row pins 0-4, Column pins 19-22
-int numPadKeyMap[topRowCount][numPadColumnCount] =
+unsigned int numPadKeyMap[topRowCount][numPadColumnCount] =
 {
 	{ KEY_NUM_LOCK, KEYPAD_SLASH, KEYPAD_ASTERIX, KEYPAD_MINUS },
 	{ KEYPAD_7,     KEYPAD_8,     KEYPAD_9,       KEYPAD_PLUS },
@@ -92,7 +92,7 @@ HyperKey numPadHyperKeyMap[topRowCount][numPadColumnCount] =
 };
 
 //Right Hand: Row pins 6-11, Column pins 12-19
-int rightHandKeyMap[bottomRowCount][rightHandColumnCount] =
+unsigned int rightHandKeyMap[bottomRowCount][rightHandColumnCount] =
 {
 	{ 0,     KEY_F6, KEY_F7, KEY_F8, KEY_F9,    KEY_F10,        KEY_F11,         KEY_F12 },
 	{ 0,     KEY_7,  KEY_8,  KEY_9,  KEY_0,     KEY_MINUS,      KEY_EQUAL,       KEY_BACKSPACE },
@@ -113,7 +113,7 @@ HyperKey rightHandHyperKeyMap[bottomRowCount][rightHandColumnCount] =
 };
 
 //Arrow Keys: Row pins 6-10, Column pins 20-22
-int arrowKeyKeyMap[bottomRowCount][arrowKeyColumnCount] =
+unsigned int arrowKeyKeyMap[bottomRowCount][arrowKeyColumnCount] =
 {
 	{ KEY_PRINTSCREEN, KEY_SCROLL_LOCK, KEY_PAUSE },
 	{ KEY_INSERT,      KEY_HOME,        KEY_PAGE_UP },
@@ -322,7 +322,7 @@ private:
 			keys[count++] = key;
 	}
 
-	static int GetKeyCode(int row, int column)
+	static unsigned int GetUnsignedKeyCode(int row, int column)
 	{
 		if (row < topRowCount)
 		{
@@ -333,6 +333,11 @@ private:
 		if (column < rightHandColumnCount)
 			return rightHandKeyMap[row - topRowCount][column];
 		return arrowKeyKeyMap[row - topRowCount][column - rightHandColumnCount];
+	}
+
+	static int GetKeyCode(int row, int column)
+	{
+		return static_cast<int>(GetUnsignedKeyCode(row, column));
 	}
 
 	static HyperKey GetHyperKey(int row, int column)

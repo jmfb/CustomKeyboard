@@ -317,6 +317,7 @@ module converter() {
 }
 
 projection() {
+    color([0, 0, 1]);
     handBase(rightWidth);
     translate([0, height + pieceSpacing, 0])
     handTopAndBottom(rightWidth);

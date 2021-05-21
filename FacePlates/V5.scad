@@ -335,5 +335,6 @@ module everything() {
 }
 
 projection() {
+    color([0, 0, 1]);
     everything();
 }

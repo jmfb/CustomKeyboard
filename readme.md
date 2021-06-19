@@ -250,6 +250,10 @@ Cherry PCB mounted stabilizers were added.  Two sets of translucent keycaps were
 	- [Datasheet](https://www.seielect.com/catalog/sei-cf_cfm.pdf)
 	- [Digikey](https://www.digikey.com/en/products/detail/stackpole-electronics-inc/CF18JT10K0/1741566)
 	- $0.01116 / resistor @ 500 = $5.58 (bulk discount)
+- Wristpad (x1 x2, but both cut from 1)
+	- Glorious Gaming Write Pad, Standard Size
+	- [Amazon](https://www.amazon.com/Glorious-Gaming-Wrist-Pad-Rest/dp/B00V5AXPTW)
+	- $26.99 / pad @ 1 = $26.99
 - Keycaps
 	- TODO: Doubleshot Translucent DCS for main set, unsure for extra non-standard keys
 - Laser Cut Parts

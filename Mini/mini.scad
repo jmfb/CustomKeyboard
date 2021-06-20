@@ -232,8 +232,8 @@ module facePlate() {
 		// Thumb 2-keys
 		tw = twoKeySize + facePlatePadding;
 		th = twoKeySize + 2 * facePlatePadding;
-		tx = thumbAnchorX + th * sin(thumbAlpha);
-		ty = thumbAnchorY - th * cos(thumbAlpha);
+		tx = thumbAnchorX + tw * sin(thumbAlpha);
+		ty = thumbAnchorY - tw * cos(thumbAlpha);
 		translate([tx, ty, 0])
 		rotate([0, 0, thumbAlpha])
 		cube([tw, th, basePlateDepth]);
@@ -357,8 +357,8 @@ module peg(x, y) {
 }
 
 module everything() {
-	basePlate();
-	// facePlate();
+	// basePlate();
+	facePlate();
 	// mountingPlate();
 	// upperLayer();
 	// lowerLayer();

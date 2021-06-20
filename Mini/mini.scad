@@ -58,44 +58,38 @@ module core() {
 		convexCorner(right, bottom, border, depth);
 	}
 
-	module thumbScrew() {
-		// Thumb screw
-		tsx = indexExtraRight + washerRadius;
-		ya = washerRadius * cos(thumbAlpha);
-		xa = washerRadius * sin(thumbAlpha);
-		xb = tsx - thumbLeft - xa;
-		yb = xb * tan(thumbAlpha);
-		tsy = thumbTop - ya + yb;
-		translate([tsx, tsy, 0])
+	module thumbScrewOutline() {
+		translate([thumbScrewX, thumbScrewY, 0])
 		cylinder(basePlateDepth, r = washerRadius, $fn = circleFragments);
 
+		cornerRadius = washerRadius - rimSize;
+		h = washerRadius + cornerRadius;
+
 		// Rounded corner to 2-keys
-		rc = washerRadius - wallSpacing;
-		h = washerRadius + rc;
 		x1 = h * cos(thumbAlpha);
 		y1 = h * sin(thumbAlpha);
 		difference() {
-			translate([tsx, tsy, 0])
+			translate([thumbScrewX, thumbScrewY, 0])
 			rotate([0, 0, thumbAlpha])
-			cube([ya + rc, xa + rc, basePlateDepth]);
+			cube([h, cornerRadius, basePlateDepth]);
 
-			translate([tsx + x1, tsy + y1, 0])
-			cylinder(basePlateDepth, r = rc, $fn = circleFragments);
+			translate([thumbScrewX + x1, thumbScrewY + y1, 0])
+			cylinder(basePlateDepth, r = cornerRadius, $fn = circleFragments);
 		}
 
 		// Rounded corner to index extra
 		difference() {
-			translate([tsx - rc, tsy - washerRadius - rc, 0])
-			cube([rc, rc + washerRadius, basePlateDepth]);
+			translate([thumbScrewX - cornerRadius, thumbScrewY - h, 0])
+			cube([cornerRadius, h, basePlateDepth]);
 
-			translate([tsx, tsy - washerRadius - rc, 0])
-			cylinder(basePlateDepth, r = rc, $fn = circleFragments);
+			translate([thumbScrewX, thumbScrewY - h, 0])
+			cylinder(basePlateDepth, r = cornerRadius, $fn = circleFragments);
 		}
 	}
 
-	module pinkyScrew() {
-		cx = pinkyFingerLeft - washerRadius;
-		cy = pinkyFingerTop - wallSpacing + washerRadius;
+	module pinkyScrewOutline() {
+		cx = pinkyScrew.x;
+		cy = pinkyScrew.y;
 		height = pinkyExtraOffset + wallSpacing;
 		extra = height - washerRadius - wallSpacing;
 
@@ -107,6 +101,10 @@ module core() {
 
 		translate([cx, cy, 0])
 		cylinder(basePlateDepth, r = washerRadius, $fn = circleFragments);
+
+		// Cover the start of the rounded edge above the pinky finger since we have extended it
+		translate([pinkyFingerLeft - facePlatePadding, pinkyFingerTop - wallSpacing, 0])
+		cube([wallSpacing, wallSpacing, basePlateDepth]);
 
 		translate([cx - washerRadius - extra, cy, 0])
 		difference() {
@@ -185,13 +183,56 @@ module core() {
 	translate([thumbLeft + thumbDY, thumbTop + thumbDX, 0])
 	cylinder(basePlateDepth, r = wallSpacing, $fn = circleFragments);
 
-	thumbScrew();
-	pinkyScrew();
+	thumbScrewOutline();
+	pinkyScrewOutline();
 }
 
 module wristPad() {
 	translate([0, facePlateHeight, 0])
 	cube([wristPadWidth, wristPadHeight, basePlateDepth]);
+}
+
+
+module m4HexHoles() {
+	module hole(x, y) {
+		hexHeight = 6; // TODO: measured height (flat to flat) of M4 hex standoff
+		padding = 0.5; // Padding between side and cutout (not too snug it gets stuck)
+		alpha = 30;
+		edgeRadius = hexHeight / 2 + padding;
+		halfHoleSide = edgeRadius * tan(alpha);
+		holeSide = 2 * halfHoleSide;
+		holeWidth = 2 * holeSide;
+
+		translate([x - halfHoleSide, y - edgeRadius, 0])
+		cube([holeSide, 2 * edgeRadius, basePlateDepth]);
+
+		translate([x + halfHoleSide, y - edgeRadius, 0])
+		rotate([0, 0, 2 * alpha])
+		cube([holeSide, 2 * edgeRadius, basePlateDepth]);
+
+		translate([x - holeSide, y, 0])
+		rotate([0, 0, -2 * alpha])
+		cube([holeSide, 2 * edgeRadius, basePlateDepth]);
+	}
+
+	for (screw = screws) {
+		hole(screw.x, screw.y);
+	}
+}
+
+
+module m4ScrewHoles() {
+	module hole(x, y) {
+		diameter = 4; 			// TODO: measure diameter of screw threads (should be 4mm for M4)
+		radius = diameter / 2;
+		padding = 0.25;			// Radial padding to keep from being too snug
+		translate([x, y, 0])
+		cylinder(basePlateDepth, r = (radius + padding), $fn = circleFragments);
+	}
+
+	for (screw = screws) {
+		hole(screw.x, screw.y);
+	}
 }
 
 module basePlate() {
@@ -201,7 +242,8 @@ module basePlate() {
 			wristPad();
 		}
 
-		// TODO: M4 screw holes (5)
+		m4ScrewHoles();
+
 		// TODO: 3x3 peg holes (?)
 	}
 }
@@ -255,8 +297,7 @@ module facePlate() {
 		cube([dh, keySize, basePlateDepth]);
 
 		connectorNotch();
-
-		// TODO: M4 hex screw holes (5)
+		m4HexHoles();
 	}
 }
 
@@ -304,8 +345,7 @@ module mountingPlate() {
 		stabilizer(1);
 
 		connectorNotch();
-
-		// TODO: M4 hex screw holes (5)
+		m4HexHoles();
 	}
 }
 
@@ -339,6 +379,7 @@ module pcb() {
 	difference() {
 		core();
 		lowerLayer();
+		m4HexHoles();
 		// TODO: technically this needs to remvoe the pcbSpacing (1mm border), but close
 	}
 }
@@ -357,8 +398,9 @@ module peg(x, y) {
 }
 
 module everything() {
-	// basePlate();
-	facePlate();
+	// core();
+	basePlate();
+	// facePlate();
 	// mountingPlate();
 	// upperLayer();
 	// lowerLayer();

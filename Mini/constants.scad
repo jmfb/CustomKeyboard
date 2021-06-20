@@ -75,3 +75,23 @@ pegNotch = 3;
 pegDepth = 3;
 
 circleFragments = 30;
+
+leftWristScrew = [washerRadius, facePlateHeight - washerRadius];
+rightWristScrew = [thumbAnchorX + facePlatePadding + washerRadius, facePlateHeight - washerRadius];
+pinkyScrew = [wallSpacing + keySize - facePlatePadding - washerRadius, pinkyFingerTop - wallSpacing + washerRadius];
+
+thumbScrewX = indexExtraRight + facePlatePadding + washerRadius;
+dToScrew = twoKeySize + facePlatePadding + washerRadius;
+dToScrewX = thumbAnchorX + dToScrew * sin(thumbAlpha);
+dToScrewY = thumbAnchorY - dToScrew * cos(thumbAlpha);
+deltaX = dToScrewX - thumbScrewX;
+deltaY = deltaX * tan(thumbAlpha);
+thumbScrewY = dToScrewY - deltaY;
+thumbScrew = [thumbScrewX, thumbScrewY];
+
+screws = [
+	leftWristScrew,
+	rightWristScrew,
+	pinkyScrew,
+	thumbScrew
+];

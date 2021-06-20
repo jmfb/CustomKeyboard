@@ -32,6 +32,7 @@ pinkyExtraOffset = halfKeySize;	// Shift down from pinky finger row
 
 wristPadHeight = 100;	// Height of the wrist pad (Glorious PC gaming model)
 wristPadWidth = 6 * keySize - thumbGridOffset + pcbSpacing + rimSize;
+wristPadCornerRadius = 7;	// Radius of the thumb side bottom coner (only one rounded since other is cut)
 
 washerDiameter = 9;									// Diameter of the M4 washers
 washerSpacing = 1;									// Spacing between edge of washer and edge of case

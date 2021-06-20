@@ -188,8 +188,15 @@ module core() {
 }
 
 module wristPad() {
-	translate([0, facePlateHeight, 0])
-	cube([wristPadWidth, wristPadHeight, basePlateDepth]);
+	top = facePlateHeight;
+	translate([0, top, 0])
+	cube([wristPadWidth, wristPadHeight - wristPadCornerRadius, basePlateDepth]);
+
+	translate([0, top + wristPadHeight - wristPadCornerRadius, 0])
+	cube([wristPadWidth - wristPadCornerRadius, wristPadCornerRadius, basePlateDepth]);
+
+	translate([wristPadWidth - wristPadCornerRadius, top + wristPadHeight - wristPadCornerRadius, 0])
+	cylinder(basePlateDepth, r = wristPadCornerRadius, $fn = circleFragments);
 }
 
 

@@ -24,6 +24,7 @@ connectorEdgeSize = 14;	// Width of the connector on the edge of the PCB
 connectorLength = 12.3;	// Distance from edge of PCB to back of connector
 connectorOffset = 42;	// Distance from edge of PCB to portion of cable at outer edge
 connectorLeft = connectorOffset - wallSpacing; // Distance to edge of base next to connector
+connectorPadding = 0.5;	// Distance from edge of connector to mounting plate/face plate (prevent rubbing)
 
 thumbGridOffset = 7;			// Shift back from innermost finger column
 middleFingerOffset = 4;			// Shift up from index and ring finger rows
@@ -96,10 +97,6 @@ thumb2CenterY = thumbAnchorY + (halfKeySize + keySize) * sin(thumbAlpha) - halfT
 
 facePlateHeight = 5 * keySize + middleFingerOffset + 2 * wallSpacing;
 facePlatePadding = 1;	// 1mm spacing between edge of faceplate and holes for keycaps (prevent rub/catch)
-
-pegLip = 1;
-pegNotch = 3;
-pegDepth = 3;
 
 circleFragments = 30;
 

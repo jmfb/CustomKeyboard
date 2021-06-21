@@ -247,15 +247,12 @@ module basePlate() {
 		}
 
 		m4ScrewHoles();
-
-		// TODO: 3x3 peg holes (?)
 	}
 }
 
 module connectorNotch() {
-	// Connector notch
-	translate([connectorLeft, facePlateHeight - washerSize - connectorEdgeSize, 0])
-	cube([connectorLength + wallSpacing, connectorEdgeSize, basePlateDepth]);
+	translate([connectorLeft, facePlateHeight - washerSize - connectorEdgeSize - 2 * connectorPadding, 0])
+	cube([connectorLength + wallSpacing + connectorPadding, connectorEdgeSize + 2 * connectorPadding, basePlateDepth]);
 }
 
 module facePlate() {
@@ -395,9 +392,9 @@ module lowerLayer() {
 	upperLayer();
 
 	left = connectorLeft;
-	top = facePlateHeight - washerSize - connectorEdgeSize;
+	top = facePlateHeight - washerSize - connectorEdgeSize - 2 * connectorPadding;
 	translate([left, top, 0])
-	cube([rimSize, connectorEdgeSize, basePlateDepth]);
+	cube([rimSize, connectorEdgeSize + 2 * connectorPadding, basePlateDepth]);
 }
 
 module pcb() {
@@ -440,29 +437,15 @@ module pcbSpacing() {
 	}
 }
 
-module peg(x, y) {
-	height = 2 * basePlateDepth - pcbDepth;
-
-	translate([x + pegLip, y, 0])
-	cube([pegNotch, pcbDepth, pegDepth]);
-
-	translate([x, y + pcbDepth, 0])
-	cube([pegNotch + 2 * pegLip, height, pegDepth]);
-
-	translate([x + pegLip, y + pcbDepth + height, 0])
-	cube([pegNotch, basePlateDepth, pegDepth]);
-}
-
 module everything() {
 	// core();
-	// basePlate();
+	basePlate();
 	// facePlate();
-	mountingPlate();
+	// mountingPlate();
 	// upperLayer();
 	// lowerLayer();
 	// pcb();
 	// pcbSpacing();
-	// peg(0, 0);
 }
 
 projection(cut = false) {

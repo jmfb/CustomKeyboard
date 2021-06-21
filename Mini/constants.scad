@@ -89,6 +89,11 @@ thumbDY = twoKeySize * cos(thumbAlpha);				// Distance from anchor to top left (
 thumbLeft = thumbAnchorX + thumbDX;					// Top/left corner (X)
 thumbTop = thumbAnchorY - thumbDY;					// Top/left corner (Y)
 
+thumb1CenterX = thumbAnchorX + halfKeySize * cos(thumbAlpha) + halfTwoKeySize * sin(thumbAlpha);
+thumb1CenterY = thumbAnchorY + halfKeySize * sin(thumbAlpha) - halfTwoKeySize * cos(thumbAlpha);
+thumb2CenterX = thumbAnchorX + (halfKeySize + keySize) * cos(thumbAlpha) + halfTwoKeySize * sin(thumbAlpha);
+thumb2CenterY = thumbAnchorY + (halfKeySize + keySize) * sin(thumbAlpha) - halfTwoKeySize * cos(thumbAlpha);
+
 facePlateHeight = 5 * keySize + middleFingerOffset + 2 * wallSpacing;
 facePlatePadding = 1;	// 1mm spacing between edge of faceplate and holes for keycaps (prevent rub/catch)
 

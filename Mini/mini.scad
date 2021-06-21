@@ -305,33 +305,70 @@ module mountingPlate() {
 		}
 	}
 
-	module stabilizer(index) {
-		hx = keyHolePadding + index * keySize;
-		hy = keyHoleSize + twoKeyHolePadding;
-		xa = hx * cos(thumbAlpha);
-		ya = hx * sin(thumbAlpha);
-		xb = hy * sin(thumbAlpha);
-		yb = hy * cos(thumbAlpha);
-		x = thumbAnchorX + xa + xb;
-		y = thumbAnchorY + ya - yb;
-		translate([x, y, 0])
-		rotate([0, 0, thumbAlpha])
-		cube([keyHoleSize, keyHoleSize, basePlateDepth]);
+	module stabilizer(centerX, centerY) {
+		module rect(left, top, width, height) {
+			translate([left, top, 0])
+			cube([width, height, basePlateDepth]);
+		}
 
-		// TODO: full stabilizer mounting holes for 2-key stabilizer
+		stabilizerWidth = 23.88;		//2u, 2.5u, 2.75u
+
+		sideWidth = 6.65;
+		sideHeight = 12.3;
+		sideBottomOffset = 6.6;
+		sideTopOffset = sideHeight - sideBottomOffset;
+		sideTop = centerY - sideTopOffset;
+
+		connectorTopOffset = 0.81;
+		connectorBottomOffset = 0.79;
+		connectorHeight = sideHeight - connectorTopOffset - connectorBottomOffset;
+		connectorWidth = (stabilizerWidth - keyHoleSize - sideWidth) / 2;
+		connectorTop = sideTop + connectorTopOffset;
+
+		sideNotchOffsetX = 4.22;
+		sideNotchWidth = sideNotchOffsetX - (sideWidth / 2);
+		sideNotchBottomOffset = 0.51;
+		sideNotchHeight = 2.8;
+		sideNotchTopOffset = sideNotchHeight - sideNotchBottomOffset;
+		sideNotchTop = centerY - sideNotchTopOffset;
+
+		bottomNotchWidth = 3.05;
+		bottomNotchBottomOffset = 13.46;
+		bottomNotchHeight = bottomNotchBottomOffset - sideHeight;
+		bottomNotchTop = sideTop + sideHeight;
+
+		translate([centerX, centerY, 0])
+		rotate([0, 0, thumbAlpha + 90])
+		translate([-centerX, -centerY, 0])
+		union() {
+			// Center hole
+			rect(centerX - halfKeyHoleSize, centerY - halfKeyHoleSize, keyHoleSize, keyHoleSize);
+
+			// Stabilizer holes
+			rect(centerX + stabilizerWidth / 2 - sideWidth / 2, sideTop, sideWidth, sideHeight);
+			rect(centerX - stabilizerWidth / 2 - sideWidth / 2, sideTop, sideWidth, sideHeight);
+
+			// Stabilizer hole to center hole connectors
+			rect(centerX + halfKeyHoleSize, connectorTop, connectorWidth, connectorHeight);
+			rect(centerX - halfKeyHoleSize - connectorWidth, connectorTop, connectorWidth, connectorHeight);
+
+			// Side notches
+			rect(centerX + stabilizerWidth / 2 + sideWidth / 2, sideNotchTop, sideNotchWidth, sideNotchHeight);
+			rect(centerX - stabilizerWidth / 2 - sideWidth / 2 - sideNotchWidth, sideNotchTop, sideNotchWidth, sideNotchHeight);
+
+			// Bottom notches
+			rect(centerX + stabilizerWidth / 2 - bottomNotchWidth / 2, bottomNotchTop, bottomNotchWidth, bottomNotchHeight);
+			rect(centerX - stabilizerWidth / 2 - bottomNotchWidth / 2, bottomNotchTop, bottomNotchWidth, bottomNotchHeight);
+		}
 	}
 
 	difference() {
 		core();
-
 		for (fingerColumn = fingerColumns) {
 			column(fingerColumn.x, fingerColumn.y, fingerColumn.z);
 		}
-
-		// Full 2-key hole for stabilizer
-		stabilizer(0);
-		stabilizer(1);
-
+		stabilizer(thumb1CenterX, thumb1CenterY);
+		stabilizer(thumb2CenterX, thumb2CenterY);
 		connectorNotch();
 		m4HexHoles();
 	}
@@ -420,11 +457,11 @@ module everything() {
 	// core();
 	// basePlate();
 	// facePlate();
-	// mountingPlate();
+	mountingPlate();
 	// upperLayer();
 	// lowerLayer();
 	// pcb();
-	pcbSpacing();
+	// pcbSpacing();
 	// peg(0, 0);
 }
 

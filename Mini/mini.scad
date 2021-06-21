@@ -15,7 +15,7 @@ module core() {
 		translate([x - 2 * r, y - 2 * r, 0])
 		difference() {
 			cube([r, r, depth]);
-			cylinder(depth, r = r, $fn = 100);
+			cylinder(depth, r = r, $fn = circleFragments);
 		}
 	}
 
@@ -24,7 +24,7 @@ module core() {
 		difference() {
 			cube([r, r, depth]);
 			translate([0, r, 0])
-			cylinder(depth, r = r, $fn = 100);
+			cylinder(depth, r = r, $fn = circleFragments);
 		}
 	}
 
@@ -114,12 +114,9 @@ module core() {
 	}
 
 	// Standard 17 keys
-	keyColumn(pinkyExtraLeft, pinkyExtraTop, 2);
-	keyColumn(pinkyFingerLeft, pinkyFingerTop, 3);
-	keyColumn(ringFingerLeft, ringFingerTop, 3);
-	keyColumn(middleFingerLeft, middleFingerTop, 3);
-	keyColumn(indexFingerLeft, indexFingerTop, 3);
-	keyColumn(indexExtraLeft, indexExtraTop, 3);
+	for (fingerColumn = fingerColumns) {
+		keyColumn(fingerColumn.x, fingerColumn.y, fingerColumn.z);
+	}
 
 	// Concave corner above pinky (TODO: move for screw)
 	concaveCornerTopRight(pinkyFingerLeft, pinkyExtraTop, wallSpacing, basePlateDepth);
@@ -270,13 +267,9 @@ module facePlate() {
 	difference() {
 		core();
 
-		// Core 17 keys
-		column(pinkyExtraLeft, pinkyExtraTop, 2);
-		column(pinkyFingerLeft, pinkyFingerTop, 3);
-		column(ringFingerLeft, ringFingerTop, 3);
-		column(middleFingerLeft, middleFingerTop, 3);
-		column(indexFingerLeft, indexFingerTop, 3);
-		column(indexExtraLeft, indexExtraTop, 3);
+		for (fingerColumn = fingerColumns) {
+			column(fingerColumn.x, fingerColumn.y, fingerColumn.z);
+		}
 
 		// Thumb 2-keys
 		tw = twoKeySize + facePlatePadding;
@@ -286,10 +279,6 @@ module facePlate() {
 		translate([tx, ty, 0])
 		rotate([0, 0, thumbAlpha])
 		cube([tw, th, basePlateDepth]);
-
-		// Thumb grid
-		translate([thumbGridLeft - facePlatePadding, thumbGridTop - facePlatePadding, 0])
-		cube([2 * keySize + 2 * facePlatePadding, 2 * keySize + 2 * facePlatePadding, basePlateDepth]);
 
 		// Hole between thumb areas
 		translate([thumbAnchorX, thumbGridTop - facePlatePadding, 0])
@@ -335,17 +324,9 @@ module mountingPlate() {
 	difference() {
 		core();
 
-		// Core 17 keys
-		column(pinkyExtraLeft, pinkyExtraTop, 2);
-		column(pinkyFingerLeft, pinkyFingerTop, 3);
-		column(ringFingerLeft, ringFingerTop, 3);
-		column(middleFingerLeft, middleFingerTop, 3);
-		column(indexFingerLeft, indexFingerTop, 3);
-		column(indexExtraLeft, indexExtraTop, 3);
-
-		// Thumb grid
-		column(thumbGridLeft, thumbGridTop, 2);
-		column(thumbGridLeft + keySize, thumbGridTop, 2);
+		for (fingerColumn = fingerColumns) {
+			column(fingerColumn.x, fingerColumn.y, fingerColumn.z);
+		}
 
 		// Full 2-key hole for stabilizer
 		stabilizer(0);

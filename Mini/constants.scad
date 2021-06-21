@@ -57,6 +57,27 @@ indexExtraLeft = indexFingerLeft + keySize;
 indexExtraRight = indexExtraLeft + keySize;
 thumbGridLeft = indexFingerLeft - thumbGridOffset;
 
+// x, y, virtical count
+pinkyExtra = [pinkyExtraLeft, pinkyExtraTop, 2];
+pinkyFinger = [pinkyFingerLeft, pinkyFingerTop, 3];
+ringFinger = [ringFingerLeft, ringFingerTop, 3];
+middleFinger = [middleFingerLeft, middleFingerTop, 3];
+indexFinger = [indexFingerLeft, indexFingerTop, 3];
+indexExtra = [indexExtraLeft, indexExtraTop, 3];
+thumbGrid1 = [thumbGridLeft, thumbGridTop, 2];
+thumbGrid2 = [thumbGridLeft + keySize, thumbGridTop, 2];
+
+fingerColumns = [
+	pinkyExtra,
+	pinkyFinger,
+	ringFinger,
+	middleFinger,
+	indexFinger,
+	indexExtra,
+	thumbGrid1,
+	thumbGrid2
+];
+
 thumbAnchorOffset = keySize + halfKeySize;			// Anchor 2-key 1.5 keys down
 // Rotation of 2-key thumb buttons such that the bottom corner touches the middle of the lower thumb grid row
 // and the size touches the bottom corner of the bottom row index-extra column.

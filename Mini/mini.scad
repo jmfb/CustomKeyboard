@@ -136,11 +136,11 @@ module core() {
 	convexCorner(washerRadius, facePlateHeight - washerRadius, washerRadius, basePlateDepth);
 
 	// Box filling in right of thumb grid and left of connector (under palm)
-	translate([connectorOffset, pinkyFingerTop, 0])
-	cube([wristPadWidth - connectorOffset, facePlateHeight - pinkyFingerTop, basePlateDepth]);
+	translate([connectorLeft, pinkyFingerTop, 0])
+	cube([wristPadWidth - connectorLeft, facePlateHeight - pinkyFingerTop, basePlateDepth]);
 
 	// Concave corner above connector
-	concaveCornerBottomRight(connectorOffset + wallSpacing, pinkyFingerTop + 3 * keySize, wallSpacing, basePlateDepth);
+	concaveCornerBottomRight(connectorLeft + wallSpacing, pinkyFingerTop + 3 * keySize, wallSpacing, basePlateDepth);
 
 	// Thumb grid to 2-key filler
 	translate([thumbAnchorX, thumbGridTop, 0])
@@ -254,7 +254,7 @@ module basePlate() {
 
 module connectorNotch() {
 	// Connector notch
-	translate([connectorOffset, facePlateHeight - washerSize - connectorEdgeSize, 0])
+	translate([connectorLeft, facePlateHeight - washerSize - connectorEdgeSize, 0])
 	cube([connectorLength + wallSpacing, connectorEdgeSize, basePlateDepth]);
 }
 
@@ -343,7 +343,7 @@ module upperLayer() {
 
 		top = ringFingerTop + 3 * keySize;
 		bottom = facePlateHeight - rimSize;
-		left = connectorLeft - pcbSpacing;
+		left = connectorOffset - pcbSpacing;
 		right = thumbAnchorX;
 
 		translate([left, top, 0])
@@ -357,18 +357,49 @@ module upperLayer() {
 module lowerLayer() {
 	upperLayer();
 
-	left = connectorLeft - wallSpacing;
+	left = connectorLeft;
 	top = facePlateHeight - washerSize - connectorEdgeSize;
 	translate([left, top, 0])
 	cube([rimSize, connectorEdgeSize, basePlateDepth]);
 }
 
 module pcb() {
+	for (fingerColumn = fingerColumns) {
+		x = fingerColumn.x;
+		y = fingerColumn.y;
+		height = fingerColumn.z * keySize;
+		translate([x, y, 0])
+		cube([keySize, height, basePlateDepth]);
+	}
+
+	// Area under palm
+	palmTop = middleFingerTop + 3 * keySize;
+	translate([connectorOffset, palmTop, 0])
+	cube([indexFingerLeft - connectorOffset, facePlateHeight - wallSpacing - palmTop, basePlateDepth]);
+
+	// Thumb 2-keys
+	translate([thumbLeft, thumbTop, 0])
+	rotate([0, 0, thumbAlpha])
+	cube([2 * keySize, twoKeySize, basePlateDepth]);
+
+	// Hole between thumb 2-keys and thumb grid
+	translate([thumbAnchorX, thumbGridTop, 0])
+	cube([thumbGridOffset, thumbAnchorY - thumbGridTop, basePlateDepth]);
+
+	// Spiky notch next to thumb 2-keys
+	dx = thumbLeft - indexExtraRight;
+	dy = dx * tan(thumbAlpha);
+	translate([indexExtraRight, thumbTop - dy, 0])
+	rotate([0, 0, thumbAlpha])
+	cube([keySize, keySize, basePlateDepth]);
+}
+
+module pcbSpacing() {
 	difference() {
 		core();
 		lowerLayer();
 		m4HexHoles();
-		// TODO: technically this needs to remvoe the pcbSpacing (1mm border), but close
+		pcb();
 	}
 }
 
@@ -387,12 +418,13 @@ module peg(x, y) {
 
 module everything() {
 	// core();
-	basePlate();
+	// basePlate();
 	// facePlate();
 	// mountingPlate();
 	// upperLayer();
 	// lowerLayer();
 	// pcb();
+	pcbSpacing();
 	// peg(0, 0);
 }
 

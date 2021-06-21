@@ -23,7 +23,7 @@ wallSpacing = pcbSpacing + rimSize;	// Space between edge of keyswitch and edge 
 connectorEdgeSize = 14;	// Width of the connector on the edge of the PCB
 connectorLength = 12.3;	// Distance from edge of PCB to back of connector
 connectorOffset = 42;	// Distance from edge of PCB to portion of cable at outer edge
-connectorLeft = connectorOffset + wallSpacing; // Distance to the left edge of the connector (also edge of PCB)
+connectorLeft = connectorOffset - wallSpacing; // Distance to edge of base next to connector
 
 thumbGridOffset = 7;			// Shift back from innermost finger column
 middleFingerOffset = 4;			// Shift up from index and ring finger rows

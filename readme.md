@@ -254,8 +254,16 @@ Cherry PCB mounted stabilizers were added.  Two sets of translucent keycaps were
 	- Glorious Gaming Write Pad, Standard Size
 	- [Amazon](https://www.amazon.com/Glorious-Gaming-Wrist-Pad-Rest/dp/B00V5AXPTW)
 	- $26.99 / pad @ 1 = $26.99
-- Keycaps
-	- TODO: Doubleshot Translucent DCS for main set, unsure for extra non-standard keys
+- Doubleshot Translucent Pudding Keycaps (x15 x2)
+	- Standard Set
+	- [Amazon](https://www.amazon.com/gp/product/B09241HV9H)
+	- $19.99 / set @ 1 = $19.99
+- DCS Clear Keycaps (x8 x2)
+	- 1u R2 x2, 1u R3 x2, 1u R4 x8, 2u R3/4 x4
+	- [Datasheet](https://pimpmykeyboard.com/template/images/DCSFamily.pdf)
+	- [PimpMyKeyboard](https://pimpmykeyboard.com/dcs-clear-keys-and-key-sets/)
+	- $1.00 / 1u @ 12 = $12.00
+	- $1.50 / 2u @ 4 = $6.00
 - Laser Cut Parts
 	- TODO: Ponoko
 - PCB

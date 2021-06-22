@@ -35,8 +35,12 @@ wristPadHeight = 100;	// Height of the wrist pad (Glorious PC gaming model)
 wristPadWidth = 6 * keySize - thumbGridOffset + pcbSpacing + rimSize;
 wristPadCornerRadius = 7;	// Radius of the thumb side bottom coner (only one rounded since other is cut)
 
+hexHeight = 6;		// Measured height (flat to flat) of M4 hex standoff
+hexPadding = 0.25;	// Padding between side and cutout (not too snug it gets stuck)
+screwDiameter = 4; 	// Diameter of screw threads (with sufficient padding)
+
 washerDiameter = 9;									// Diameter of the M4 washers
-washerSpacing = 1;									// Spacing between edge of washer and edge of case
+washerSpacing = 1.5;								// Spacing between edge of washer and edge of case
 washerSize = washerDiameter + 2 * washerSpacing;	// Size of washer plus spacing
 washerRadius = washerSize / 2;						// Radius of washer plus spacing
 
@@ -101,6 +105,7 @@ facePlatePadding = 1;	// 1mm spacing between edge of faceplate and holes for key
 circleFragments = 30;
 
 leftWristScrew = [washerRadius, facePlateHeight - washerRadius];
+// TODO: Need to move this down from the diagonal now, meaning the entire face place height increases.
 rightWristScrew = [thumbAnchorX + facePlatePadding + washerRadius, facePlateHeight - washerRadius];
 pinkyScrew = [wallSpacing + keySize - facePlatePadding - washerRadius, pinkyFingerTop - wallSpacing + washerRadius];
 

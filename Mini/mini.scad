@@ -199,10 +199,8 @@ module wristPad() {
 
 module m4HexHoles() {
 	module hole(x, y) {
-		hexHeight = 6; // TODO: measured height (flat to flat) of M4 hex standoff
-		padding = 0.5; // Padding between side and cutout (not too snug it gets stuck)
 		alpha = 30;
-		edgeRadius = hexHeight / 2 + padding;
+		edgeRadius = hexHeight / 2 + hexPadding;
 		halfHoleSide = edgeRadius * tan(alpha);
 		holeSide = 2 * halfHoleSide;
 		holeWidth = 2 * holeSide;
@@ -227,11 +225,9 @@ module m4HexHoles() {
 
 module m4ScrewHoles() {
 	module hole(x, y) {
-		diameter = 4; 			// TODO: measure diameter of screw threads (should be 4mm for M4)
-		radius = diameter / 2;
-		padding = 0.25;			// Radial padding to keep from being too snug
+		radius = screwDiameter / 2;
 		translate([x, y, 0])
-		cylinder(basePlateDepth, r = (radius + padding), $fn = circleFragments);
+		cylinder(basePlateDepth, r = radius, $fn = circleFragments);
 	}
 
 	for (screw = screws) {
@@ -439,8 +435,9 @@ module pcbSpacing() {
 
 module everything() {
 	// core();
-	basePlate();
-	// facePlate();
+	// basePlate();
+	facePlate();
+	wristPad();
 	// mountingPlate();
 	// upperLayer();
 	// lowerLayer();

@@ -127,7 +127,9 @@ screws = [
 ];
 
 pegHoleSize = 3;									// Width and height of PCB to base peg holes
+halfPegHoleSize = pegHoleSize / 2;					// Half of the hole size (for centering)
 pegLipSize = 1;										// Size of lip on eithr side of peg notch
+pegWidth = pegHoleSize + 2 * pegLipSize;			// Total width of the peg
 pegInnerHeight = 2 * basePlateDepth - pcbDepth;		// Distance between bottom of PCB and top of base plate
 pegSpacing = 3;										// Min distance to edge of PCB from hole
 pegTopNotchHeight = pcbDepth;
@@ -136,9 +138,12 @@ pegOuterHeight = pegInnerHeight + pegTopNotchHeight + pegBottomNotchHeight;
 
 lowerRightPeg = [connectorOffset + pegSpacing, pcbBottom - pegSpacing - pegHoleSize];
 thumbPeg = [thumbAnchorX, thumbGridTop];
+indexPeg = [indexExtraLeft - halfPegHoleSize, indexExtraTop + keySize - halfPegHoleSize];
+pinkyPeg = [pinkyFingerLeft - halfPegHoleSize, pinkyExtraTop + keySize - halfPegHoleSize];
 
 pegs = [
 	lowerRightPeg,
-	thumbPeg
-	// TODO: Figure out placement of upper right area for a third peg (than does not conflict with PCB holes)
+	thumbPeg,
+	indexPeg,
+	pinkyPeg
 ];

@@ -444,6 +444,17 @@ module pcbSpacing() {
 	}
 }
 
+module peg() {
+	translate([pegLipSize, 0, 0])
+	cube([pegHoleSize, pegTopNotchHeight, basePlateDepth]);
+
+	translate([0, pegTopNotchHeight, 0])
+	cube([pegWidth, pegInnerHeight, basePlateDepth]);
+
+	translate([pegLipSize, pegTopNotchHeight + pegInnerHeight, 0])
+	cube([pegHoleSize, pegBottomNotchHeight, basePlateDepth]);
+}
+
 module everything() {
 	// core();
 	basePlate();
@@ -454,6 +465,7 @@ module everything() {
 	// lowerLayer();
 	// pcb();
 	// pcbSpacing();
+	// peg();
 }
 
 projection(cut = false) {

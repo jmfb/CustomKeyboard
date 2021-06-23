@@ -1,8 +1,10 @@
 include <constants.scad>
 
-module pegHole(x, y) {
-	translate([x, y, 0])
-	cube([pegNotch, pegNotch, basePlateDepth]);
+module pegHoles() {
+	for (peg = pegs) {
+		translate([peg.x, peg.y, 0])
+		cube([pegHoleSize, pegHoleSize, basePlateDepth]);
+	}
 }
 
 module core() {
@@ -151,35 +153,23 @@ module core() {
 	rotate([0, 0, thumbAlpha])
 	cube([2 * keySize + wallSpacing, twoKeySize, basePlateDepth]);
 
-	// TODO: left off here, I wish I could draw in text...
-	h1 = twoKeySize + wallSpacing;
-	d1 = halfKeySize + wallSpacing + extraBottomSpacing;
-	lly = d1 * sin(thumbAlpha);
-	llx = d1 * cos(thumbAlpha);
-	y1 = d1 - lly;
-	x1 = y1 / tan(thumbAlpha);
-	h2 = sqrt(y1 * y1 + x1 * x1);
+	// Fancy thumb rotation distance calculations
+	dy = halfKeySize + wallSpacing + extraBottomSpacing;
+	h1 = 2 * keySize + wallSpacing;
+	y1 = h1 * sin(thumbAlpha);
+	x1 = h1 * cos(thumbAlpha);
+	y2 = dy - y1;
+	x2 = y2 * tan(thumbAlpha);
+	h2 = sqrt(x2 * x2 + y2 * y2);
+	dx = x1 - x2 - h2;
+	y3 = dx * tan(thumbAlpha);
+	r = dy - y3;
 
 	translate([thumbAnchorX, thumbAnchorY, 0])
-	cube([llx - x1 - h2, d1, basePlateDepth]);
+	cube([dx, dy, basePlateDepth]);
 
-	// Fancy thumb rotation distance calculations
-	// th = twoKeySize + wallSpacing;
-	// sth = halfKeySize + wallSpacing;
-	// x = th * cos(thumbAlpha) - tan(thumbAlpha) * (sth - th * sin(thumbAlpha));
-	// h = (sth - th * sin(thumbAlpha)) / cos(thumbAlpha);
-	// dx = x - h;
-	// y = dx * tan(thumbAlpha);
-	// h2 = sqrt(dx * dx + y * y);
-	// r = th - h2;
-
-	// Bottom (unrotated) portion of thumb
-	// translate([thumbAnchorX, thumbAnchorY, 0])
-	// cube([dx, halfKeySize + wallSpacing, basePlateDepth]);
-
-	// Lower left corner of thumb
-	// translate([thumbAnchorX + dx, thumbAnchorY + y, 0])
-	// cylinder(basePlateDepth, r = r, $fn = circleFragments);
+	translate([thumbAnchorX + dx, thumbAnchorY + y3])
+	cylinder(basePlateDepth, r = r, $fn = circleFragments);
 
 	// Top wall of thumb
 	twx = thumbAnchorX + (twoKeySize + wallSpacing) * sin(thumbAlpha);
@@ -255,6 +245,7 @@ module basePlate() {
 		}
 
 		m4ScrewHoles();
+		pegHoles();
 	}
 }
 
@@ -384,7 +375,7 @@ module upperLayer() {
 		facePlate();
 
 		top = ringFingerTop + 3 * keySize;
-		bottom = facePlateHeight - rimSize;
+		bottom = facePlateHeight - rimSize - extraBottomSpacing;
 		left = connectorOffset - pcbSpacing;
 		right = thumbAnchorX;
 
@@ -406,34 +397,41 @@ module lowerLayer() {
 }
 
 module pcb() {
-	for (fingerColumn = fingerColumns) {
-		x = fingerColumn.x;
-		y = fingerColumn.y;
-		height = fingerColumn.z * keySize;
-		translate([x, y, 0])
-		cube([keySize, height, basePlateDepth]);
+	module pcbCore() {
+		for (fingerColumn = fingerColumns) {
+			x = fingerColumn.x;
+			y = fingerColumn.y;
+			height = fingerColumn.z * keySize;
+			translate([x, y, 0])
+			cube([keySize, height, basePlateDepth]);
+		}
+
+		// Area under palm
+		palmTop = middleFingerTop + 3 * keySize;
+		translate([connectorOffset, palmTop, 0])
+		cube([indexFingerLeft - connectorOffset, pcbBottom - palmTop, basePlateDepth]);
+
+		// Thumb 2-keys
+		translate([thumbLeft, thumbTop, 0])
+		rotate([0, 0, thumbAlpha])
+		cube([2 * keySize, twoKeySize, basePlateDepth]);
+
+		// Hole between thumb 2-keys and thumb grid
+		translate([thumbAnchorX, thumbGridTop, 0])
+		cube([thumbGridOffset, thumbAnchorY - thumbGridTop, basePlateDepth]);
+
+		// Spiky notch next to thumb 2-keys
+		dx = thumbLeft - indexExtraRight;
+		dy = dx * tan(thumbAlpha);
+		translate([indexExtraRight, thumbTop - dy, 0])
+		rotate([0, 0, thumbAlpha])
+		cube([keySize, keySize, basePlateDepth]);
 	}
 
-	// Area under palm
-	palmTop = middleFingerTop + 3 * keySize;
-	translate([connectorOffset, palmTop, 0])
-	cube([indexFingerLeft - connectorOffset, facePlateHeight - wallSpacing - palmTop, basePlateDepth]);
-
-	// Thumb 2-keys
-	translate([thumbLeft, thumbTop, 0])
-	rotate([0, 0, thumbAlpha])
-	cube([2 * keySize, twoKeySize, basePlateDepth]);
-
-	// Hole between thumb 2-keys and thumb grid
-	translate([thumbAnchorX, thumbGridTop, 0])
-	cube([thumbGridOffset, thumbAnchorY - thumbGridTop, basePlateDepth]);
-
-	// Spiky notch next to thumb 2-keys
-	dx = thumbLeft - indexExtraRight;
-	dy = dx * tan(thumbAlpha);
-	translate([indexExtraRight, thumbTop - dy, 0])
-	rotate([0, 0, thumbAlpha])
-	cube([keySize, keySize, basePlateDepth]);
+	difference() {
+		pcbCore();
+		pegHoles();
+	}
 }
 
 module pcbSpacing() {
@@ -442,12 +440,13 @@ module pcbSpacing() {
 		lowerLayer();
 		m4HexHoles();
 		pcb();
+		pegHoles();
 	}
 }
 
 module everything() {
-	core();
-	// basePlate();
+	// core();
+	basePlate();
 	// facePlate();
 	// wristPad();
 	// mountingPlate();

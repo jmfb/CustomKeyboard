@@ -102,6 +102,7 @@ thumb2CenterY = thumbAnchorY + (halfKeySize + keySize) * sin(thumbAlpha) - halfT
 
 facePlateHeight = 5 * keySize + middleFingerOffset + 2 * wallSpacing + extraBottomSpacing;
 facePlatePadding = 1;	// 1mm spacing between edge of faceplate and holes for keycaps (prevent rub/catch)
+pcbBottom = facePlateHeight - wallSpacing - extraBottomSpacing;
 
 circleFragments = 30;
 
@@ -123,4 +124,21 @@ screws = [
 	rightWristScrew,
 	pinkyScrew,
 	thumbScrew
+];
+
+pegHoleSize = 3;									// Width and height of PCB to base peg holes
+pegLipSize = 1;										// Size of lip on eithr side of peg notch
+pegInnerHeight = 2 * basePlateDepth - pcbDepth;		// Distance between bottom of PCB and top of base plate
+pegSpacing = 3;										// Min distance to edge of PCB from hole
+pegTopNotchHeight = pcbDepth;
+pegBottomNotchHeight = basePlateDepth;
+pegOuterHeight = pegInnerHeight + pegTopNotchHeight + pegBottomNotchHeight;
+
+lowerRightPeg = [connectorOffset + pegSpacing, pcbBottom - pegSpacing - pegHoleSize];
+thumbPeg = [thumbAnchorX, thumbGridTop];
+
+pegs = [
+	lowerRightPeg,
+	thumbPeg
+	// TODO: Figure out placement of upper right area for a third peg (than does not conflict with PCB holes)
 ];

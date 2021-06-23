@@ -19,6 +19,7 @@ facePlateDepth = 1.5;		// Face plate depth (top layer)
 rimSize = 3;						// Size of the wall layer rim
 pcbSpacing = 1;						// Space between the PCB and the rim
 wallSpacing = pcbSpacing + rimSize;	// Space between edge of keyswitch and edge of case
+extraBottomSpacing = 3;				// Extra spacing at the bottom to allow clearance for thumb screw
 
 connectorEdgeSize = 14;	// Width of the connector on the edge of the PCB
 connectorLength = 12.3;	// Distance from edge of PCB to back of connector
@@ -40,7 +41,7 @@ hexPadding = 0.25;	// Padding between side and cutout (not too snug it gets stuc
 screwDiameter = 4; 	// Diameter of screw threads (with sufficient padding)
 
 washerDiameter = 9;									// Diameter of the M4 washers
-washerSpacing = 1.5;								// Spacing between edge of washer and edge of case
+washerSpacing = 2;								// Spacing between edge of washer and edge of case
 washerSize = washerDiameter + 2 * washerSpacing;	// Size of washer plus spacing
 washerRadius = washerSize / 2;						// Radius of washer plus spacing
 
@@ -99,13 +100,12 @@ thumb1CenterY = thumbAnchorY + halfKeySize * sin(thumbAlpha) - halfTwoKeySize * 
 thumb2CenterX = thumbAnchorX + (halfKeySize + keySize) * cos(thumbAlpha) + halfTwoKeySize * sin(thumbAlpha);
 thumb2CenterY = thumbAnchorY + (halfKeySize + keySize) * sin(thumbAlpha) - halfTwoKeySize * cos(thumbAlpha);
 
-facePlateHeight = 5 * keySize + middleFingerOffset + 2 * wallSpacing;
+facePlateHeight = 5 * keySize + middleFingerOffset + 2 * wallSpacing + extraBottomSpacing;
 facePlatePadding = 1;	// 1mm spacing between edge of faceplate and holes for keycaps (prevent rub/catch)
 
 circleFragments = 30;
 
 leftWristScrew = [washerRadius, facePlateHeight - washerRadius];
-// TODO: Need to move this down from the diagonal now, meaning the entire face place height increases.
 rightWristScrew = [thumbAnchorX + facePlatePadding + washerRadius, facePlateHeight - washerRadius];
 pinkyScrew = [wallSpacing + keySize - facePlatePadding - washerRadius, pinkyFingerTop - wallSpacing + washerRadius];
 

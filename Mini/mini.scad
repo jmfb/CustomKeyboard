@@ -151,23 +151,35 @@ module core() {
 	rotate([0, 0, thumbAlpha])
 	cube([2 * keySize + wallSpacing, twoKeySize, basePlateDepth]);
 
+	// TODO: left off here, I wish I could draw in text...
+	h1 = twoKeySize + wallSpacing;
+	d1 = halfKeySize + wallSpacing + extraBottomSpacing;
+	lly = d1 * sin(thumbAlpha);
+	llx = d1 * cos(thumbAlpha);
+	y1 = d1 - lly;
+	x1 = y1 / tan(thumbAlpha);
+	h2 = sqrt(y1 * y1 + x1 * x1);
+
+	translate([thumbAnchorX, thumbAnchorY, 0])
+	cube([llx - x1 - h2, d1, basePlateDepth]);
+
 	// Fancy thumb rotation distance calculations
-	th = twoKeySize + wallSpacing;
-	sth = halfKeySize + wallSpacing;
-	x = th * cos(thumbAlpha) - tan(thumbAlpha) * (sth - th * sin(thumbAlpha));
-	h = (sth - th * sin(thumbAlpha)) / cos(thumbAlpha);
-	dx = x - h;
-	y = dx * tan(thumbAlpha);
-	h2 = sqrt(dx * dx + y * y);
-	r = th - h2;
+	// th = twoKeySize + wallSpacing;
+	// sth = halfKeySize + wallSpacing;
+	// x = th * cos(thumbAlpha) - tan(thumbAlpha) * (sth - th * sin(thumbAlpha));
+	// h = (sth - th * sin(thumbAlpha)) / cos(thumbAlpha);
+	// dx = x - h;
+	// y = dx * tan(thumbAlpha);
+	// h2 = sqrt(dx * dx + y * y);
+	// r = th - h2;
 
 	// Bottom (unrotated) portion of thumb
-	translate([thumbAnchorX, thumbAnchorY, 0])
-	cube([dx, halfKeySize + wallSpacing, basePlateDepth]);
+	// translate([thumbAnchorX, thumbAnchorY, 0])
+	// cube([dx, halfKeySize + wallSpacing, basePlateDepth]);
 
 	// Lower left corner of thumb
-	translate([thumbAnchorX + dx, thumbAnchorY + y, 0])
-	cylinder(basePlateDepth, r = r, $fn = circleFragments);
+	// translate([thumbAnchorX + dx, thumbAnchorY + y, 0])
+	// cylinder(basePlateDepth, r = r, $fn = circleFragments);
 
 	// Top wall of thumb
 	twx = thumbAnchorX + (twoKeySize + wallSpacing) * sin(thumbAlpha);
@@ -434,10 +446,10 @@ module pcbSpacing() {
 }
 
 module everything() {
-	// core();
+	core();
 	// basePlate();
-	facePlate();
-	wristPad();
+	// facePlate();
+	// wristPad();
 	// mountingPlate();
 	// upperLayer();
 	// lowerLayer();

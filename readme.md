@@ -184,6 +184,11 @@ Cherry PCB mounted stabilizers were added.  Two sets of translucent keycaps were
 	- [LED Cutout Datasheet](https://drive.google.com/file/d/0B5JcED9YINdnNU1qajJmVmtEcUU/view?resourcekey=0-LZfcyjo3jcX8JEKJD6tRKA)
 	- [MechanicalKeyboards](https://mechanicalkeyboards.com/shop/index.php?l=product_detail&p=4451)
 	- $0.50 / switch @ 100 = $50.00 (bulk discount)
+- Pin Receptacle Connector (Maybe, adds height to key (might throw off 3mm spacing between PCB and mounting plate)
+	- 0305-2-15-15-47-27-10-0 (ED90333-ND)
+	- [Datasheet](https://www.mill-max.com/products/datasheet/pinsrecs/0305-2-15-80-47-80-10-0)
+	- [Digikey](https://www.digikey.com/en/products/detail/mill-max-manufacturing-corp/0305-2-15-15-47-27-10-0/1801940)
+	- $0.22906 / connector @ 200 = $45.81 (bulk discount, went in on 500 with Greg).
 - Keyswitch Diode (x23 x2)
 	- 1N4148 (1N4148FS-ND)
 	- [Datasheet](https://rocelec.widen.net/view/pdf/bhc41r7lwc/ONSM-S-A0003539415-1.pdf?t.download=true&u=5oefqw)

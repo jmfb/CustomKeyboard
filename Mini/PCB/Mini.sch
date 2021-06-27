@@ -1,0 +1,213 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Mini:KeyLedDiode K1
+U 1 1 60D6894D
+P 3050 2450
+F 0 "K1" H 3025 2981 50  0000 C CNN
+F 1 "KeyLedDiode" H 3025 2890 50  0000 C CNN
+F 2 "Mini:KeyLedDiode" H 3050 2450 50  0001 C CNN
+F 3 "" H 3050 2450 50  0001 C CNN
+	1    3050 2450
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mini:KeyLedDiode K2
+U 1 1 60D68DE2
+P 4550 2400
+F 0 "K2" H 4525 2931 50  0000 C CNN
+F 1 "KeyLedDiode" H 4525 2840 50  0000 C CNN
+F 2 "Mini:KeyLedDiode" H 4550 2400 50  0001 C CNN
+F 3 "" H 4550 2400 50  0001 C CNN
+	1    4550 2400
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mini:KeyLedDiode K3
+U 1 1 60D697C8
+P 3050 4050
+F 0 "K3" H 3025 4581 50  0000 C CNN
+F 1 "KeyLedDiode" H 3025 4490 50  0000 C CNN
+F 2 "Mini:KeyLedDiode" H 3050 4050 50  0001 C CNN
+F 3 "" H 3050 4050 50  0001 C CNN
+	1    3050 4050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mini:KeyLedDiode K4
+U 1 1 60D6A6FF
+P 4550 3950
+F 0 "K4" H 4525 4481 50  0000 C CNN
+F 1 "KeyLedDiode" H 4525 4390 50  0000 C CNN
+F 2 "Mini:KeyLedDiode" H 4550 3950 50  0001 C CNN
+F 3 "" H 4550 3950 50  0001 C CNN
+	1    4550 3950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2950 2100 3050 2100
+Wire Wire Line
+	4450 2050 4550 2050
+Wire Wire Line
+	2950 3700 3050 3700
+Wire Wire Line
+	4450 3600 4550 3600
+NoConn ~ 5000 4000
+NoConn ~ 5000 4100
+Wire Wire Line
+	2550 2450 2550 2500
+$Comp
+L Connector:Conn_01x09_Female J1
+U 1 1 60D96186
+P 6750 3250
+F 0 "J1" H 6778 3276 50  0000 L CNN
+F 1 "Conn_01x09_Female" H 6778 3185 50  0000 L CNN
+F 2 "Mini:MiniDin9" H 6750 3250 50  0001 C CNN
+F 3 "~" H 6750 3250 50  0001 C CNN
+	1    6750 3250
+	1    0    0    -1  
+$EndComp
+NoConn ~ 6550 3650
+Wire Wire Line
+	2950 2850 2950 3150
+Wire Wire Line
+	2950 3150 4450 3150
+Wire Wire Line
+	5550 3150 5550 2850
+Wire Wire Line
+	5550 2850 6550 2850
+Wire Wire Line
+	4450 2800 4450 3150
+Connection ~ 4450 3150
+Wire Wire Line
+	4450 3150 5550 3150
+Wire Wire Line
+	5550 3150 5550 4600
+Wire Wire Line
+	5550 4600 4450 4600
+Wire Wire Line
+	4450 4600 4450 4350
+Connection ~ 5550 3150
+Wire Wire Line
+	4450 4600 2950 4600
+Wire Wire Line
+	2950 4600 2950 4450
+Connection ~ 4450 4600
+Wire Wire Line
+	6550 2950 5650 2950
+Wire Wire Line
+	3050 2950 3050 2850
+Wire Wire Line
+	4550 2950 4550 2800
+Connection ~ 4550 2950
+Wire Wire Line
+	4550 2950 3050 2950
+Wire Wire Line
+	5650 2950 5650 4550
+Wire Wire Line
+	5650 4550 4550 4550
+Wire Wire Line
+	3050 4550 3050 4450
+Connection ~ 5650 2950
+Wire Wire Line
+	5650 2950 4550 2950
+Wire Wire Line
+	4550 4550 4550 4350
+Connection ~ 4550 4550
+Wire Wire Line
+	4550 4550 3050 4550
+Wire Wire Line
+	6550 3050 5750 3050
+Wire Wire Line
+	5750 3050 5750 1800
+Wire Wire Line
+	5750 1800 2350 1800
+Wire Wire Line
+	2350 1800 2350 2400
+Wire Wire Line
+	2350 2400 2550 2400
+Wire Wire Line
+	2350 2400 2350 4000
+Wire Wire Line
+	2350 4000 2550 4000
+Connection ~ 2350 2400
+Wire Wire Line
+	6550 3150 5850 3150
+Wire Wire Line
+	5850 3150 5850 1700
+Wire Wire Line
+	5850 1700 3900 1700
+Wire Wire Line
+	3900 1700 3900 2350
+Wire Wire Line
+	3900 2350 4050 2350
+Wire Wire Line
+	3900 2350 3900 3900
+Wire Wire Line
+	3900 3900 4050 3900
+Connection ~ 3900 2350
+Wire Wire Line
+	6550 3250 5950 3250
+Wire Wire Line
+	5950 3250 5950 1900
+Wire Wire Line
+	5950 1900 5100 1900
+Wire Wire Line
+	5100 1900 5100 2350
+Wire Wire Line
+	5100 2350 5000 2350
+Wire Wire Line
+	5100 1900 3600 1900
+Wire Wire Line
+	3600 1900 3600 2400
+Wire Wire Line
+	3600 2400 3500 2400
+Connection ~ 5100 1900
+Wire Wire Line
+	6550 3350 5100 3350
+Wire Wire Line
+	5100 3350 5100 3900
+Wire Wire Line
+	5100 3900 5000 3900
+Wire Wire Line
+	5100 3350 3600 3350
+Wire Wire Line
+	3600 3350 3600 4000
+Wire Wire Line
+	3600 4000 3500 4000
+Connection ~ 5100 3350
+Wire Wire Line
+	6550 3450 6050 3450
+Wire Wire Line
+	6050 3450 6050 1600
+Wire Wire Line
+	6050 1600 2250 1600
+Wire Wire Line
+	2250 1600 2250 2500
+Wire Wire Line
+	2250 2500 2550 2500
+Connection ~ 2550 2500
+Wire Wire Line
+	6550 3550 6150 3550
+Wire Wire Line
+	6150 3550 6150 1500
+Wire Wire Line
+	6150 1500 2200 1500
+Wire Wire Line
+	2200 1500 2200 2600
+Wire Wire Line
+	2200 2600 2550 2600
+$EndSCHEMATC

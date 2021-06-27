@@ -14,200 +14,333 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L Mini:KeyLedDiode K1
-U 1 1 60D6894D
-P 3050 2450
-F 0 "K1" H 3025 2981 50  0000 C CNN
-F 1 "KeyLedDiode" H 3025 2890 50  0000 C CNN
-F 2 "Mini:KeyLedDiode" H 3050 2450 50  0001 C CNN
-F 3 "" H 3050 2450 50  0001 C CNN
-	1    3050 2450
+L Mini:MiniDINN9 U?
+U 1 1 60D91131
+P 9650 5500
+F 0 "U?" H 9700 6181 50  0000 C CNN
+F 1 "MiniDINN9" H 9700 6090 50  0000 C CNN
+F 2 "" H 9650 5500 50  0001 C CNN
+F 3 "" H 9650 5500 50  0001 C CNN
+	1    9650 5500
 	1    0    0    -1  
 $EndComp
 $Comp
-L Mini:KeyLedDiode K2
-U 1 1 60D68DE2
-P 4550 2400
-F 0 "K2" H 4525 2931 50  0000 C CNN
-F 1 "KeyLedDiode" H 4525 2840 50  0000 C CNN
-F 2 "Mini:KeyLedDiode" H 4550 2400 50  0001 C CNN
-F 3 "" H 4550 2400 50  0001 C CNN
-	1    4550 2400
+L Mini:Demultiplexer U?
+U 1 1 60D91AF8
+P 9600 3850
+F 0 "U?" H 9575 4731 50  0000 C CNN
+F 1 "Demultiplexer" H 9575 4640 50  0000 C CNN
+F 2 "" H 9650 3600 50  0001 C CNN
+F 3 "" H 9650 3600 50  0001 C CNN
+	1    9600 3850
 	1    0    0    -1  
 $EndComp
 $Comp
-L Mini:KeyLedDiode K3
-U 1 1 60D697C8
-P 3050 4050
-F 0 "K3" H 3025 4581 50  0000 C CNN
-F 1 "KeyLedDiode" H 3025 4490 50  0000 C CNN
-F 2 "Mini:KeyLedDiode" H 3050 4050 50  0001 C CNN
-F 3 "" H 3050 4050 50  0001 C CNN
-	1    3050 4050
+L Mini:ParallelLoadShiftRegister U?
+U 1 1 60D92831
+P 9550 1500
+F 0 "U?" H 9500 361 50  0000 C CNN
+F 1 "ParallelLoadShiftRegister" H 9500 270 50  0000 C CNN
+F 2 "" H 9550 1500 50  0001 C CNN
+F 3 "" H 9550 1500 50  0001 C CNN
+	1    9550 1500
 	1    0    0    -1  
 $EndComp
 $Comp
-L Mini:KeyLedDiode K4
-U 1 1 60D6A6FF
-P 4550 3950
-F 0 "K4" H 4525 4481 50  0000 C CNN
-F 1 "KeyLedDiode" H 4525 4390 50  0000 C CNN
-F 2 "Mini:KeyLedDiode" H 4550 3950 50  0001 C CNN
-F 3 "" H 4550 3950 50  0001 C CNN
-	1    4550 3950
-	1    0    0    -1  
+L Device:R R?
+U 1 1 60D9333B
+P 8000 1900
+F 0 "R?" H 7930 1854 50  0000 R CNN
+F 1 "R" H 7930 1945 50  0000 R CNN
+F 2 "" V 7930 1900 50  0001 C CNN
+F 3 "~" H 8000 1900 50  0001 C CNN
+	1    8000 1900
+	-1   0    0    1   
 $EndComp
-Wire Wire Line
-	2950 2100 3050 2100
-Wire Wire Line
-	4450 2050 4550 2050
-Wire Wire Line
-	2950 3700 3050 3700
-Wire Wire Line
-	4450 3600 4550 3600
-NoConn ~ 5000 4000
-NoConn ~ 5000 4100
-Wire Wire Line
-	2550 2450 2550 2500
 $Comp
-L Connector:Conn_01x09_Female J1
-U 1 1 60D96186
-P 6750 3250
-F 0 "J1" H 6778 3276 50  0000 L CNN
-F 1 "Conn_01x09_Female" H 6778 3185 50  0000 L CNN
-F 2 "Mini:MiniDin9" H 6750 3250 50  0001 C CNN
-F 3 "~" H 6750 3250 50  0001 C CNN
-	1    6750 3250
+L Device:R R?
+U 1 1 60D93D8F
+P 7750 1900
+F 0 "R?" H 7820 1946 50  0000 L CNN
+F 1 "R" H 7820 1855 50  0000 L CNN
+F 2 "" V 7680 1900 50  0001 C CNN
+F 3 "~" H 7750 1900 50  0001 C CNN
+	1    7750 1900
 	1    0    0    -1  
 $EndComp
-NoConn ~ 6550 3650
-Wire Wire Line
-	2950 2850 2950 3150
-Wire Wire Line
-	2950 3150 4450 3150
-Wire Wire Line
-	5550 3150 5550 2850
-Wire Wire Line
-	5550 2850 6550 2850
-Wire Wire Line
-	4450 2800 4450 3150
-Connection ~ 4450 3150
-Wire Wire Line
-	4450 3150 5550 3150
-Wire Wire Line
-	5550 3150 5550 4600
-Wire Wire Line
-	5550 4600 4450 4600
-Wire Wire Line
-	4450 4600 4450 4350
-Connection ~ 5550 3150
-Wire Wire Line
-	4450 4600 2950 4600
-Wire Wire Line
-	2950 4600 2950 4450
-Connection ~ 4450 4600
-Wire Wire Line
-	6550 2950 5650 2950
-Wire Wire Line
-	3050 2950 3050 2850
-Wire Wire Line
-	4550 2950 4550 2800
-Connection ~ 4550 2950
-Wire Wire Line
-	4550 2950 3050 2950
-Wire Wire Line
-	5650 2950 5650 4550
-Wire Wire Line
-	5650 4550 4550 4550
-Wire Wire Line
-	3050 4550 3050 4450
-Connection ~ 5650 2950
-Wire Wire Line
-	5650 2950 4550 2950
-Wire Wire Line
-	4550 4550 4550 4350
-Connection ~ 4550 4550
-Wire Wire Line
-	4550 4550 3050 4550
-Wire Wire Line
-	6550 3050 5750 3050
-Wire Wire Line
-	5750 3050 5750 1800
-Wire Wire Line
-	5750 1800 2350 1800
-Wire Wire Line
-	2350 1800 2350 2400
-Wire Wire Line
-	2350 2400 2550 2400
-Wire Wire Line
-	2350 2400 2350 4000
-Wire Wire Line
-	2350 4000 2550 4000
-Connection ~ 2350 2400
-Wire Wire Line
-	6550 3150 5850 3150
-Wire Wire Line
-	5850 3150 5850 1700
-Wire Wire Line
-	5850 1700 3900 1700
-Wire Wire Line
-	3900 1700 3900 2350
-Wire Wire Line
-	3900 2350 4050 2350
-Wire Wire Line
-	3900 2350 3900 3900
-Wire Wire Line
-	3900 3900 4050 3900
-Connection ~ 3900 2350
-Wire Wire Line
-	6550 3250 5950 3250
-Wire Wire Line
-	5950 3250 5950 1900
-Wire Wire Line
-	5950 1900 5100 1900
-Wire Wire Line
-	5100 1900 5100 2350
-Wire Wire Line
-	5100 2350 5000 2350
-Wire Wire Line
-	5100 1900 3600 1900
-Wire Wire Line
-	3600 1900 3600 2400
-Wire Wire Line
-	3600 2400 3500 2400
-Connection ~ 5100 1900
-Wire Wire Line
-	6550 3350 5100 3350
-Wire Wire Line
-	5100 3350 5100 3900
-Wire Wire Line
-	5100 3900 5000 3900
-Wire Wire Line
-	5100 3350 3600 3350
-Wire Wire Line
-	3600 3350 3600 4000
-Wire Wire Line
-	3600 4000 3500 4000
-Connection ~ 5100 3350
-Wire Wire Line
-	6550 3450 6050 3450
-Wire Wire Line
-	6050 3450 6050 1600
-Wire Wire Line
-	6050 1600 2250 1600
-Wire Wire Line
-	2250 1600 2250 2500
-Wire Wire Line
-	2250 2500 2550 2500
-Connection ~ 2550 2500
-Wire Wire Line
-	6550 3550 6150 3550
-Wire Wire Line
-	6150 3550 6150 1500
-Wire Wire Line
-	6150 1500 2200 1500
-Wire Wire Line
-	2200 1500 2200 2600
-Wire Wire Line
-	2200 2600 2550 2600
+$Comp
+L Device:R R?
+U 1 1 60D94491
+P 7500 1900
+F 0 "R?" H 7570 1946 50  0000 L CNN
+F 1 "R" H 7570 1855 50  0000 L CNN
+F 2 "" V 7430 1900 50  0001 C CNN
+F 3 "~" H 7500 1900 50  0001 C CNN
+	1    7500 1900
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 60D94BA3
+P 7250 1900
+F 0 "R?" H 7320 1946 50  0000 L CNN
+F 1 "R" H 7320 1855 50  0000 L CNN
+F 2 "" V 7180 1900 50  0001 C CNN
+F 3 "~" H 7250 1900 50  0001 C CNN
+	1    7250 1900
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mini:KeyLedDiode K?
+U 1 1 60D94E5E
+P 1300 1150
+F 0 "K?" H 1275 1681 50  0000 C CNN
+F 1 "KeyLedDiode" H 1275 1590 50  0000 C CNN
+F 2 "" H 1300 1150 50  0001 C CNN
+F 3 "" H 1300 1150 50  0001 C CNN
+	1    1300 1150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mini:KeyLedDiode K?
+U 1 1 60D957F4
+P 2400 1150
+F 0 "K?" H 2375 1681 50  0000 C CNN
+F 1 "KeyLedDiode" H 2375 1590 50  0000 C CNN
+F 2 "" H 2400 1150 50  0001 C CNN
+F 3 "" H 2400 1150 50  0001 C CNN
+	1    2400 1150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mini:KeyLedDiode K?
+U 1 1 60D95C9B
+P 3550 1150
+F 0 "K?" H 3525 1681 50  0000 C CNN
+F 1 "KeyLedDiode" H 3525 1590 50  0000 C CNN
+F 2 "" H 3550 1150 50  0001 C CNN
+F 3 "" H 3550 1150 50  0001 C CNN
+	1    3550 1150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mini:KeyLedDiode K?
+U 1 1 60D95F88
+P 4700 1150
+F 0 "K?" H 4675 1681 50  0000 C CNN
+F 1 "KeyLedDiode" H 4675 1590 50  0000 C CNN
+F 2 "" H 4700 1150 50  0001 C CNN
+F 3 "" H 4700 1150 50  0001 C CNN
+	1    4700 1150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mini:KeyLedDiode K?
+U 1 1 60D96499
+P 5850 1150
+F 0 "K?" H 5825 1681 50  0000 C CNN
+F 1 "KeyLedDiode" H 5825 1590 50  0000 C CNN
+F 2 "" H 5850 1150 50  0001 C CNN
+F 3 "" H 5850 1150 50  0001 C CNN
+	1    5850 1150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mini:KeyLedDiode K?
+U 1 1 60D969D9
+P 7050 1150
+F 0 "K?" H 7025 1681 50  0000 C CNN
+F 1 "KeyLedDiode" H 7025 1590 50  0000 C CNN
+F 2 "" H 7050 1150 50  0001 C CNN
+F 3 "" H 7050 1150 50  0001 C CNN
+	1    7050 1150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mini:KeyLedDiode K?
+U 1 1 60D96F98
+P 7150 2700
+F 0 "K?" H 7125 3231 50  0000 C CNN
+F 1 "KeyLedDiode" H 7125 3140 50  0000 C CNN
+F 2 "" H 7150 2700 50  0001 C CNN
+F 3 "" H 7150 2700 50  0001 C CNN
+	1    7150 2700
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mini:KeyLedDiode K?
+U 1 1 60D9766D
+P 1300 2150
+F 0 "K?" H 1275 2681 50  0000 C CNN
+F 1 "KeyLedDiode" H 1275 2590 50  0000 C CNN
+F 2 "" H 1300 2150 50  0001 C CNN
+F 3 "" H 1300 2150 50  0001 C CNN
+	1    1300 2150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mini:KeyLedDiode K?
+U 1 1 60D97E6E
+P 1300 3150
+F 0 "K?" H 1275 3681 50  0000 C CNN
+F 1 "KeyLedDiode" H 1275 3590 50  0000 C CNN
+F 2 "" H 1300 3150 50  0001 C CNN
+F 3 "" H 1300 3150 50  0001 C CNN
+	1    1300 3150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mini:KeyLedDiode K?
+U 1 1 60D9856D
+P 2450 2200
+F 0 "K?" H 2425 2731 50  0000 C CNN
+F 1 "KeyLedDiode" H 2425 2640 50  0000 C CNN
+F 2 "" H 2450 2200 50  0001 C CNN
+F 3 "" H 2450 2200 50  0001 C CNN
+	1    2450 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mini:KeyLedDiode K?
+U 1 1 60D98A24
+P 2400 3150
+F 0 "K?" H 2375 3681 50  0000 C CNN
+F 1 "KeyLedDiode" H 2375 3590 50  0000 C CNN
+F 2 "" H 2400 3150 50  0001 C CNN
+F 3 "" H 2400 3150 50  0001 C CNN
+	1    2400 3150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mini:KeyLedDiode K?
+U 1 1 60D990DD
+P 3550 2250
+F 0 "K?" H 3525 2781 50  0000 C CNN
+F 1 "KeyLedDiode" H 3525 2690 50  0000 C CNN
+F 2 "" H 3550 2250 50  0001 C CNN
+F 3 "" H 3550 2250 50  0001 C CNN
+	1    3550 2250
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mini:KeyLedDiode K?
+U 1 1 60D99623
+P 3550 3150
+F 0 "K?" H 3525 3681 50  0000 C CNN
+F 1 "KeyLedDiode" H 3525 3590 50  0000 C CNN
+F 2 "" H 3550 3150 50  0001 C CNN
+F 3 "" H 3550 3150 50  0001 C CNN
+	1    3550 3150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mini:KeyLedDiode K?
+U 1 1 60D99ACE
+P 4700 2250
+F 0 "K?" H 4675 2781 50  0000 C CNN
+F 1 "KeyLedDiode" H 4675 2690 50  0000 C CNN
+F 2 "" H 4700 2250 50  0001 C CNN
+F 3 "" H 4700 2250 50  0001 C CNN
+	1    4700 2250
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mini:KeyLedDiode K?
+U 1 1 60D9A0C4
+P 4700 3250
+F 0 "K?" H 4675 3781 50  0000 C CNN
+F 1 "KeyLedDiode" H 4675 3690 50  0000 C CNN
+F 2 "" H 4700 3250 50  0001 C CNN
+F 3 "" H 4700 3250 50  0001 C CNN
+	1    4700 3250
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mini:KeyLedDiode K?
+U 1 1 60D9A677
+P 5900 2250
+F 0 "K?" H 5875 2781 50  0000 C CNN
+F 1 "KeyLedDiode" H 5875 2690 50  0000 C CNN
+F 2 "" H 5900 2250 50  0001 C CNN
+F 3 "" H 5900 2250 50  0001 C CNN
+	1    5900 2250
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mini:KeyLedDiode K?
+U 1 1 60D9ACED
+P 5900 3250
+F 0 "K?" H 5875 3781 50  0000 C CNN
+F 1 "KeyLedDiode" H 5875 3690 50  0000 C CNN
+F 2 "" H 5900 3250 50  0001 C CNN
+F 3 "" H 5900 3250 50  0001 C CNN
+	1    5900 3250
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mini:KeyLedDiode K?
+U 1 1 60D9B3F5
+P 1150 4550
+F 0 "K?" H 1125 5081 50  0000 C CNN
+F 1 "KeyLedDiode" H 1125 4990 50  0000 C CNN
+F 2 "" H 1150 4550 50  0001 C CNN
+F 3 "" H 1150 4550 50  0001 C CNN
+	1    1150 4550
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mini:KeyLedDiode K?
+U 1 1 60D9B913
+P 1100 5750
+F 0 "K?" H 1075 6281 50  0000 C CNN
+F 1 "KeyLedDiode" H 1075 6190 50  0000 C CNN
+F 2 "" H 1100 5750 50  0001 C CNN
+F 3 "" H 1100 5750 50  0001 C CNN
+	1    1100 5750
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mini:KeyLedDiode K?
+U 1 1 60D9C0A7
+P 2650 4450
+F 0 "K?" H 2625 4981 50  0000 C CNN
+F 1 "KeyLedDiode" H 2625 4890 50  0000 C CNN
+F 2 "" H 2650 4450 50  0001 C CNN
+F 3 "" H 2650 4450 50  0001 C CNN
+	1    2650 4450
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mini:KeyLedDiode K?
+U 1 1 60D9C8B3
+P 3800 4400
+F 0 "K?" H 3775 4931 50  0000 C CNN
+F 1 "KeyLedDiode" H 3775 4840 50  0000 C CNN
+F 2 "" H 3800 4400 50  0001 C CNN
+F 3 "" H 3800 4400 50  0001 C CNN
+	1    3800 4400
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mini:KeyLedDiode K?
+U 1 1 60D9CFDF
+P 2600 5550
+F 0 "K?" H 2575 6081 50  0000 C CNN
+F 1 "KeyLedDiode" H 2575 5990 50  0000 C CNN
+F 2 "" H 2600 5550 50  0001 C CNN
+F 3 "" H 2600 5550 50  0001 C CNN
+	1    2600 5550
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mini:KeyLedDiode K?
+U 1 1 60D9D818
+P 3750 5500
+F 0 "K?" H 3725 6031 50  0000 C CNN
+F 1 "KeyLedDiode" H 3725 5940 50  0000 C CNN
+F 2 "" H 3750 5500 50  0001 C CNN
+F 3 "" H 3750 5500 50  0001 C CNN
+	1    3750 5500
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC

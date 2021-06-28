@@ -151,11 +151,11 @@ module core() {
 	// Two 2-key thumb keys, rotated, with left wall
 	translate([thumbLeft, thumbTop, 0])
 	rotate([0, 0, thumbAlpha])
-	cube([2 * keySize + wallSpacing, twoKeySize, basePlateDepth]);
+	cube([thumbWidth + wallSpacing, twoKeySize, basePlateDepth]);
 
 	// Fancy thumb rotation distance calculations
 	dy = halfKeySize + wallSpacing + extraBottomSpacing;
-	h1 = 2 * keySize + wallSpacing;
+	h1 = thumbWidth + wallSpacing;
 	y1 = h1 * sin(thumbAlpha);
 	x1 = h1 * cos(thumbAlpha);
 	y2 = dy - y1;
@@ -176,10 +176,12 @@ module core() {
 	twy = thumbAnchorY - (twoKeySize + wallSpacing) * cos(thumbAlpha);
 	translate([twx, twy, 0])
 	rotate([0, 0, thumbAlpha])
-	cube([2 * keySize, wallSpacing, basePlateDepth]);
+	cube([thumbWidth, wallSpacing, basePlateDepth]);
 
 	// Top left corner of thumb
-	translate([thumbLeft + thumbDY, thumbTop + thumbDX, 0])
+	tcx = thumbWidth * cos(thumbAlpha);
+	tcy = thumbWidth * sin(thumbAlpha);
+	translate([thumbLeft + tcx, thumbTop + tcy, 0])
 	cylinder(basePlateDepth, r = wallSpacing, $fn = circleFragments);
 
 	thumbScrewOutline();
@@ -301,7 +303,7 @@ module mountingPlate() {
 		}
 	}
 
-	module stabilizer(centerX, centerY) {
+	module stabilizer(centerX, centerY, alpha) {
 		module rect(left, top, width, height) {
 			translate([left, top, 0])
 			cube([width, height, basePlateDepth]);
@@ -334,7 +336,7 @@ module mountingPlate() {
 		bottomNotchTop = sideTop + sideHeight;
 
 		translate([centerX, centerY, 0])
-		rotate([0, 0, thumbAlpha + 90])
+		rotate([0, 0, alpha])
 		translate([-centerX, -centerY, 0])
 		union() {
 			// Center hole
@@ -363,8 +365,8 @@ module mountingPlate() {
 		for (fingerColumn = fingerColumns) {
 			column(fingerColumn.x, fingerColumn.y, fingerColumn.z);
 		}
-		stabilizer(thumb1CenterX, thumb1CenterY);
-		stabilizer(thumb2CenterX, thumb2CenterY);
+		stabilizer(thumb1CenterX, thumb1CenterY, thumbAlpha + 90);
+		stabilizer(thumb2CenterX, thumb2CenterY, thumbAlpha + 270);
 		connectorNotch();
 		m4HexHoles();
 	}
@@ -384,6 +386,15 @@ module upperLayer() {
 
 		translate([pinkyFingerLeft, pinkyFingerTop + 2 * keySize, 0])
 		cube([keySize + 2 * wallSpacing + 3 * keySize, keySize + pcbSpacing, basePlateDepth]);
+
+		// Thumb 2-keys plus extra spacing
+		tw = twoKeySize + facePlatePadding;
+		th = twoKeySize + 2 * facePlatePadding;
+		tx = thumbAnchorX + tw * sin(thumbAlpha);
+		ty = thumbAnchorY - tw * cos(thumbAlpha);
+		translate([tx, ty, 0])
+		rotate([0, 0, thumbAlpha])
+		cube([tw + thumbExtraSpacing, th, basePlateDepth]);
 	}
 }
 
@@ -414,7 +425,7 @@ module pcb() {
 		// Thumb 2-keys
 		translate([thumbLeft, thumbTop, 0])
 		rotate([0, 0, thumbAlpha])
-		cube([2 * keySize, twoKeySize, basePlateDepth]);
+		cube([thumbWidth, twoKeySize, basePlateDepth]);
 
 		// Hole between thumb 2-keys and thumb grid
 		translate([thumbAnchorX, thumbGridTop, 0])

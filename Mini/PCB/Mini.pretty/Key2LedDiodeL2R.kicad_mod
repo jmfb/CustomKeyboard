@@ -1,8 +1,8 @@
-(module KeyLedDiode (layer F.Cu) (tedit 60D67D55)
+(module Key2LedDiodeL2R (layer F.Cu) (tedit 60D9F6B3)
   (fp_text reference CHERRY? (at -1 10) (layer F.SilkS)
     (effects (font (size 1 1) (thickness 0.15)))
   )
-  (fp_text value KeyLedDiode (at 0 -11) (layer F.Fab) hide
+  (fp_text value Key2LedDiodeL2R (at 0 -11) (layer F.Fab) hide
     (effects (font (size 1 1) (thickness 0.15)))
   )
   (fp_line (start -7 7) (end -7 -7) (layer F.SilkS) (width 0.12))
@@ -25,4 +25,8 @@
   (pad POST thru_hole circle (at 5 0) (size 1.7 1.7) (drill 1.7) (layers *.Cu *.Mask))
   (pad POST thru_hole circle (at -5 0) (size 1.7 1.7) (drill 1.7) (layers *.Cu *.Mask))
   (pad HOLE thru_hole circle (at 0 0) (size 4 4) (drill 4) (layers *.Cu *.Mask))
+  (pad HOLE thru_hole circle (at 11.94 7) (size 3.05 3.05) (drill 3.05) (layers *.Cu *.Mask))
+  (pad HOLE thru_hole circle (at -11.94 7) (size 3.05 3.05) (drill 3.05) (layers *.Cu *.Mask))
+  (pad HOLE thru_hole circle (at -11.94 -8.24) (size 4 4) (drill 4) (layers *.Cu *.Mask))
+  (pad HOLE thru_hole circle (at 11.94 -8.24) (size 4 4) (drill 4) (layers *.Cu *.Mask))
 )

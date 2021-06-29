@@ -466,6 +466,48 @@ module peg() {
 	cube([pegHoleSize, pegBottomNotchHeight, basePlateDepth]);
 }
 
+module echoThumb2KeyLedPcbCutouts() {
+	module rotatePoint(name, anchorX, anchorY, x, y) {
+		// Triangle o1,a1,h1 has side x rotated down from horizontal axis
+		a1 = x;
+		o1 = a1 * tan(thumbAlpha);
+		h1 = a1 / cos(thumbAlpha);
+		// Triangle o2,a2,h2 has side h2 rotated right of vertical axis
+		h2 = y - o1;
+		o2 = h2 * sin(thumbAlpha);
+		a2 = h2 * cos(thumbAlpha);
+		// Rotated distances from anchor
+		dx = o2 + h1;
+		dy = a2;
+		// Rotated coordinates (subtracting for right hand)
+		rx = anchorX - dx;
+		ry = anchorY - dy;
+		echo(name, rx, ry);
+	}
+
+	module rotateCube(name, anchorX, anchorY, bottom, right, width, height) {
+		// Top, left, bottom, and right are distances from anchor in unrotated world.
+		top = bottom + height;
+		left = right + width;
+		rotatePoint(str(name, "_TopLeft"), anchorX, anchorY, left, top);
+		rotatePoint(str(name, "_TopRight"), anchorX, anchorY, right, top);
+		rotatePoint(str(name, "_BottomLeft"), anchorX, anchorY, left, bottom);
+		rotatePoint(str(name, "_BottomRight"), anchorX, anchorY, right, bottom);
+	}
+
+	portionOfLedUnderKeyFootprint = 4;
+	ledSize = 5;
+	left1 = keyHolePadding + keyHoleSize - portionOfLedUnderKeyFootprint;
+	left2 = left1 + keySize;
+	top = twoKeyHolePadding + (keyHoleSize - ledSize) / 2;
+	// PCB coordinate system is offset from case coordinate system; use PCB coordinates
+	pcbAnchorX = 97.5;
+	pcbAnchorY = 89.5;
+
+	rotateCube("ThumbKey1", pcbAnchorX, pcbAnchorY, top, left1, ledSize, ledSize);
+	rotateCube("ThumbKey2", pcbAnchorX, pcbAnchorY, top, left2, ledSize, ledSize);
+}
+
 module everything() {
 	// core();
 	basePlate();
@@ -477,6 +519,7 @@ module everything() {
 	// pcb();
 	// pcbSpacing();
 	// peg();
+	// echoThumb2KeyLedPcbCutouts();
 }
 
 projection(cut = false) {

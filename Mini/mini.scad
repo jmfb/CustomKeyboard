@@ -508,9 +508,51 @@ module echoThumb2KeyLedPcbCutouts() {
 	rotateCube("ThumbKey2", pcbAnchorX, pcbAnchorY, top, left2, ledSize, ledSize);
 }
 
+module echoThumb2KeyPositions() {
+	x0 = 119;
+	y0 = 101.5;
+	o1 = thumbGridOffset;
+	a1 = keySize + halfKeySize;
+	alpha = thumbAlpha;
+	h1 = o1 / sin(alpha);
+	a2 = twoKeySize - h1;
+	h2 = a2 / cos(alpha);
+	yul = y0 - a1 - h2;
+	echo("yul", yul);
+
+	h3 = 2 * keySize + thumbExtraSpacing;
+	o3 = h3 * sin(alpha);
+	a3 = h3 * cos(alpha);
+	xlr = x0 + a3;
+	ylr = y0 + o3;
+	echo("xlr, ylr", xlr, ylr);
+
+	h4 = twoKeySize;
+	o4 = h4 * sin(alpha);
+	a4 = h4 * cos(alpha);
+	xur = xlr + o4;
+	yur = ylr - a4;
+	echo("xur, yur", xur, yur);
+
+	module thumbCenter(name, dx, dy) {
+		h1 = dx;
+		o1 = h1 * sin(alpha);
+		a1 = h1 * cos(alpha);
+		h2 = dy;
+		o2 = h2 * sin(alpha);
+		a2 = h2 * cos(alpha);
+		xc = x0 + a1 + o2;
+		yc = y0 + o1 - a2;
+		echo(str(name, "(xc, yc)"), xc, yc);
+	}
+
+	thumbCenter("T2_1", halfKeySize, halfTwoKeySize);
+	thumbCenter("T2_2", keySize + halfKeySize, halfTwoKeySize);
+}
+
 module everything() {
 	// core();
-	basePlate();
+	// basePlate();
 	// facePlate();
 	// wristPad();
 	// mountingPlate();
@@ -520,6 +562,7 @@ module everything() {
 	// pcbSpacing();
 	// peg();
 	// echoThumb2KeyLedPcbCutouts();
+	echoThumb2KeyPositions();
 }
 
 projection(cut = false) {

@@ -480,7 +480,7 @@ module echoThumb2KeyLedPcbCutouts() {
 		dx = o2 + h1;
 		dy = a2;
 		// Rotated coordinates (subtracting for right hand)
-		rx = anchorX - dx;
+		rx = anchorX + dx;
 		ry = anchorY - dy;
 		echo(name, rx, ry);
 	}
@@ -501,8 +501,8 @@ module echoThumb2KeyLedPcbCutouts() {
 	left2 = left1 + keySize;
 	top = twoKeyHolePadding + (keyHoleSize - ledSize) / 2;
 	// PCB coordinate system is offset from case coordinate system; use PCB coordinates
-	pcbAnchorX = 97.5;
-	pcbAnchorY = 89.5;
+	pcbAnchorX = 119;
+	pcbAnchorY = 101.5;
 
 	rotateCube("ThumbKey1", pcbAnchorX, pcbAnchorY, top, left1, ledSize, ledSize);
 	rotateCube("ThumbKey2", pcbAnchorX, pcbAnchorY, top, left2, ledSize, ledSize);
@@ -561,8 +561,8 @@ module everything() {
 	// pcb();
 	// pcbSpacing();
 	// peg();
-	// echoThumb2KeyLedPcbCutouts();
-	echoThumb2KeyPositions();
+	echoThumb2KeyLedPcbCutouts();
+	// echoThumb2KeyPositions();
 }
 
 projection(cut = false) {

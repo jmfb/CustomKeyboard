@@ -662,9 +662,35 @@ module controllerSideWall() {
 	}
 }
 
+module controller() {
+	controllerBase();
+
+	translate([controllerWidth + 1, 0, 0])
+	controllerFace();
+
+	translate([0, controllerLength + 1, 0])
+	controllerBottomWall();
+
+	translate([controllerWidth + 1, controllerLength + 1, 0])
+	controllerTopWall();
+
+	translate([0, controllerLength + 1 + controllerHeight + 1, 0])
+	controllerSideWall();
+
+	translate([controllerLength + 1, controllerLength + 1 + controllerHeight + 1, 0])
+	controllerSideWall();
+
+	pegTop = controllerLength + 1 + controllerHeight + 1;
+	pegLeft = 2 * (controllerLength + 1);
+	for (row = [0:1], column = [0:3]) {
+		translate([pegLeft + column * (pegWidth + 1), pegTop + row * (pegOuterHeight + 1), 0])
+		peg();
+	}
+}
+
 module everything() {
 	// core();
-	// basePlate();
+	basePlate();
 	// facePlate();
 	// wristPad();
 	// mountingPlate();
@@ -676,10 +702,11 @@ module everything() {
 	// echoThumb2KeyLedPcbCutouts();
 	// echoThumb2KeyPositions();
 	// controllerBase();
-	controllerFace();
+	// controllerFace();
 	// controllerBottomWall();
 	// controllerTopWall();
 	// controllerSideWall();
+	// controller();
 }
 
 projection(cut = false) {

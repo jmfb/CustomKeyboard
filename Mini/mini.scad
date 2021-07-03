@@ -550,6 +550,115 @@ module echoThumb2KeyPositions() {
 	thumbCenter("T2_2", keySize + halfKeySize, halfTwoKeySize);
 }
 
+module controllerBase() {
+	module topBottomNotch(x, y) {
+		translate([x, y, 0])
+		cube([controllerNotchSize, basePlateDepth, basePlateDepth]);
+	}
+
+	module leftRightNotch(x, y) {
+		translate([x, y, 0])
+		cube([basePlateDepth, controllerNotchSize, basePlateDepth]);
+	}
+
+	module screwHole(x, y) {
+		translate([x, y, 0])
+		cylinder(basePlateDepth, r = controllerScrewDiameter / 2, $fn = circleFragments);
+	}
+
+	difference() {
+		cube([controllerWidth, controllerLength, basePlateDepth]);
+
+		topBottomNotch(topBottomLeft1, topNotchTop);
+		topBottomNotch(topBottomLeft2, topNotchTop);
+		topBottomNotch(topBottomLeft1, bottomNotchTop);
+		topBottomNotch(topBottomLeft2, bottomNotchTop);
+
+		leftRightNotch(leftNotchLeft, leftRightTop1);
+		leftRightNotch(leftNotchLeft, leftRightTop2);
+		leftRightNotch(rightNotchLeft, leftRightTop1);
+		leftRightNotch(rightNotchLeft, leftRightTop2);
+
+		distanceToScrew = controllerOverhang + controllerWallSize + pcbSpacing + controllerScrewPcbOffset;
+		screwTop1 = distanceToScrew;
+		screwTop2 = controllerLength - distanceToScrew;
+		screwLeft1 = distanceToScrew;
+		screwLeft2 = controllerWidth - distanceToScrew;
+		screwHole(screwLeft1, screwTop1);
+		screwHole(screwLeft1, screwTop2);
+		screwHole(screwLeft2, screwTop1);
+		screwHole(screwLeft2, screwTop2);
+	}
+}
+
+module controllerFace() {
+	module connector(x, y) {
+		translate([x, y, 0])
+		cube([connectorLength + connectorPadding, connectorEdgeSize + 2 * connectorPadding, basePlateDepth]);
+	}
+
+	difference() {
+		controllerBase();
+
+		connectorTop = (controllerLength - connectorEdgeSize - 2 * connectorPadding) / 2;
+		connector(0, connectorTop);
+		connector(controllerWidth - connectorLength - connectorPadding, connectorTop);
+	}
+}
+
+module controllerWall(width, slotOffset) {
+	module notch(x, y) {
+		translate([x, y, 0])
+		cube([controllerNotchSize, basePlateDepth, basePlateDepth]);
+	}
+
+	module slot(x) {
+		translate([x, slotOffset, 0])
+		cube([basePlateDepth, controllerHeight / 2, basePlateDepth]);
+	}
+
+	difference() {
+		union() {
+			translate([0, basePlateDepth, 0])
+			cube([width, controllerHeight - 2 * basePlateDepth, basePlateDepth]);
+
+			left1 = distanceToNotch;
+			left2 = width - distanceToNotch - controllerNotchSize;
+			top2 = controllerHeight - basePlateDepth;
+			notch(left1, 0);
+			notch(left2, 0);
+			notch(left1, top2);
+			notch(left2, top2);
+		}
+
+		slot(controllerOverhang);
+		slot(width - controllerOverhang - controllerWallSize);
+	}
+}
+
+module controllerBottomWall() {
+	controllerWall(controllerWidth, 0);
+}
+
+module controllerTopWall() {
+	difference() {
+		controllerBottomWall();
+
+		translate([(controllerWidth - teensyWidth) / 2, 0, 0])
+		cube([teensyWidth, controllerTopSpacing + basePlateDepth, basePlateDepth]);
+	}
+}
+
+module controllerSideWall() {
+	difference() {
+		controllerWall(controllerLength, controllerHeight / 2);
+
+		holeSize = connectorEdgeSize + 2 * connectorPadding;
+		translate([(controllerLength - holeSize) / 2, 0, 0])
+		cube([holeSize, controllerTopSpacing + basePlateDepth, basePlateDepth]);
+	}
+}
+
 module everything() {
 	// core();
 	// basePlate();
@@ -561,8 +670,13 @@ module everything() {
 	// pcb();
 	// pcbSpacing();
 	// peg();
-	echoThumb2KeyLedPcbCutouts();
+	// echoThumb2KeyLedPcbCutouts();
 	// echoThumb2KeyPositions();
+	controllerBase();
+	// controllerFace();
+	// controllerBottomWall();
+	// controllerTopWall();
+	// controllerSideWall();
 }
 
 projection(cut = false) {

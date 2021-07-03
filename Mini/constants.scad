@@ -149,3 +149,32 @@ pegs = [
 	indexPeg,
 	pinkyPeg
 ];
+
+// Controller box
+teensyWidth = 18;
+teensyLength = 31;
+controllerConnectorSpacing = 4.7;
+controllerPcbWidth = (connectorLength + controllerConnectorSpacing) * 2 + teensyWidth;
+controllerOverhang = basePlateDepth;
+controllerWallSize = basePlateDepth;
+controllerWidth = controllerPcbWidth + (controllerOverhang + controllerWallSize + pcbSpacing) * 2;
+controllerPcbLength = teensyLength;
+controllerLength = controllerPcbLength + (controllerOverhang + controllerWallSize + pcbSpacing) * 2;
+controllerScrewPcbOffset = 3;
+controllerScrewDiameter = 2.4;
+controllerNotchSize = 5;
+controllerNotchOffset = 2;
+controllerBottomSpacing = 5;
+controllerTopSpacing = 8;
+controllerHeight = basePlateDepth + controllerBottomSpacing + pcbDepth + controllerTopSpacing + basePlateDepth;
+
+// Controller notches to connect walls to base and face
+distanceToNotch = controllerOverhang + controllerWallSize + controllerNotchOffset;
+topNotchTop = controllerOverhang;
+bottomNotchTop = controllerLength - controllerOverhang - basePlateDepth;
+topBottomLeft1 = distanceToNotch;
+topBottomLeft2 = controllerWidth - distanceToNotch - controllerNotchSize;
+leftNotchLeft = controllerOverhang;
+rightNotchLeft = controllerWidth - controllerOverhang - basePlateDepth;
+leftRightTop1 = distanceToNotch;
+leftRightTop2 = controllerLength - distanceToNotch - controllerNotchSize;

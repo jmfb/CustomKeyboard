@@ -1,0 +1,193 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Mini:Teensy2.0 UT2
+U 1 1 60E0DCD0
+P 5950 2950
+F 0 "UT2" H 6025 3615 50  0000 C CNN
+F 1 "Teensy2.0" H 6025 3524 50  0000 C CNN
+F 2 "Mini:Teensy2.0" H 5950 2950 50  0001 C CNN
+F 3 "" H 5950 2950 50  0001 C CNN
+	1    5950 2950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mini:MiniDINN9 ULH1
+U 1 1 60E0F156
+P 4300 3050
+F 0 "ULH1" H 4350 3731 50  0000 C CNN
+F 1 "MiniDINN9" H 4350 3640 50  0000 C CNN
+F 2 "Mini:MiniDin9" H 4300 3050 50  0001 C CNN
+F 3 "" H 4300 3050 50  0001 C CNN
+	1    4300 3050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mini:MiniDINN9 URH1
+U 1 1 60E0FFED
+P 7700 3000
+F 0 "URH1" H 7156 2979 50  0000 R CNN
+F 1 "MiniDINN9" H 7156 3070 50  0000 R CNN
+F 2 "Mini:MiniDin9" H 7700 3000 50  0001 C CNN
+F 3 "" H 7700 3000 50  0001 C CNN
+	1    7700 3000
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	6600 2550 6900 2550
+Wire Wire Line
+	6900 2550 6900 3500
+Wire Wire Line
+	6900 3500 7700 3500
+Wire Wire Line
+	6600 2550 6600 2300
+Wire Wire Line
+	6600 2300 4300 2300
+Wire Wire Line
+	4300 2300 4300 2550
+Connection ~ 6600 2550
+Wire Wire Line
+	5450 2550 5100 2550
+Wire Wire Line
+	5100 2550 5100 3500
+Wire Wire Line
+	5100 3500 4300 3500
+Wire Wire Line
+	5450 2550 5450 2250
+Wire Wire Line
+	5450 2250 7700 2250
+Wire Wire Line
+	7700 2250 7700 2550
+Connection ~ 5450 2550
+Wire Wire Line
+	5450 2650 5150 2650
+Wire Wire Line
+	5150 2650 5150 2800
+Wire Wire Line
+	5150 2800 4900 2800
+Wire Wire Line
+	5200 2900 4900 2900
+Wire Wire Line
+	5200 2900 5200 3700
+Wire Wire Line
+	5200 3700 7050 3700
+Wire Wire Line
+	7050 3700 7050 3150
+Wire Wire Line
+	7050 3150 7100 3150
+Wire Wire Line
+	5250 3000 4900 3000
+Wire Wire Line
+	5250 3000 5250 3750
+Wire Wire Line
+	5250 3750 7000 3750
+Wire Wire Line
+	7000 3750 7000 3050
+Wire Wire Line
+	7000 3050 7100 3050
+Wire Wire Line
+	5300 3100 4900 3100
+Wire Wire Line
+	5300 3100 5300 3800
+Wire Wire Line
+	5300 3800 6950 3800
+Wire Wire Line
+	6950 3800 6950 2950
+Wire Wire Line
+	6950 2950 7100 2950
+Wire Wire Line
+	5350 3200 4900 3200
+Wire Wire Line
+	5350 3200 5350 3850
+Wire Wire Line
+	5350 3850 6850 3850
+Wire Wire Line
+	6850 3850 6850 2850
+Wire Wire Line
+	6850 2850 7100 2850
+Wire Wire Line
+	5450 2750 5400 2750
+Wire Wire Line
+	5400 2750 5400 2200
+Wire Wire Line
+	5400 2200 6800 2200
+Wire Wire Line
+	6800 2200 6800 3250
+Wire Wire Line
+	6800 3250 7100 3250
+Wire Wire Line
+	5450 2850 5200 2850
+Wire Wire Line
+	5200 2850 5200 2900
+Connection ~ 5200 2900
+Wire Wire Line
+	5450 2950 5250 2950
+Wire Wire Line
+	5250 2950 5250 3000
+Connection ~ 5250 3000
+Wire Wire Line
+	5450 3050 5300 3050
+Wire Wire Line
+	5300 3050 5300 3100
+Connection ~ 5300 3100
+Wire Wire Line
+	5450 3150 5350 3150
+Wire Wire Line
+	5350 3150 5350 3200
+Connection ~ 5350 3200
+Wire Wire Line
+	5450 3250 5150 3250
+Wire Wire Line
+	4900 3250 4900 3300
+Wire Wire Line
+	5150 3250 5150 3900
+Wire Wire Line
+	5150 3900 6750 3900
+Wire Wire Line
+	6750 3900 6750 2750
+Wire Wire Line
+	6750 2750 7100 2750
+Connection ~ 5150 3250
+Wire Wire Line
+	5150 3250 4900 3250
+Wire Wire Line
+	3800 3000 3800 3350
+Wire Wire Line
+	3800 3350 5450 3350
+Wire Wire Line
+	5450 3450 5400 3450
+Wire Wire Line
+	5400 3450 5400 3950
+Wire Wire Line
+	5400 3950 8200 3950
+Wire Wire Line
+	8200 3950 8200 3050
+NoConn ~ 5450 3550
+NoConn ~ 6600 3550
+NoConn ~ 6600 3450
+NoConn ~ 6600 3350
+NoConn ~ 6600 3250
+NoConn ~ 6600 3150
+NoConn ~ 6600 3050
+NoConn ~ 6600 2950
+NoConn ~ 6600 2850
+NoConn ~ 6600 2750
+NoConn ~ 6600 2650
+NoConn ~ 5750 2700
+NoConn ~ 5450 3650
+NoConn ~ 6600 3650
+NoConn ~ 6150 4700
+$EndSCHEMATC

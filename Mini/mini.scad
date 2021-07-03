@@ -603,6 +603,9 @@ module controllerFace() {
 		connectorTop = (controllerLength - connectorEdgeSize - 2 * connectorPadding) / 2;
 		connector(0, connectorTop);
 		connector(controllerWidth - connectorLength - connectorPadding, connectorTop);
+
+		translate([controllerWidth / 2, controllerOverhang + controllerWallSize + pcbSpacing + 24.94 + 1.27, 0])
+		cylinder(basePlateDepth, r = 1.5, $fn = circleFragments);
 	}
 }
 
@@ -672,8 +675,8 @@ module everything() {
 	// peg();
 	// echoThumb2KeyLedPcbCutouts();
 	// echoThumb2KeyPositions();
-	controllerBase();
-	// controllerFace();
+	// controllerBase();
+	controllerFace();
 	// controllerBottomWall();
 	// controllerTopWall();
 	// controllerSideWall();

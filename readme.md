@@ -270,6 +270,23 @@ Cherry PCB mounted stabilizers were added.  Two sets of translucent keycaps were
 	- $1.00 / 1u @ 12 = $12.00
 	- $1.50 / 2u @ 4 = $6.00
 - Laser Cut Parts
-	- TODO: Ponoko
+	- [Ponoko](https://www.ponoko.com)
+	- All 3mm parts are Green Translucent Acrylic
+	- All 1.5mm parts are Clear Acrylic (not available in Green Translucent)
+	- Controller (3mm) $7.69 @ 1 = $7.69
+	- Base Plate (3mm) $7.15 @ 2 = $14.30
+	- Mounting Plate (1.5mm) $7.71 @ 2 = $15.42
+	- Lower Layer (3mm) $5.965 @ 4 = $23.86
+	- Upper Layer (3mm) $6.08 @ 2 = $12.16
+	- Face Plate (3mm) $3.855 @ 4 = $15.42
+	- Face Plate (1.5mm) $2.815 @ 2 = $5.63
+	- Multi-product discount $30.91
+	- Setup Fee $14.00
+	- Total: $77.57
 - PCB
-	- TODO: Seeed Studio
+	- [Seeed Studio](https://www.seeedstudio.com)
+	- Controller $0.98 @ 5 = $4.90
+	- Left Hand $6.486 @ 5 = $32.43
+	- Right Hand $6.486 @ 5 = $32.43
+	- Shipping (DHL from China) $30.19
+	- Total: $19.99 @ 5 = $99.95

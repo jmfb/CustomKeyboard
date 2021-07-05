@@ -81,92 +81,87 @@ const Positions scanPositions[rowCount][columnCount] = {
 	{ Positions::PinkyExtraTop, Positions::PinkyExtraBottom, Positions::None, Positions::None }
 };
 
-const unsigned int leftHandLayer0[keyCount] = {
-	KEY_ESC, KEY_TAB,
-	KEY_Q, KEY_A, KEY_Z,
-	KEY_W, KEY_S, KEY_X,
-	KEY_E, KEY_D, KEY_C,
-	KEY_R, KEY_F, KEY_V,
-	KEY_T, KEY_G, KEY_B,
-	KEY_1, KEY_2,
-	KEY_3, KEY_4,
-	KEY_SPACE, KEY_5
-};
-
-const unsigned int rightHandLayer0[keyCount] = {
-	KEY_BACKSPACE, KEY_ENTER,
-	KEY_P, KEY_SEMICOLON, KEY_SLASH,
-	KEY_O, KEY_L, KEY_PERIOD,
-	KEY_I, KEY_K, KEY_COMMA,
-	KEY_U, KEY_J, KEY_M,
-	KEY_Y, KEY_H, KEY_N,
-	KEY_6, KEY_7,
-	KEY_8, KEY_9,
-	KEY_MINUS, KEY_0
-};
-
-#if 0
-const int leftHyperKey = 1000;
-const int rightHyperKey = 1001;
-
-class HyperKey
-{
+class HandKeyState {
 public:
-	HyperKey()
-		: keyCode(0), shift(false)
-	{
-	}
-
-	HyperKey(int keyCode, bool shift)
-		: keyCode(keyCode), shift(shift)
-	{
-	}
-
-	int keyCode;
-	bool shift;
-};
-
-const HyperKey none;
-#endif
-
-class KeyState {
-public:
-	KeyState() {
+	HandKeyState() {
 		for (uint8_t key = 0; key < keyCount; ++key) {
-			leftHand[key] = false;
-			rightHand[key] = false;
+			keys[key] = false;
 		}
 	}
 
-	void Scan() {
-		for (uint8_t row = 0; row < rowCount; ++row) {
-			ScanRow(row);
+	void SetKey(uint8_t row, uint8_t column, bool pressed) {
+		if (pressed) {
+			auto position = scanPositions[row][column];
+			if (position != Positions::None) {
+				keys[static_cast<uint8_t>(position)] = true;
+			}
 		}
 	}
 
-	KeyState operator&&(const KeyState& other) const
-	{
-		KeyState result;
+	HandKeyState operator&&(const HandKeyState& other) const {
+		HandKeyState result;
 		for (uint8_t key = 0; key < keyCount; ++key) {
-			result.leftHand[key] = leftHand[key] && other.leftHand[key];
-			result.rightHand[key] = rightHand[key] && other.rightHand[key];
+			result.keys[key] = keys[key] && other.keys[key];
 		}
 		return result;
 	}
 
-	bool operator==(const KeyState& other) const
-	{
+	bool operator==(const HandKeyState& other) const {
 		for (uint8_t key = 0; key < keyCount; ++key) {
-			if (leftHand[key] != other.leftHand[key] || rightHand[key] != other.rightHand[key]) {
+			if (keys[key] != other.keys[key]) {
 				return false;
 			}
 		}
 		return true;
 	}
 
-	bool operator!=(const KeyState& other) const
-	{
+	bool operator!=(const HandKeyState& other) const {
 		return !operator==(other);
+	}
+
+	bool IsPressed(uint8_t key) const {
+		if (key < keyCount) {
+			return keys[key];
+		}
+		return false;
+	}
+
+private:
+	bool keys[keyCount];
+};
+
+class KeyState {
+public:
+	void Scan() {
+		for (uint8_t row = 0; row < rowCount; ++row) {
+			ScanRow(row);
+		}
+	}
+
+	KeyState operator&&(const KeyState& other) const {
+		KeyState result;
+		result.leftHand = leftHand && other.leftHand;
+		result.rightHand = rightHand && other.rightHand;
+		return result;
+	}
+
+	bool operator==(const KeyState& other) const {
+		return leftHand == other.leftHand && rightHand == other.rightHand;
+	}
+
+	bool operator!=(const KeyState& other) const {
+		return !operator==(other);
+	}
+
+	bool IsPressed(uint8_t key) const {
+		if (key < keyCount) {
+			return leftHand.IsPressed(key);
+		}
+		auto rightHandKey = key - keyCount;
+		if (key < keyCount) {
+			return rightHand.IsPressed(rightHandKey);
+		}
+		return false;
 	}
 
 private:
@@ -180,27 +175,9 @@ private:
 	}
 
 	void ScanColumn(uint8_t row, uint8_t column) {
-		auto leftHandPosition = ReadPosition(Pins::ReceiveLeftHand, row, column);
-		if (leftHandPosition != Positions::None) {
-			leftHand[static_cast<uint8_t>(leftHandPosition)] = true;
-		}
-
-		auto rightHandPosition = ReadPosition(Pins::ReceiveRightHand, row, column);
-		if (rightHandPosition != Positions::None) {
-			rightHand[static_cast<uint8_t>(rightHandPosition)] = true;
-		}
-
+		leftHand.SetKey(row, column, ReadColumn(Pins::ReceiveLeftHand));
+		rightHand.SetKey(row, column, ReadColumn(Pins::ReceiveRightHand));
 		PulseColumnClock();
-	}
-
-	bool ReadColumn(Pins pin) {
-		return digitalRead(static_cast<uint8_t>(pin)) == LOW;
-	}
-
-	Positions ReadPosition(Pins pin, uint8_t row, uint8_t column) {
-		return ReadColumn(pin) ?
-			scanPositions[row][column] :
-			Positions::None;
 	}
 
 	void SelectRow(uint8_t row) {
@@ -222,14 +199,18 @@ private:
 		digitalWrite(static_cast<uint8_t>(Pins::ShiftLoad), HIGH);
 	}
 
+	bool ReadColumn(Pins pin) {
+		return digitalRead(static_cast<uint8_t>(pin)) == LOW;
+	}
+
 	void PulseColumnClock() {
 		digitalWrite(static_cast<uint8_t>(Pins::ColumnClock), HIGH);
 		digitalWrite(static_cast<uint8_t>(Pins::ColumnClock), LOW);
 	}
 
 private:
-	bool leftHand[keyCount];
-	bool rightHand[keyCount];
+	HandKeyState leftHand;
+	HandKeyState rightHand;
 };
 
 const uint8_t debounceCount = 3;
@@ -252,174 +233,271 @@ private:
 	KeyState keyState[debounceCount];
 };
 
-#if 0
-const int maxKeyCount = 6;
+const uint8_t maxPressedKeys = 10;
 
-class PressedKeys
-{
+class PressedKeys {
 public:
-	PressedKeys()
-		: count(0)
-	{
+	PressedKeys() {
+		nextKey = 0;
+		for (uint8_t key = 0; key < maxPressedKeys; ++key) {
+			keys[key] = 0;
+		}
+		overflow = false;
 	}
 
-	void Scan(const PressedKeys& previousPressedKeys, const KeyState& keyState)
-	{
+	void Scan(const PressedKeys& previousPressedKeys, const KeyState& keyState) {
 		HoldPreviousKeys(previousPressedKeys, keyState);
-		if (count < maxKeyCount)
-			PressNewKeys(previousPressedKeys, keyState);
+		PressNewKeys(keyState);
 	}
 
-	bool operator==(const PressedKeys& other) const
-	{
-		if (count != other.count)
+	bool operator==(const PressedKeys& other) const {
+		if (nextKey != other.nextKey) {
 			return false;
-		for (int index = 0; index < count; ++index)
-			if (keys[index] != other.keys[index])
+		}
+		for (uint8_t key = 0; key < nextKey; ++key) {
+			if (keys[key] != other.keys[key]) {
 				return false;
+			}
+		}
 		return true;
 	}
-	bool operator!=(const PressedKeys& other) const
-	{
+
+	bool operator!=(const PressedKeys& other) const {
 		return !operator==(other);
 	}
 
-	int GetKeyCode(int index) const
-	{
-		return GetKeyCode(keys[index].row, keys[index].column);
+	uint8_t GetCount() const {
+		return nextKey;
 	}
 
-	HyperKey GetHyperKey(int index) const
-	{
-		return GetHyperKey(keys[index].row, keys[index].column);
+	uint8_t Get(uint8_t index) const {
+		return index < nextKey ? keys[index] : 0;
 	}
 
-private:
-	void HoldPreviousKeys(const PressedKeys& previousPressedKeys, const KeyState& keyState)
-	{
-		for (int index = 0; index < previousPressedKeys.count; ++index)
-			if (keyState.IsPressed(previousPressedKeys.keys[index]))
-				Press(previousPressedKeys.keys[index]);
-	}
-
-	void PressNewKeys(const PressedKeys& previousPressedKeys, const KeyState& keyState)
-	{
-		for (int row = 0; row < rowCount; ++row)
-			for (int column = 0; column < columnCount; ++column)
-				DetectPressedKey(keyState, row, column);
-	}
-
-	void DetectPressedKey(const KeyState& keyState, int row, int column)
-	{
-		PressedKey pressedKey(row, column);
-		if (keyState.IsPressed(pressedKey) && !IsPressed(pressedKey))
-			Press(pressedKey);
-	}
-
-	bool IsPressed(const PressedKey& key) const
-	{
-		for (int index = 0; index < count; ++index)
-			if (keys[index] == key)
+	bool IsPressed(uint8_t key) const {
+		for (uint8_t index = 0; index < nextKey; ++index) {
+			if (keys[index] == key) {
 				return true;
+			}
+		}
 		return false;
 	}
 
-	void Press(const PressedKey& key)
-	{
-		if (count < maxKeyCount)
-			keys[count++] = key;
-	}
-
-	static int GetKeyCode(int row, int column)
-	{
-		if (row < topRowCount)
-		{
-			if (column < leftHandColumnCount)
-				return leftHandKeyMap[row][column];
-			return numPadKeyMap[row][column - leftHandColumnCount];
+private:
+	void HoldPreviousKeys(const PressedKeys& previousPressedKeys, const KeyState& keyState) {
+		for (uint8_t key = 0; key < previousPressedKeys.nextKey; ++key) {
+			auto previousKey = previousPressedKeys.keys[key];
+			if (keyState.IsPressed(previousKey)) {
+				Press(previousKey);
+			}
 		}
-		if (column < rightHandColumnCount)
-			return rightHandKeyMap[row - topRowCount][column];
-		return arrowKeyKeyMap[row - topRowCount][column - rightHandColumnCount];
 	}
 
-	static HyperKey GetHyperKey(int row, int column)
-	{
-		if (row < topRowCount)
-		{
-			if (column < leftHandColumnCount)
-				return leftHandHyperKeyMap[row][column];
-			return numPadHyperKeyMap[row][column - leftHandColumnCount];
+	void PressNewKeys(const KeyState& keyState) {
+		for (uint8_t key = 0; key < 2 * keyCount; ++key) {
+			if (keyState.IsPressed(key) && !IsPressed(key)) {
+				Press(key);
+			}
 		}
-		if (column < rightHandColumnCount)
-			return rightHandHyperKeyMap[row - topRowCount][column];
-		return arrowKeyHyperKeyMap[row - topRowCount][column - rightHandColumnCount];
 	}
 
-public:
-	int count;
+	void Press(uint8_t key) {
+		if (nextKey < maxPressedKeys) {
+			keys[nextKey++] = key;
+		} else {
+			overflow = true;
+		}
+	}
 
 private:
-	PressedKey keys[maxKeyCount];
+	uint8_t nextKey;
+	uint8_t keys[maxPressedKeys];
+	bool overflow;
 };
 
-class KeyReport
-{
+const uint8_t maxModifierCount = 2;
+
+class LayerKey {
 public:
-	KeyReport()
-	{
-		modifiers = 0;
-		for (int key = 0; key < maxKeyCount; ++key)
-			keys[key] = 0;
+	LayerKey() {
+		isValid = false;
 	}
 
-	void Translate(const PressedKeys& pressedKeys)
-	{
-		bool hyper = false;
-		bool hyperShift = false;
-		int nextKey = 0;
-		for (int index = 0; index < pressedKeys.count; ++index)
-		{
-			if (hyper)
-			{
-				HyperKey hyperKey = pressedKeys.GetHyperKey(index);
-				hyperShift = hyperKey.shift;
-				keys[nextKey++] = static_cast<uint8_t>(hyperKey.keyCode);
-			}
-			else
-			{
-				int keyCode = pressedKeys.GetKeyCode(index);
-				//TODO: use different hyper key maps based on which hyper key was pressed.
-				if (keyCode == leftHyperKey || keyCode == rightHyperKey)
-				{
-					hyper = true;
-					continue;
-				}
+	LayerKey(unsigned int value) {
+		isValid = true;
+		keyCode = value;
+		modifierCount = 0;
+	}
 
-				if (IsMacroKey(keyCode))
-				{
-					//TODO: Handle macro keys differently (multi key, hyper key, etc.)
-					int mappedKeyCode = ExpandMacroKey(keyCode);
-					if (mappedKeyCode != 0)
-						keys[nextKey++] = static_cast<uint8_t>(mappedKeyCode);
-					continue;
-				}
+	LayerKey(unsigned int value, unsigned int modifier1) {
+		isValid = true;
+		keyCode = value;
+		modifiers[0] = modifier1;
+		modifierCount = 1;
+	}
 
-				if (IsModifier(keyCode))
-				{
-					modifiers |= keyCode;
-					continue;
-				}
+	LayerKey(unsigned int value, unsigned int modifier1, unsigned int modifier2) {
+		isValid = true;
+		keyCode = value;
+		modifiers[0] = modifier1;
+		modifiers[1] = modifier2;
+		modifierCount = 2;
+	}
 
-				keys[nextKey++] = static_cast<uint8_t>(keyCode);
+	bool IsValid() const {
+		return isValid;
+	}
+
+	unsigned int GetKeyCode() const {
+		return keyCode;
+	}
+
+	uint8_t GetModifierCount() const {
+		return modifierCount;
+	}
+
+	unsigned int GetModifier(uint8_t index) const {
+		return index < modifierCount ? modifiers[index] : 0;
+	}
+
+private:
+	bool isValid;
+	unsigned int keyCode;
+	unsigned int modifiers[maxModifierCount];
+	uint8_t modifierCount;
+};
+
+class H {
+public:
+	static LayerKey K() { return LayerKey(); }
+	static LayerKey K(unsigned int keyCode) { return LayerKey(keyCode); }
+
+	static LayerKey LS(unsigned int keyCode) { return LayerKey(keyCode, KEY_LEFT_SHIFT); }
+	static LayerKey RS(unsigned int keyCode) { return LayerKey(keyCode, KEY_RIGHT_SHIFT); }
+
+	static LayerKey VD(unsigned int keyCode) { return LayerKey(keyCode, KEY_LEFT_GUI, KEY_LEFT_CTRL); }
+
+	static LayerKey CA(unsigned int keyCode) { return LayerKey(keyCode, KEY_LEFT_CTRL, KEY_LEFT_ALT); }
+	static LayerKey CS(unsigned int keyCode) { return LayerKey(keyCode, KEY_LEFT_CTRL, KEY_LEFT_SHIFT); }
+};
+
+const uint8_t layerRowCount = 3;
+const uint8_t layerColumnCount = 5;
+const uint8_t layerSize = layerRowCount * layerColumnCount;
+const uint8_t layerCount = 4;
+
+const LayerKey leftHandLayer0[layerSize] = {
+	H::K(KEY_Q), H::K(KEY_W), H::K(KEY_E), H::K(KEY_R), H::K(KEY_T),
+	H::K(KEY_A), H::K(KEY_S), H::K(KEY_D), H::K(KEY_F), H::K(KEY_G),
+	H::K(KEY_Z), H::K(KEY_X), H::K(KEY_C), H::K(KEY_V), H::K(KEY_B)
+};
+
+const LayerKey leftHandLayer1[layerSize] = {
+	H::K(KEYPAD_ASTERIX), H::K(KEYPAD_7), H::K(KEYPAD_8), H::K(KEYPAD_9), H::K(KEYPAD_PLUS),
+	H::K(KEYPAD_0),       H::K(KEYPAD_4), H::K(KEYPAD_5), H::K(KEYPAD_6), H::K(KEYPAD_PERIOD),
+	H::K(KEYPAD_SLASH),   H::K(KEYPAD_1), H::K(KEYPAD_2), H::K(KEYPAD_3), H::K(KEYPAD_MINUS)
+};
+
+// ~!&|#
+// <[({\
+// :^%*,
+const LayerKey leftHandLayer2[layerSize] = {
+	H::LS(KEY_TILDE),     H::LS(KEY_1),         H::RS(KEY_7), H::RS(KEY_BACKSLASH),  H::LS(KEY_3),
+	H::RS(KEY_COMMA),     H::K(KEY_LEFT_BRACE), H::RS(KEY_9), H::RS(KEY_LEFT_BRACE), H::K(KEY_BACKSLASH),
+	H::RS(KEY_SEMICOLON), H::LS(KEY_6),         H::LS(KEY_5), H::RS(KEY_8),          H::K(KEY_COMMA)
+};
+
+const LayerKey leftHandLayer3[layerSize] = {
+	H::K(),            H::K(),          H::VD(KEY_F4), H::K(),           H::K(),
+	H::CA(KEY_DELETE), H::VD(KEY_LEFT), H::VD(KEY_D),  H::VD(KEY_RIGHT), H::CS(KEY_ESC),
+	H::K(),            H::K(),          H::K(),        H::K(),           H::K()
+};
+
+const LayerKey leftHandLayers[layerCount][layerSize] = {
+	leftHandLayer0,
+	leftHandLayer1,
+	leftHandLayer2,
+	leftHandLayer3
+};
+
+const LayerKey rightHandLayer0[layerSize] = {
+	H::K(KEY_Y), H::K(KEY_U), H::K(KEY_I),     H::K(KEY_O),      H::K(KEY_P),
+	H::K(KEY_H), H::K(KEY_J), H::K(KEY_K),     H::K(KEY_L),      H::K(),	// Nothing, Layer 3 shift
+	H::K(KEY_N), H::K(KEY_M), H::K(KEY_COMMA), H::K(KEY_PERIOD), H::K(KEY_SLASH)
+};
+
+const LayerKey rightHandLayer1[layerSize] = {
+	H::K(KEY_PRINTSCREEN), H::K(KEY_F1), H::K(KEY_F2),  H::K(KEY_F3),  H::K(KEY_F4),
+	H::K(KEY_SCROLL_LOCK), H::K(KEY_F5), H::K(KEY_F6),  H::K(KEY_F7),  H::K(KEY_F8),
+	H::K(KEY_PAUSE),       H::K(KEY_F9), H::K(KEY_F10), H::K(KEY_F11), H::K(KEY_F12)
+};
+
+// $"'`@
+// /})]>
+// .+-=?
+const LayerKey rightHandLayer2[layerSize] = {
+	H::LS(KEY_4),     H::RS(KEY_QUOTE),       H::K(KEY_QUOTE), H::K(KEY_TILDE),       H::LS(KEY_2),
+	H::K(KEY_SLASH),  H::RS(KEY_RIGHT_BRACE), H::RS(KEY_0),    H::K(KEY_RIGHT_BRACE), H::RS(KEY_PERIOD),
+	H::K(KEY_PERIOD), H::RS(KEY_EQUAL),       H::K(KEY_MINUS), H::K(KEY_EQUAL),       H::RS(KEY_SLASH)
+};
+
+const LayerKey rightHandLayer3[layerSize] = {
+	H::K(KEY_INSERT), H::K(KEY_HOME),    H::K(KEY_UP),        H::K(KEY_END),   H::K(),
+	H::K(KEY_DELETE), H::K(KEY_LEFT),    H::K(KEY_DOWN),      H::K(KEY_RIGHT), H::K(),
+	H::K(),           H::K(KEY_PAGE_UP), H::K(KEY_PAGE_DOWN), H::K(),          H::K()
+};
+
+const LayerKey rightHandLayers[layerCount][layerSize] = {
+	rightHandLayer0,
+	rightHandLayer1,
+	rightHandLayer2,
+	rightHandLayer3
+};
+
+const uint8_t maxKeyCount = 6;
+
+class KeyReport {
+public:
+	KeyReport() {
+		nextKey = 0;
+		modifiers = 0;
+		for (uint8_t key = 0; key < maxKeyCount; ++key)
+			keys[key] = 0;
+		overflow = false;
+	}
+
+	void AddKey(unsigned int keyCode) {
+		auto value = static_cast<uint8_t>(keyCode);
+		if (IsModifier(keyCode)) {
+			modifiers |= value;
+		} else if (!IsAlreadyAdded(value)) {
+			if (nextKey < maxKeyCount) {
+				keys[nextKey++] = value;
+			} else {
+				overflow = true;
 			}
 		}
-		if (hyperShift)
-			modifiers |= KEY_LEFT_SHIFT;
 	}
 
-	void Transmit() const
-	{
+	void AddLayerKey(const LayerKey& layerKey) {
+		if (!layerKey.IsValid()) {
+			return;
+		}
+		for (uint8_t index = 0; index < layerKey.GetModifierCount(); ++index) {
+			AddKey(layerKey.GetModifier(index));
+		}
+		AddKey(layerKey.GetKeyCode());
+	}
+
+	void AddLeftLayerKey(uint8_t layer, uint8_t key) {
+		AddLayerKey(leftHandLayers[layer][GetLeftHandLayerIndex(key)]);
+	}
+
+	void AddRightLayerKey(uint8_t layer, uint8_t key) {
+		AddLayerKey(rightHandLayers[layer][GetRightHandLayerIndex(key)]);
+	}
+
+	void Transmit() const {
 		Keyboard.set_modifier(modifiers);
 		Keyboard.set_key1(keys[0]);
 		Keyboard.set_key2(keys[1]);
@@ -431,95 +509,304 @@ public:
 		delay(2);
 	}
 
-	bool operator==(const KeyReport& other) const
-	{
-		for (int index = 0; index < maxKeyCount; ++index)
-			if (keys[index] != other.keys[index])
+	bool operator==(const KeyReport& other) const {
+		for (uint8_t key = 0; key < maxKeyCount; ++key) {
+			if (keys[key] != other.keys[key]) {
 				return false;
+			}
+		}
 		return modifiers == other.modifiers;
 	}
-	bool operator!=(const KeyReport& other) const
-	{
+
+	bool operator!=(const KeyReport& other) const {
 		return !operator==(other);
 	}
 
 private:
-	static bool IsModifier(int keyCode)
-	{
-		switch (keyCode)
-		{
-		case KEY_LEFT_GUI:
-		case KEY_RIGHT_GUI:
-		case KEY_LEFT_SHIFT:
-		case KEY_RIGHT_SHIFT:
-		case KEY_LEFT_ALT:
-		case KEY_RIGHT_ALT:
-		case KEY_LEFT_CTRL
-:		case KEY_RIGHT_CTRL:
-			return true;
+	static bool IsModifier(int keyCode) {
+		switch (keyCode) {
+			case KEY_LEFT_GUI:
+			case KEY_RIGHT_GUI:
+			case KEY_LEFT_SHIFT:
+			case KEY_RIGHT_SHIFT:
+			case KEY_LEFT_ALT:
+			case KEY_RIGHT_ALT:
+			case KEY_LEFT_CTRL:
+			case KEY_RIGHT_CTRL:
+				return true;
 		}
 		return false;
 	}
 
-	static bool IsMacroKey(int keyCode)
-	{
-		return keyCode >= minMacroKey && keyCode <= maxMacroKey;
-	}
-
-	int ExpandMacroKey(int keyCode)
-	{
-		//TODO: Can't use KEY_MEDIA_* on windows.  Found a doc saying I need special HID identifier during device detection.
-		switch (keyCode)
-		{
-		case MKEY_N1: return WindowsKey(KEY_D);
-		case MKEY_N2: return WindowsKey(KEY_E);
-		case MKEY_N3: return WindowsKey(KEY_R);
-		case MKEY_N4: return WindowsKey(KEY_PAUSE);
+	bool IsAlreadyAdded(uint8_t value) {
+		for (uint8_t key = 0; key < nextKey; ++key) {
+			if (keys[key] == value) {
+				return true;
+			}
 		}
-		return 0;
+		return false;
 	}
 
-	int WindowsKey(int keyCode)
-	{
-		modifiers |= KEY_LEFT_GUI;
-		return keyCode;
+	static uint8_t GetLeftHandLayerIndex(uint8_t key) {
+		switch (static_cast<Positions>(key)) {
+			case Positions::PinkyTop: return 0;
+			case Positions::RingTop: return 1;
+			case Positions::MiddleTop: return 2;
+			case Positions::IndexTop: return 3;
+			case Positions::IndexExtraTop: return 4;
+
+			case Positions::PinkyHome: return 5;
+			case Positions::RingHome: return 6;
+			case Positions::MiddleHome: return 7;
+			case Positions::IndexHome: return 8;
+			case Positions::IndexExtraHome: return 9;
+
+			case Positions::PinkyBottom: return 10;
+			case Positions::RingBottom: return 11;
+			case Positions::MiddleBottom: return 12;
+			case Positions::IndexBottom: return 13;
+			case Positions::IndexExtraBottom: return 14;
+
+			default: return 0;
+		}
 	}
 
-	int Alt(int keyCode)
-	{
-		modifiers |= KEY_LEFT_ALT;
-		return keyCode;
+	static uint8_t GetRightHandLayerIndex(uint8_t key) {
+		switch (static_cast<Positions>(key)) {
+			case Positions::IndexExtraTop: return 0;
+			case Positions::IndexTop: return 1;
+			case Positions::MiddleTop: return 2;
+			case Positions::RingTop: return 3;
+			case Positions::PinkyTop: return 4;
+
+			case Positions::IndexExtraHome: return 5;
+			case Positions::IndexHome: return 6;
+			case Positions::MiddleHome: return 7;
+			case Positions::RingHome: return 8;
+			case Positions::PinkyHome: return 9;
+
+			case Positions::IndexExtraBottom: return 10;
+			case Positions::IndexBottom: return 11;
+			case Positions::MiddleBottom: return 12;
+			case Positions::RingBottom: return 13;
+			case Positions::PinkyBottom: return 14;
+
+			default: return 0;
+		}
 	}
 
 private:
+	uint8_t nextKey;
 	uint8_t modifiers;
 	uint8_t keys[maxKeyCount];
+	bool overflow;
 };
-#endif
 
-void loop()
-{
-	static StableScanner stableScanner;
-	static KeyState previousKeyState;
-#if 0
-	static PressedKeys previousPressedKeys;
-	static KeyReport previousKeyReport;
-#endif
-	KeyState keyState = stableScanner.Scan();
-	if (keyState == previousKeyState)
-		return;
-	previousKeyState = keyState;
-#if 0
-	PressedKeys pressedKeys;
-	pressedKeys.Scan(previousPressedKeys, keyState);
-	if (pressedKeys == previousPressedKeys)
-		return;
-	previousPressedKeys = pressedKeys;
-	KeyReport keyReport;
-	keyReport.Translate(pressedKeys);
-	if (keyReport == previousKeyReport)
-		return;
-	previousKeyReport = keyReport;
-	keyReport.Transmit();
-#endif
+class Helper {
+public:
+	static uint8_t LeftKey(Positions position) {
+		return static_cast<uint8_t>(position);
+	}
+
+	static uint8_t RightKey(Positions position) {
+		return keyCount + static_cast<uint8_t>(position);
+	}
+};
+
+const auto layer1Shift = Helper::RightKey(Positions::ThumbOuter);
+const auto layer2Shift = Helper::LeftKey(Positions::ThumbOuter);
+const auto layer3Shift = Helper::RightKey(Positions::PinkyHome);
+
+class KeyboardDriver {
+public:
+	KeyboardDriver() {
+		layer = 0;
+		layerKeyCount = 0;
+	}
+
+	void ScanAndTransmit() {
+		auto keyState = stableScanner.Scan();
+		if (keyState == previousKeyState) {
+			return;
+		}
+		previousKeyState = keyState;
+
+		PressedKeys pressedKeys;
+		pressedKeys.Scan(previousPressedKeys, keyState);
+		if (pressedKeys == previousPressedKeys) {
+			return;
+		}
+
+		GenerateKeyReports(pressedKeys);
+		previousPressedKeys = pressedKeys;
+	}
+
+private:
+	void GenerateKeyReports(const PressedKeys& pressedKeys) {
+		DetectLayerUnshift(pressedKeys);
+		DetectLayerShift(pressedKeys);
+		KeyReport keyReport;
+		for (uint8_t index = 0; index < pressedKeys.GetCount(); ++index) {
+			AddToReport(keyReport, pressedKeys.Get(index));
+		}
+		SendKeyReport(keyReport);
+	}
+
+	void DetectLayerUnshift(const PressedKeys& pressedKeys) {
+		switch (layer) {
+			case 1:
+				if (!pressedKeys.IsPressed(layer1Shift)) {
+					if (layerKeyCount == 0) {
+						KeyReport releaseUnderscore = previousKeyReport;
+						KeyReport pressUnderscore = previousKeyReport;
+						pressUnderscore.AddKey(KEY_RIGHT_SHIFT);
+						pressUnderscore.AddKey(KEY_MINUS);
+						SendKeyReport(pressUnderscore);
+						SendKeyReport(releaseUnderscore);
+					}
+					SwitchLayer(0);
+				}
+				break;
+
+			case 2:
+				if (!pressedKeys.IsPressed(layer2Shift)) {
+					if (layerKeyCount == 0) {
+						KeyReport releaseSemicolon = previousKeyReport;
+						KeyReport pressSemicolon = previousKeyReport;
+						pressSemicolon.AddKey(KEY_SPACE);
+						SendKeyReport(pressSemicolon);
+						SendKeyReport(releaseSemicolon);
+					}
+					SwitchLayer(0);
+				}
+				break;
+
+			case 3:
+				if (!pressedKeys.IsPressed(layer3Shift)) {
+					if (layerKeyCount == 0) {
+						KeyReport releaseSemicolon = previousKeyReport;
+						KeyReport pressSemicolon = previousKeyReport;
+						pressSemicolon.AddKey(KEY_SEMICOLON);
+						SendKeyReport(pressSemicolon);
+						SendKeyReport(releaseSemicolon);
+					}
+					SwitchLayer(0);
+				}
+				break;
+		}
+	}
+
+	void DetectLayerShift(const PressedKeys& pressedKeys) {
+		if (layer == 0) {
+			if (pressedKeys.IsPressed(layer1Shift)) {
+				SwitchLayer(1);
+			} else if (pressedKeys.IsPressed(layer2Shift)) {
+				SwitchLayer(2);
+			} else if (pressedKeys.IsPressed(layer3Shift)) {
+				SwitchLayer(3);
+			}
+		}
+	}
+
+	void SwitchLayer(int value) {
+		layer = value;
+		layerKeyCount = 0;
+	}
+
+	void AddToReport(KeyReport& keyReport, uint8_t key) {
+		if (key < keyCount) {
+			AddLeftHandKey(keyReport, key);
+		} else {
+			auto rightHandKey = key - keyCount;
+			if (rightHandKey < keyCount) {
+				AddRightHandKey(keyReport, rightHandKey);
+			}
+		}
+	}
+
+	void AddLeftHandKey(KeyReport& keyReport, uint8_t key) {
+		switch (static_cast<Positions>(key)) {
+			case Positions::PinkyExtraTop:
+				keyReport.AddKey(KEY_ESC);
+				break;
+			case Positions::PinkyExtraBottom:
+				keyReport.AddKey(KEY_TAB);
+				break;
+			case Positions::ThumbGridTopFirst:
+				keyReport.AddKey(KEY_LEFT_CTRL);
+				break;
+			case Positions::ThumbGridTopSecond:
+				keyReport.AddKey(KEY_LEFT_GUI);
+				break;
+			case Positions::ThumbGridBottomFirst:
+				keyReport.AddKey(KEY_LEFT_ALT);
+				break;
+			case Positions::ThumbGridBottomSecond:
+				keyReport.AddKey(KEY_MENU);
+				break;
+			case Positions::ThumbInner:
+				keyReport.AddKey(KEY_LEFT_SHIFT);
+				break;
+			case Positions::ThumbOuter:
+				// Nothing (layer 2 shift)
+				break;
+			default:
+				keyReport.AddLeftLayerKey(layer, key);
+				++layerKeyCount;
+				break;
+		}
+	}
+
+	void AddRightHandKey(KeyReport& keyReport, uint8_t key) {
+		switch (static_cast<Positions>(key)) {
+			case Positions::PinkyExtraTop:
+				keyReport.AddKey(KEY_BACKSPACE);
+				break;
+			case Positions::PinkyExtraBottom:
+				keyReport.AddKey(KEY_ENTER);
+				break;
+			case Positions::ThumbGridTopFirst:
+				keyReport.AddKey(KEY_RIGHT_CTRL);
+				break;
+			case Positions::ThumbGridTopSecond:
+				keyReport.AddKey(KEY_RIGHT_GUI);
+				break;
+			case Positions::ThumbGridBottomFirst:
+				keyReport.AddKey(KEY_RIGHT_ALT);
+				break;
+			case Positions::ThumbGridBottomSecond:
+				keyReport.AddKey(KEY_MENU);
+				break;
+			case Positions::ThumbInner:
+				keyReport.AddKey(KEY_SPACE);
+				break;
+			case Positions::ThumbOuter:
+				// Nothing (layer 1 shift)
+				break;
+			default:
+				keyReport.AddRightLayerKey(layer, key);
+				++layerKeyCount;
+				break;
+		}
+	}
+
+	void SendKeyReport(const KeyReport& keyReport) {
+		if (keyReport != previousKeyReport) {
+			keyReport.Transmit();
+			previousKeyReport = keyReport;
+		}
+	}
+
+private:
+	KeyState previousKeyState;
+	StableScanner stableScanner;
+	PressedKeys previousPressedKeys;
+	KeyReport previousKeyReport;
+	uint8_t layer;
+	uint8_t layerKeyCount;
+};
+
+void loop() {
+	static KeyboardDriver keyboardDriver;
+	keyboardDriver.ScanAndTransmit();
 }

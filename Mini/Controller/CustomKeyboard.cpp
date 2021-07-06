@@ -315,56 +315,39 @@ private:
 	bool overflow;
 };
 
-const uint8_t maxModifierCount = 2;
+const uint8_t invalidKeyCode = 0xff;
 
 class LayerKey {
 public:
 	LayerKey() {
-		isValid = false;
+		keyCode = invalidKeyCode;
 	}
 
 	LayerKey(unsigned int value) {
-		isValid = true;
-		keyCode = value;
-		modifierCount = 0;
+		keyCode = static_cast<uint8_t>(value);
+		modifiers = 0;
 	}
 
-	LayerKey(unsigned int value, unsigned int modifier1) {
-		isValid = true;
-		keyCode = value;
-		modifiers[0] = modifier1;
-		modifierCount = 1;
-	}
-
-	LayerKey(unsigned int value, unsigned int modifier1, unsigned int modifier2) {
-		isValid = true;
-		keyCode = value;
-		modifiers[0] = modifier1;
-		modifiers[1] = modifier2;
-		modifierCount = 2;
+	LayerKey(unsigned int value, unsigned int modifiers) {
+		keyCode = static_cast<uint8_t>(value);
+		modifiers = static_cast<uint8_t>(modifiers);
 	}
 
 	bool IsValid() const {
-		return isValid;
+		return keyCode != invalidKeyCode;
 	}
 
-	unsigned int GetKeyCode() const {
+	uint8_t GetKeyCode() const {
 		return keyCode;
 	}
 
-	uint8_t GetModifierCount() const {
-		return modifierCount;
-	}
-
-	unsigned int GetModifier(uint8_t index) const {
-		return index < modifierCount ? modifiers[index] : 0;
+	uint8_t GetModifiers() const {
+		return modifiers;
 	}
 
 private:
-	bool isValid;
-	unsigned int keyCode;
-	unsigned int modifiers[maxModifierCount];
-	uint8_t modifierCount;
+	uint8_t keyCode;
+	uint8_t modifiers;
 };
 
 class H {
@@ -375,10 +358,10 @@ public:
 	static LayerKey LS(unsigned int keyCode) { return LayerKey(keyCode, KEY_LEFT_SHIFT); }
 	static LayerKey RS(unsigned int keyCode) { return LayerKey(keyCode, KEY_RIGHT_SHIFT); }
 
-	static LayerKey VD(unsigned int keyCode) { return LayerKey(keyCode, KEY_LEFT_GUI, KEY_LEFT_CTRL); }
+	static LayerKey VD(unsigned int keyCode) { return LayerKey(keyCode, KEY_LEFT_GUI | KEY_LEFT_CTRL); }
 
-	static LayerKey CA(unsigned int keyCode) { return LayerKey(keyCode, KEY_LEFT_CTRL, KEY_LEFT_ALT); }
-	static LayerKey CS(unsigned int keyCode) { return LayerKey(keyCode, KEY_LEFT_CTRL, KEY_LEFT_SHIFT); }
+	static LayerKey CA(unsigned int keyCode) { return LayerKey(keyCode, KEY_LEFT_CTRL | KEY_LEFT_ALT); }
+	static LayerKey CS(unsigned int keyCode) { return LayerKey(keyCode, KEY_LEFT_CTRL | KEY_LEFT_SHIFT); }
 };
 
 const uint8_t layerRowCount = 3;
@@ -461,8 +444,9 @@ public:
 	KeyReport() {
 		nextKey = 0;
 		modifiers = 0;
-		for (uint8_t key = 0; key < maxKeyCount; ++key)
+		for (uint8_t key = 0; key < maxKeyCount; ++key) {
 			keys[key] = 0;
+		}
 		overflow = false;
 	}
 
@@ -483,9 +467,7 @@ public:
 		if (!layerKey.IsValid()) {
 			return;
 		}
-		for (uint8_t index = 0; index < layerKey.GetModifierCount(); ++index) {
-			AddKey(layerKey.GetModifier(index));
-		}
+		modifiers |= layerKey.GetModifiers();
 		AddKey(layerKey.GetKeyCode());
 	}
 
@@ -657,12 +639,7 @@ private:
 			case 1:
 				if (!pressedKeys.IsPressed(layer1Shift)) {
 					if (layerKeyCount == 0) {
-						KeyReport releaseUnderscore = previousKeyReport;
-						KeyReport pressUnderscore = previousKeyReport;
-						pressUnderscore.AddKey(KEY_RIGHT_SHIFT);
-						pressUnderscore.AddKey(KEY_MINUS);
-						SendKeyReport(pressUnderscore);
-						SendKeyReport(releaseUnderscore);
+						SendSyntheticKey(H::SR(KEY_MINUS));
 					}
 					SwitchLayer(0);
 				}
@@ -671,11 +648,7 @@ private:
 			case 2:
 				if (!pressedKeys.IsPressed(layer2Shift)) {
 					if (layerKeyCount == 0) {
-						KeyReport releaseSemicolon = previousKeyReport;
-						KeyReport pressSemicolon = previousKeyReport;
-						pressSemicolon.AddKey(KEY_SPACE);
-						SendKeyReport(pressSemicolon);
-						SendKeyReport(releaseSemicolon);
+						SendSyntheticKey(H::K(KEY_SPACE));
 					}
 					SwitchLayer(0);
 				}
@@ -684,11 +657,7 @@ private:
 			case 3:
 				if (!pressedKeys.IsPressed(layer3Shift)) {
 					if (layerKeyCount == 0) {
-						KeyReport releaseSemicolon = previousKeyReport;
-						KeyReport pressSemicolon = previousKeyReport;
-						pressSemicolon.AddKey(KEY_SEMICOLON);
-						SendKeyReport(pressSemicolon);
-						SendKeyReport(releaseSemicolon);
+						SendSyntheticKey(H::K(KEY_SEMICOLON));
 					}
 					SwitchLayer(0);
 				}
@@ -711,6 +680,14 @@ private:
 	void SwitchLayer(int value) {
 		layer = value;
 		layerKeyCount = 0;
+	}
+
+	void SendSyntheticKey(const LayerKey& layerKey) {
+		KeyReport release = previousKeyReport;
+		KeyReport press = previousKeyReport;
+		press.AddLayerKey(layerKey);
+		SendKeyReport(press);
+		SendKeyReport(release);
 	}
 
 	void AddToReport(KeyReport& keyReport, uint8_t key) {

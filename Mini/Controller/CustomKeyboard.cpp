@@ -623,6 +623,10 @@ public:
 		previousPressedKeys = pressedKeys;
 	}
 
+	uint8_t GetLayer() const {
+		return layer;
+	}
+
 private:
 	void GenerateKeyReports(const PressedKeys& pressedKeys) {
 		DetectLayerUnshift(pressedKeys);
@@ -783,115 +787,134 @@ private:
 	uint8_t layerKeyCount;
 };
 
+class LedColor {
+public:
+	uint8_t intensity;
+	uint8_t red;
+	uint8_t blue;
+	uint8_t green;
+};
+
+namespace LedColors {
+	const uint8_t fullIntensity = 0b00011111;
+	const LedColor none = { 0, 0, 0, 0 };
+	const LedColor white = { fullIntensity, 0xff, 0xff, 0xff };
+	const LedColor silver = { fullIntensity, 0xc0, 0xc0, 0xc0 };
+	const LedColor gray = { fullIntensity, 0x80, 0x80, 0x80 };
+
+	const LedColor maroon = { fullIntensity, 0x80, 0, 0 };
+	const LedColor red = { fullIntensity, 0xff, 0, 0 };
+	const LedColor purple = { fullIntensity, 0x80, 0x80, 0 };
+	const LedColor fuchsia = { fullIntensity, 0xff, 0xff, 0 };
+
+	const LedColor green = { fullIntensity, 0, 0, 0x80 };
+	const LedColor lime = { fullIntensity, 0, 0, 0xff };
+	const LedColor olive = { fullIntensity, 0x80, 0, 0x80 };
+	const LedColor yellow = { fullIntensity, 0xff, 0, 0xff };
+
+	const LedColor navy = { fullIntensity, 0, 0x80, 0 };
+	const LedColor blue = { fullIntensity, 0, 0xff, 0 };
+	const LedColor teal = { fullIntensity, 0, 0x80, 0x80 };
+	const LedColor aqua = { fullIntensity, 0, 0xff, 0xff };
+
+	// TODO: Add more well defined colors
+}
+
+const uint8_t frameSize = 32;
+
+// LED Order
+// =========
+// PinkyExtraTop
+// PinkyTop
+// RingTop
+// MiddleTop
+// IndexTop
+// IndexExtraTop
+// IndexExtraHome
+// IndexHome
+// MiddleHome
+// RingHome
+// PinkyHome
+// PinkyExtraBottom
+// PinkyBottom
+// RingBottom
+// MiddleBottom
+// IndexBottom
+// IndexExtraBottom
+// ThumbGridTopFirst
+// ThumbGridTopSecond
+// ThumbGridBottomSecond
+// ThumbGridBottomFirst
+// ThumbInner
+// ThumbOuter
+
+class LedDriver {
+public:
+	void SetUniformColor(const LedColor& color) {
+		TransmitStartFrame();
+		for (uint8_t key = 0; key < keyCount; ++key) {
+			TransmitLedColor(color, color);
+		}
+		TransmitEndFrame();
+	}
+
+	// TODO: More advanced color algorithms
+
+private:
+	void PulseLedClock() {
+		digitalWrite(static_cast<uint8_t>(Pins::LedClock), HIGH);
+		digitalWrite(static_cast<uint8_t>(Pins::LedClock), LOW);
+	}
+
+	void TransmitBit(bool left, bool right) {
+		// Dual transmit LED data to each hand using a single clock
+		digitalWrite(static_cast<uint8_t>(Pins::LedDataLeftHand), left ? HIGH : LOW);
+		digitalWrite(static_cast<uint8_t>(Pins::LedDataRightHand), right ? HIGH : LOW);
+		PulseLedClock();
+	}
+
+	void TransmitByte(uint8_t left, uint8_t right) {
+		const uint8_t bitsPerByte = 8;
+		for (uint8_t index = 0; index < bitsPerByte; ++index) {
+			// MSB first, LSB last
+			uint8_t mask = 0b10000000 >> index;
+			TransmitBit((left & mask) == mask, (right & mask) == mask);
+		}
+	}
+
+	void TransmitStartFrame() {
+		TransmitFrame(false);
+	}
+
+	void TransmitEndFrame() {
+		TransmitFrame(true);
+	}
+
+	void TransmitFrame(bool value) {
+		for (uint8_t index = 0; index < frameSize; ++index) {
+			TransmitBit(value, value);
+		}
+	}
+
+	void TransmitLedColor(const LedColor& leftColor, const LedColor& rightColor) {
+		TransmitByte(leftColor.intensity | 0b11100000, rightColor.intensity | 0b11100000);
+		TransmitByte(leftColor.red, rightColor.red);
+		TransmitByte(leftColor.blue, rightColor.blue);
+		TransmitByte(leftColor.green, rightColor.green);
+	}
+};
+
+const LedColor layerColors[layerCount] = {
+	LedColors::green,
+	LedColors::blue,
+	LedColors::navy,
+	LedColors::teal
+};
+
 void loop() {
 	static KeyboardDriver keyboardDriver;
+	static LedDriver ledDriver;
 	keyboardDriver.ScanAndTransmit();
+	ledDriver.SetUniformColor(layerColors[keyboardDriver.GetLayer()]);
+	delay(100);
 }
-
-#if 0
-void pulseLedClock() {
-  digitalWrite(ledClockPin, HIGH);
-  digitalWrite(ledClockPin, LOW);
-}
-
-void pulseClock() {
-  digitalWrite(clockPin, HIGH);
-  digitalWrite(clockPin, LOW);
-}
-
-void transmitBit(bool data) {
-  digitalWrite(transmitPin, data ? HIGH : LOW);
-  pulseLedClock();
-}
-
-void transmitByte(uint8_t data) {
-  for (auto index = 0; index < 8; ++index) {
-    uint8_t mask = 0B10000000 >> index;
-    transmitBit((data & mask) == mask);
-  }
-}
-
-void transmitStartFrame() {
-  for (auto index = 0; index < 4; ++index) {
-    transmitByte(0B00000000);
-  }
-}
-
-void transmitEndFrame() {
-  for (auto index = 0; index < 4; ++index) {
-    transmitByte(0B11111111);
-  }
-}
-
-void transmitLed(uint8_t intensity, uint8_t red, uint8_t green, uint8_t blue) {
-  transmitByte(intensity | 0B11100000);
-  transmitByte(red);
-  transmitByte(blue);
-  transmitByte(green);
-}
-
-class Foo {
-public:
-  uint8_t intensity;
-  uint8_t red;
-  uint8_t green;
-  uint8_t blue;
-
-  void transmit() const {
-    transmitLed(intensity, red, green, blue);
-  }
-
-  void rotateColor() {
-    auto blueBit = blue & 0B01;
-    blue >>= 1;
-    blue |= (green & 0B01) << 7;
-    green >>= 1;
-    green |= (red & 0B01) << 7;
-    red >>= 1;
-    red |= blueBit << 7;
-  }
-};
-
-const uint8_t mediumIntensity = 0B00000001;
-
-Foo leds[] = {
-  { 0B00011111, 0B11111111, 0, 0 },
-  { 0B00001111, 0B11111111, 0, 0 },
-  { 0B00000111, 0B11111111, 0, 0 },
-  { 0B00000011, 0B11111111, 0, 0 },
-  { 0B00000001, 0B11111111, 0, 0 }
-};
-
-void transmitLeds() {
-  transmitStartFrame();
-  for (auto& color : leds) {
-    color.transmit();
-  }
-  transmitEndFrame();
-}
-
-//LED Order
-PinkyExtraTop
-PinkyTop
-RingTop
-MiddleTop
-IndexTop
-IndexExtraTop
-IndexExtraHome
-IndexHome
-MiddleHome
-RingHome
-PinkyHome
-PinkyExtraBottom
-PinkyBottom
-RingBottom
-MiddleBottom
-IndexBottom
-IndexExtraBottom
-ThumbGridTopFirst
-ThumbGridTopSecond
-ThumbGridBottomSecond
-ThumbGridBottomFirst
-ThumbInner
-ThumbOuter
-#endif

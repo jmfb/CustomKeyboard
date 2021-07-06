@@ -787,3 +787,111 @@ void loop() {
 	static KeyboardDriver keyboardDriver;
 	keyboardDriver.ScanAndTransmit();
 }
+
+#if 0
+void pulseLedClock() {
+  digitalWrite(ledClockPin, HIGH);
+  digitalWrite(ledClockPin, LOW);
+}
+
+void pulseClock() {
+  digitalWrite(clockPin, HIGH);
+  digitalWrite(clockPin, LOW);
+}
+
+void transmitBit(bool data) {
+  digitalWrite(transmitPin, data ? HIGH : LOW);
+  pulseLedClock();
+}
+
+void transmitByte(uint8_t data) {
+  for (auto index = 0; index < 8; ++index) {
+    uint8_t mask = 0B10000000 >> index;
+    transmitBit((data & mask) == mask);
+  }
+}
+
+void transmitStartFrame() {
+  for (auto index = 0; index < 4; ++index) {
+    transmitByte(0B00000000);
+  }
+}
+
+void transmitEndFrame() {
+  for (auto index = 0; index < 4; ++index) {
+    transmitByte(0B11111111);
+  }
+}
+
+void transmitLed(uint8_t intensity, uint8_t red, uint8_t green, uint8_t blue) {
+  transmitByte(intensity | 0B11100000);
+  transmitByte(red);
+  transmitByte(blue);
+  transmitByte(green);
+}
+
+class Foo {
+public:
+  uint8_t intensity;
+  uint8_t red;
+  uint8_t green;
+  uint8_t blue;
+
+  void transmit() const {
+    transmitLed(intensity, red, green, blue);
+  }
+
+  void rotateColor() {
+    auto blueBit = blue & 0B01;
+    blue >>= 1;
+    blue |= (green & 0B01) << 7;
+    green >>= 1;
+    green |= (red & 0B01) << 7;
+    red >>= 1;
+    red |= blueBit << 7;
+  }
+};
+
+const uint8_t mediumIntensity = 0B00000001;
+
+Foo leds[] = {
+  { 0B00011111, 0B11111111, 0, 0 },
+  { 0B00001111, 0B11111111, 0, 0 },
+  { 0B00000111, 0B11111111, 0, 0 },
+  { 0B00000011, 0B11111111, 0, 0 },
+  { 0B00000001, 0B11111111, 0, 0 }
+};
+
+void transmitLeds() {
+  transmitStartFrame();
+  for (auto& color : leds) {
+    color.transmit();
+  }
+  transmitEndFrame();
+}
+
+//LED Order
+PinkyExtraTop
+PinkyTop
+RingTop
+MiddleTop
+IndexTop
+IndexExtraTop
+IndexExtraHome
+IndexHome
+MiddleHome
+RingHome
+PinkyHome
+PinkyExtraBottom
+PinkyBottom
+RingBottom
+MiddleBottom
+IndexBottom
+IndexExtraBottom
+ThumbGridTopFirst
+ThumbGridTopSecond
+ThumbGridBottomSecond
+ThumbGridBottomFirst
+ThumbInner
+ThumbOuter
+#endif

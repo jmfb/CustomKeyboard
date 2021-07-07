@@ -643,7 +643,7 @@ private:
 			case 1:
 				if (!pressedKeys.IsPressed(layer1Shift)) {
 					if (layerKeyCount == 0) {
-						SendSyntheticKey(H::SR(KEY_MINUS));
+						SendSyntheticKey(H::RS(KEY_MINUS));
 					}
 					SwitchLayer(0);
 				}

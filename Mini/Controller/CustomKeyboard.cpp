@@ -787,7 +787,7 @@ private:
 	uint8_t layerKeyCount;
 };
 
-const uint8_t fullIntensity = 0b00011111;
+constexpr uint8_t fullIntensity = 0b00011111;
 
 class LedColor {
 public:
@@ -796,11 +796,13 @@ public:
 	uint8_t blue;
 	uint8_t green;
 
-	static LedColor FromHex(unsigned int value) {
-		uint8_t red = static_cast<uint8_t>((value & 0xff0000) >> 16);
-		uint8_t green = static_cast<uint8_t>((value & 0x00ff00) >> 8);
-		uint8_t blue = static_cast<uint8_t>(value & 0x0000ff);
-		return { fullIntensity, red, blue, green };
+	constexpr static LedColor FromHex(unsigned int value) {
+		return {
+			fullIntensity,
+			static_cast<uint8_t>((value & 0xff0000) >> 16),
+			static_cast<uint8_t>(value & 0x0000ff),
+			static_cast<uint8_t>((value & 0x00ff00) >> 8)
+		};
 	}
 };
 
@@ -815,14 +817,14 @@ namespace LedColors {
 	// const auto purple = LedColor::FromHex(0x800080ul);
 	// const auto fuchsia = LedColor::FromHex(0xff00fful);
 
-	const auto green = LedColor::FromHex(0x008000ul);
+	constexpr auto green = LedColor::FromHex(0x008000ul);
 	// const auto lime = LedColor::FromHex(0x00ff00ul);
 	// const auto olive = LedColor::FromHex(0x808000ul);
 	// const auto yellow = LedColor::FromHex(0xffff00ul);
 
-	const auto navy = LedColor::FromHex(0x000080ul);
-	const auto blue = LedColor::FromHex(0x0000fful);
-	const auto teal = LedColor::FromHex(0x008080ul);
+	constexpr auto navy = LedColor::FromHex(0x000080ul);
+	constexpr auto blue = LedColor::FromHex(0x0000fful);
+	constexpr auto teal = LedColor::FromHex(0x008080ul);
 	// const auto aqua = LedColor::FromHex(0x00fffful);
 
 	// const auto aquamarine = LedColor::FromHex(0x7fffd4ul);

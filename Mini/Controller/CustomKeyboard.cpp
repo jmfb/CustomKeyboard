@@ -381,9 +381,9 @@ const LayerKey leftHandLayer1[layerSize] = {
 	H::K(KEYPAD_SLASH),   H::K(KEYPAD_1), H::K(KEYPAD_2), H::K(KEYPAD_3), H::K(KEYPAD_MINUS)
 };
 
-// ~!&|#
-// <[({\
-// :^%*,
+// |~!&|#|
+// |<[({\|
+// |:^%*,|
 const LayerKey leftHandLayer2[layerSize] = {
 	H::LS(KEY_TILDE),     H::LS(KEY_1),         H::RS(KEY_7), H::RS(KEY_BACKSLASH),  H::LS(KEY_3),
 	H::RS(KEY_COMMA),     H::K(KEY_LEFT_BRACE), H::RS(KEY_9), H::RS(KEY_LEFT_BRACE), H::K(KEY_BACKSLASH),
@@ -415,9 +415,9 @@ const LayerKey rightHandLayer1[layerSize] = {
 	H::K(KEY_PAUSE),       H::K(KEY_F9), H::K(KEY_F10), H::K(KEY_F11), H::K(KEY_F12)
 };
 
-// $"'`@
-// /})]>
-// .+-=?
+// |$"'`@|
+// |/})]>|
+// |.+-=?|
 const LayerKey rightHandLayer2[layerSize] = {
 	H::LS(KEY_4),     H::RS(KEY_QUOTE),       H::K(KEY_QUOTE), H::K(KEY_TILDE),       H::LS(KEY_2),
 	H::K(KEY_SLASH),  H::RS(KEY_RIGHT_BRACE), H::RS(KEY_0),    H::K(KEY_RIGHT_BRACE), H::RS(KEY_PERIOD),
@@ -787,37 +787,59 @@ private:
 	uint8_t layerKeyCount;
 };
 
+const uint8_t fullIntensity = 0b00011111;
+
 class LedColor {
 public:
 	uint8_t intensity;
 	uint8_t red;
 	uint8_t blue;
 	uint8_t green;
+
+	static LedColor FromHex(unsigned int value) {
+		uint8_t red = static_cast<uint8_t>((value & 0xff0000) >> 16);
+		uint8_t green = static_cast<uint8_t>((value & 0x00ff00) >> 8);
+		uint8_t blue = static_cast<uint8_t>(value & 0x0000ff);
+		return { fullIntensity, red, blue, green };
+	}
 };
 
 namespace LedColors {
-	const uint8_t fullIntensity = 0b00011111;
-	const LedColor none = { 0, 0, 0, 0 };
-	const LedColor white = { fullIntensity, 0xff, 0xff, 0xff };
-	const LedColor silver = { fullIntensity, 0xc0, 0xc0, 0xc0 };
-	const LedColor gray = { fullIntensity, 0x80, 0x80, 0x80 };
+	// const auto black = LedColor::FromHex(0x000000ul);
+	// const auto white = LedColor::FromHex(0xfffffful);
+	// const auto silver = LedColor::FromHex(0xc0c0c0ul);
+	// const auto gray = LedColor::FromHex(0x808080ul);
 
-	const LedColor maroon = { fullIntensity, 0x80, 0, 0 };
-	const LedColor red = { fullIntensity, 0xff, 0, 0 };
-	const LedColor purple = { fullIntensity, 0x80, 0x80, 0 };
-	const LedColor fuchsia = { fullIntensity, 0xff, 0xff, 0 };
+	// const auto maroon = LedColor::FromHex(0x800000ul);
+	// const auto red = LedColor::FromHex(0xff0000ul);
+	// const auto purple = LedColor::FromHex(0x800080ul);
+	// const auto fuchsia = LedColor::FromHex(0xff00fful);
 
-	const LedColor green = { fullIntensity, 0, 0, 0x80 };
-	const LedColor lime = { fullIntensity, 0, 0, 0xff };
-	const LedColor olive = { fullIntensity, 0x80, 0, 0x80 };
-	const LedColor yellow = { fullIntensity, 0xff, 0, 0xff };
+	const auto green = LedColor::FromHex(0x008000ul);
+	// const auto lime = LedColor::FromHex(0x00ff00ul);
+	// const auto olive = LedColor::FromHex(0x808000ul);
+	// const auto yellow = LedColor::FromHex(0xffff00ul);
 
-	const LedColor navy = { fullIntensity, 0, 0x80, 0 };
-	const LedColor blue = { fullIntensity, 0, 0xff, 0 };
-	const LedColor teal = { fullIntensity, 0, 0x80, 0x80 };
-	const LedColor aqua = { fullIntensity, 0, 0xff, 0xff };
+	const auto navy = LedColor::FromHex(0x000080ul);
+	const auto blue = LedColor::FromHex(0x0000fful);
+	const auto teal = LedColor::FromHex(0x008080ul);
+	// const auto aqua = LedColor::FromHex(0x00fffful);
 
-	// TODO: Add more well defined colors
+	// const auto aquamarine = LedColor::FromHex(0x7fffd4ul);
+	// const auto cadetblue = LedColor::FromHex(0x5f9ea0ul);
+	// const auto cornflowerblue = LedColor::FromHex(0x6495edul);
+	// const auto darkblue = LedColor::FromHex(0x00008bul);
+	// const auto darkcyan = LedColor::FromHex(0x008b8bul);
+	// const auto darkslateblue = LedColor::FromHex(0x483d8bul);
+	// const auto lightblue = LedColor::FromHex(0xadd8e6ul);
+	// const auto lightcyan = LedColor::FromHex(0xe0fffful);
+	// const auto lightseagreen = LedColor::FromHex(0x20b2aaul);
+	// const auto lightskyblue = LedColor::FromHex(0x87cefaul);
+	// const auto midnightblue = LedColor::FromHex(0x191970ul);
+	// const auto powderblue = LedColor::FromHex(0xb0e0e6ul);
+	// const auto royalblue = LedColor::FromHex(0x4169e1ul);
+	// const auto seagreen = LedColor::FromHex(0x2e8b57ul);
+	// const auto steelblue = LedColor::FromHex(0x4682b4ul);
 }
 
 const uint8_t frameSize = 32;

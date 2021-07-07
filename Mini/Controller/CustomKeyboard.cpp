@@ -65,12 +65,12 @@ enum class Positions : uint8_t {
 	Last = ThumbOuter
 };
 
-const auto keyCount = static_cast<uint8_t>(Positions::Last) + 1;
+constexpr auto keyCount = static_cast<uint8_t>(Positions::Last) + 1;
 
-const uint8_t rowCount = 8;
-const uint8_t columnCount = 4;
+constexpr uint8_t rowCount = 8;
+constexpr uint8_t columnCount = 4;
 
-const Positions scanPositions[rowCount][columnCount] = {
+constexpr Positions scanPositions[rowCount][columnCount] = {
 	{ Positions::None, Positions::None, Positions::ThumbOuter, Positions::ThumbGridBottomSecond },
 	{ Positions::None, Positions::None, Positions::ThumbInner, Positions::ThumbGridBottomFirst },
 	{ Positions::IndexExtraTop, Positions::IndexExtraHome, Positions::IndexExtraBottom, Positions::ThumbGridTopFirst },
@@ -213,7 +213,7 @@ private:
 	HandKeyState rightHand;
 };
 
-const uint8_t debounceCount = 3;
+constexpr uint8_t debounceCount = 3;
 
 class StableScanner {
 public:
@@ -233,7 +233,7 @@ private:
 	KeyState keyState[debounceCount];
 };
 
-const uint8_t maxPressedKeys = 10;
+constexpr uint8_t maxPressedKeys = 10;
 
 class PressedKeys {
 public:
@@ -315,33 +315,23 @@ private:
 	bool overflow;
 };
 
-const uint8_t invalidKeyCode = 0xff;
+constexpr uint8_t invalidKeyCode = 0xff;
 
 class LayerKey {
 public:
-	LayerKey() {
-		keyCode = invalidKeyCode;
-	}
+	constexpr LayerKey() : keyCode(invalidKeyCode), modifiers(0) {}
+	constexpr LayerKey(unsigned int value) : keyCode(static_cast<uint8_t>(value)), modifiers(0) {}
+	constexpr LayerKey(unsigned int value, unsigned int modifiers) : keyCode(static_cast<uint8_t>(value)), modifiers(modifiers) {}
 
-	LayerKey(unsigned int value) {
-		keyCode = static_cast<uint8_t>(value);
-		modifiers = 0;
-	}
-
-	LayerKey(unsigned int value, unsigned int modifiers) {
-		keyCode = static_cast<uint8_t>(value);
-		modifiers = static_cast<uint8_t>(modifiers);
-	}
-
-	bool IsValid() const {
+	constexpr bool IsValid() const {
 		return keyCode != invalidKeyCode;
 	}
 
-	uint8_t GetKeyCode() const {
+	constexpr uint8_t GetKeyCode() const {
 		return keyCode;
 	}
 
-	uint8_t GetModifiers() const {
+	constexpr uint8_t GetModifiers() const {
 		return modifiers;
 	}
 
@@ -352,92 +342,76 @@ private:
 
 class H {
 public:
-	static LayerKey K() { return LayerKey(); }
-	static LayerKey K(unsigned int keyCode) { return LayerKey(keyCode); }
+	constexpr static LayerKey K() { return LayerKey(); }
+	constexpr static LayerKey K(unsigned int keyCode) { return LayerKey(keyCode); }
 
-	static LayerKey LS(unsigned int keyCode) { return LayerKey(keyCode, KEY_LEFT_SHIFT); }
-	static LayerKey RS(unsigned int keyCode) { return LayerKey(keyCode, KEY_RIGHT_SHIFT); }
+	constexpr static LayerKey LS(unsigned int keyCode) { return LayerKey(keyCode, KEY_LEFT_SHIFT); }
+	constexpr static LayerKey RS(unsigned int keyCode) { return LayerKey(keyCode, KEY_RIGHT_SHIFT); }
 
-	static LayerKey VD(unsigned int keyCode) { return LayerKey(keyCode, KEY_LEFT_GUI | KEY_LEFT_CTRL); }
+	constexpr static LayerKey VD(unsigned int keyCode) { return LayerKey(keyCode, KEY_LEFT_GUI | KEY_LEFT_CTRL); }
 
-	static LayerKey CA(unsigned int keyCode) { return LayerKey(keyCode, KEY_LEFT_CTRL | KEY_LEFT_ALT); }
-	static LayerKey CS(unsigned int keyCode) { return LayerKey(keyCode, KEY_LEFT_CTRL | KEY_LEFT_SHIFT); }
+	constexpr static LayerKey CA(unsigned int keyCode) { return LayerKey(keyCode, KEY_LEFT_CTRL | KEY_LEFT_ALT); }
+	constexpr static LayerKey CS(unsigned int keyCode) { return LayerKey(keyCode, KEY_LEFT_CTRL | KEY_LEFT_SHIFT); }
 };
 
-const uint8_t layerRowCount = 3;
-const uint8_t layerColumnCount = 5;
-const uint8_t layerSize = layerRowCount * layerColumnCount;
-const uint8_t layerCount = 4;
+constexpr uint8_t layerRowCount = 3;
+constexpr uint8_t layerColumnCount = 5;
+constexpr uint8_t layerSize = layerRowCount * layerColumnCount;
+constexpr uint8_t layerCount = 4;
 
-const LayerKey leftHandLayer0[layerSize] = {
-	H::K(KEY_Q), H::K(KEY_W), H::K(KEY_E), H::K(KEY_R), H::K(KEY_T),
-	H::K(KEY_A), H::K(KEY_S), H::K(KEY_D), H::K(KEY_F), H::K(KEY_G),
-	H::K(KEY_Z), H::K(KEY_X), H::K(KEY_C), H::K(KEY_V), H::K(KEY_B)
+constexpr LayerKey leftHandLayers[layerCount][layerSize] = {
+	{
+		H::K(KEY_Q), H::K(KEY_W), H::K(KEY_E), H::K(KEY_R), H::K(KEY_T),
+		H::K(KEY_A), H::K(KEY_S), H::K(KEY_D), H::K(KEY_F), H::K(KEY_G),
+		H::K(KEY_Z), H::K(KEY_X), H::K(KEY_C), H::K(KEY_V), H::K(KEY_B)
+	},
+	{
+		H::K(KEYPAD_ASTERIX), H::K(KEYPAD_7), H::K(KEYPAD_8), H::K(KEYPAD_9), H::K(KEYPAD_PLUS),
+		H::K(KEYPAD_0),       H::K(KEYPAD_4), H::K(KEYPAD_5), H::K(KEYPAD_6), H::K(KEYPAD_PERIOD),
+		H::K(KEYPAD_SLASH),   H::K(KEYPAD_1), H::K(KEYPAD_2), H::K(KEYPAD_3), H::K(KEYPAD_MINUS)
+	},
+	// |~!&|#|
+	// |<[({\|
+	// |:^%*,|
+	{
+		H::LS(KEY_TILDE),     H::LS(KEY_1),         H::RS(KEY_7), H::RS(KEY_BACKSLASH),  H::LS(KEY_3),
+		H::RS(KEY_COMMA),     H::K(KEY_LEFT_BRACE), H::RS(KEY_9), H::RS(KEY_LEFT_BRACE), H::K(KEY_BACKSLASH),
+		H::RS(KEY_SEMICOLON), H::LS(KEY_6),         H::LS(KEY_5), H::RS(KEY_8),          H::K(KEY_COMMA)
+	},
+	{
+		H::K(),            H::K(),          H::VD(KEY_F4), H::K(),           H::K(),
+		H::CA(KEY_DELETE), H::VD(KEY_LEFT), H::VD(KEY_D),  H::VD(KEY_RIGHT), H::CS(KEY_ESC),
+		H::K(),            H::K(),          H::K(),        H::K(),           H::K()
+	}
 };
 
-const LayerKey leftHandLayer1[layerSize] = {
-	H::K(KEYPAD_ASTERIX), H::K(KEYPAD_7), H::K(KEYPAD_8), H::K(KEYPAD_9), H::K(KEYPAD_PLUS),
-	H::K(KEYPAD_0),       H::K(KEYPAD_4), H::K(KEYPAD_5), H::K(KEYPAD_6), H::K(KEYPAD_PERIOD),
-	H::K(KEYPAD_SLASH),   H::K(KEYPAD_1), H::K(KEYPAD_2), H::K(KEYPAD_3), H::K(KEYPAD_MINUS)
+constexpr LayerKey rightHandLayers[layerCount][layerSize] = {
+	{
+		H::K(KEY_Y), H::K(KEY_U), H::K(KEY_I),     H::K(KEY_O),      H::K(KEY_P),
+		H::K(KEY_H), H::K(KEY_J), H::K(KEY_K),     H::K(KEY_L),      H::K(),	// Nothing, Layer 3 shift
+		H::K(KEY_N), H::K(KEY_M), H::K(KEY_COMMA), H::K(KEY_PERIOD), H::K(KEY_SLASH)
+	},
+	{
+		H::K(KEY_PRINTSCREEN), H::K(KEY_F1), H::K(KEY_F2),  H::K(KEY_F3),  H::K(KEY_F4),
+		H::K(KEY_SCROLL_LOCK), H::K(KEY_F5), H::K(KEY_F6),  H::K(KEY_F7),  H::K(KEY_F8),
+		H::K(KEY_PAUSE),       H::K(KEY_F9), H::K(KEY_F10), H::K(KEY_F11), H::K(KEY_F12)
+	},
+	// |$"'`@|
+	// |/})]>|
+	// |.+-=?|
+	{
+		H::LS(KEY_4),     H::RS(KEY_QUOTE),       H::K(KEY_QUOTE), H::K(KEY_TILDE),       H::LS(KEY_2),
+		H::K(KEY_SLASH),  H::RS(KEY_RIGHT_BRACE), H::RS(KEY_0),    H::K(KEY_RIGHT_BRACE), H::RS(KEY_PERIOD),
+		H::K(KEY_PERIOD), H::RS(KEY_EQUAL),       H::K(KEY_MINUS), H::K(KEY_EQUAL),       H::RS(KEY_SLASH)
+	},
+	{
+		H::K(KEY_INSERT), H::K(KEY_HOME),    H::K(KEY_UP),        H::K(KEY_END),   H::K(),
+		H::K(KEY_DELETE), H::K(KEY_LEFT),    H::K(KEY_DOWN),      H::K(KEY_RIGHT), H::K(),
+		H::K(),           H::K(KEY_PAGE_UP), H::K(KEY_PAGE_DOWN), H::K(),          H::K()
+	}
 };
 
-// |~!&|#|
-// |<[({\|
-// |:^%*,|
-const LayerKey leftHandLayer2[layerSize] = {
-	H::LS(KEY_TILDE),     H::LS(KEY_1),         H::RS(KEY_7), H::RS(KEY_BACKSLASH),  H::LS(KEY_3),
-	H::RS(KEY_COMMA),     H::K(KEY_LEFT_BRACE), H::RS(KEY_9), H::RS(KEY_LEFT_BRACE), H::K(KEY_BACKSLASH),
-	H::RS(KEY_SEMICOLON), H::LS(KEY_6),         H::LS(KEY_5), H::RS(KEY_8),          H::K(KEY_COMMA)
-};
-
-const LayerKey leftHandLayer3[layerSize] = {
-	H::K(),            H::K(),          H::VD(KEY_F4), H::K(),           H::K(),
-	H::CA(KEY_DELETE), H::VD(KEY_LEFT), H::VD(KEY_D),  H::VD(KEY_RIGHT), H::CS(KEY_ESC),
-	H::K(),            H::K(),          H::K(),        H::K(),           H::K()
-};
-
-const LayerKey leftHandLayers[layerCount][layerSize] = {
-	leftHandLayer0,
-	leftHandLayer1,
-	leftHandLayer2,
-	leftHandLayer3
-};
-
-const LayerKey rightHandLayer0[layerSize] = {
-	H::K(KEY_Y), H::K(KEY_U), H::K(KEY_I),     H::K(KEY_O),      H::K(KEY_P),
-	H::K(KEY_H), H::K(KEY_J), H::K(KEY_K),     H::K(KEY_L),      H::K(),	// Nothing, Layer 3 shift
-	H::K(KEY_N), H::K(KEY_M), H::K(KEY_COMMA), H::K(KEY_PERIOD), H::K(KEY_SLASH)
-};
-
-const LayerKey rightHandLayer1[layerSize] = {
-	H::K(KEY_PRINTSCREEN), H::K(KEY_F1), H::K(KEY_F2),  H::K(KEY_F3),  H::K(KEY_F4),
-	H::K(KEY_SCROLL_LOCK), H::K(KEY_F5), H::K(KEY_F6),  H::K(KEY_F7),  H::K(KEY_F8),
-	H::K(KEY_PAUSE),       H::K(KEY_F9), H::K(KEY_F10), H::K(KEY_F11), H::K(KEY_F12)
-};
-
-// |$"'`@|
-// |/})]>|
-// |.+-=?|
-const LayerKey rightHandLayer2[layerSize] = {
-	H::LS(KEY_4),     H::RS(KEY_QUOTE),       H::K(KEY_QUOTE), H::K(KEY_TILDE),       H::LS(KEY_2),
-	H::K(KEY_SLASH),  H::RS(KEY_RIGHT_BRACE), H::RS(KEY_0),    H::K(KEY_RIGHT_BRACE), H::RS(KEY_PERIOD),
-	H::K(KEY_PERIOD), H::RS(KEY_EQUAL),       H::K(KEY_MINUS), H::K(KEY_EQUAL),       H::RS(KEY_SLASH)
-};
-
-const LayerKey rightHandLayer3[layerSize] = {
-	H::K(KEY_INSERT), H::K(KEY_HOME),    H::K(KEY_UP),        H::K(KEY_END),   H::K(),
-	H::K(KEY_DELETE), H::K(KEY_LEFT),    H::K(KEY_DOWN),      H::K(KEY_RIGHT), H::K(),
-	H::K(),           H::K(KEY_PAGE_UP), H::K(KEY_PAGE_DOWN), H::K(),          H::K()
-};
-
-const LayerKey rightHandLayers[layerCount][layerSize] = {
-	rightHandLayer0,
-	rightHandLayer1,
-	rightHandLayer2,
-	rightHandLayer3
-};
-
-const uint8_t maxKeyCount = 6;
+constexpr uint8_t maxKeyCount = 6;
 
 class KeyReport {
 public:
@@ -586,18 +560,18 @@ private:
 
 class Helper {
 public:
-	static uint8_t LeftKey(Positions position) {
+	constexpr static uint8_t LeftKey(Positions position) {
 		return static_cast<uint8_t>(position);
 	}
 
-	static uint8_t RightKey(Positions position) {
+	constexpr static uint8_t RightKey(Positions position) {
 		return keyCount + static_cast<uint8_t>(position);
 	}
 };
 
-const auto layer1Shift = Helper::RightKey(Positions::ThumbOuter);
-const auto layer2Shift = Helper::LeftKey(Positions::ThumbOuter);
-const auto layer3Shift = Helper::RightKey(Positions::PinkyHome);
+constexpr auto layer1Shift = Helper::RightKey(Positions::ThumbOuter);
+constexpr auto layer2Shift = Helper::LeftKey(Positions::ThumbOuter);
+constexpr auto layer3Shift = Helper::RightKey(Positions::PinkyHome);
 
 class KeyboardDriver {
 public:

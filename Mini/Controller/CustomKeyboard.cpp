@@ -786,47 +786,67 @@ public:
 			static_cast<uint8_t>((value & 0x00ff00) >> 8)
 		};
 	}
+
+	LedColor TransitionTo(const LedColor& to, uint8_t step, uint8_t count) const {
+		return {
+			TransitionPart(intensity, to.intensity, step, count),
+			TransitionPart(red, to.red, step, count),
+			TransitionPart(blue, to.blue, step, count),
+			TransitionPart(green, to.green, step, count)
+		};
+	}
+
+private:
+	static uint8_t TransitionPart(uint8_t from, uint8_t to, uint8_t step, uint8_t count) {
+		if (from == to || step == count) {
+			return to;
+		}
+		auto goingUp = from < to;
+		unsigned int difference = goingUp ? to - from : from - to;
+		auto delta = static_cast<uint8_t>((difference * step) / count);
+		return goingUp ? from + delta : from - delta;
+	}
 };
 
 namespace LedColors {
-	// const auto black = LedColor::FromHex(0x000000ul);
-	// const auto white = LedColor::FromHex(0xfffffful);
-	// const auto silver = LedColor::FromHex(0xc0c0c0ul);
-	// const auto gray = LedColor::FromHex(0x808080ul);
+	// constexpr auto black = LedColor::FromHex(0x000000ul);
+	// constexpr auto white = LedColor::FromHex(0xfffffful);
+	// constexpr auto silver = LedColor::FromHex(0xc0c0c0ul);
+	// constexpr auto gray = LedColor::FromHex(0x808080ul);
 
-	// const auto maroon = LedColor::FromHex(0x800000ul);
-	// const auto red = LedColor::FromHex(0xff0000ul);
-	// const auto purple = LedColor::FromHex(0x800080ul);
-	// const auto fuchsia = LedColor::FromHex(0xff00fful);
+	// constexpr auto maroon = LedColor::FromHex(0x800000ul);
+	// constexpr auto red = LedColor::FromHex(0xff0000ul);
+	// constexpr auto purple = LedColor::FromHex(0x800080ul);
+	// constexpr auto fuchsia = LedColor::FromHex(0xff00fful);
 
 	constexpr auto green = LedColor::FromHex(0x008000ul);
-	// const auto lime = LedColor::FromHex(0x00ff00ul);
-	// const auto olive = LedColor::FromHex(0x808000ul);
-	// const auto yellow = LedColor::FromHex(0xffff00ul);
+	// constexpr auto lime = LedColor::FromHex(0x00ff00ul);
+	// constexpr auto olive = LedColor::FromHex(0x808000ul);
+	// constexpr auto yellow = LedColor::FromHex(0xffff00ul);
 
 	constexpr auto navy = LedColor::FromHex(0x000080ul);
 	constexpr auto blue = LedColor::FromHex(0x0000fful);
 	constexpr auto teal = LedColor::FromHex(0x008080ul);
-	// const auto aqua = LedColor::FromHex(0x00fffful);
+	constexpr auto aqua = LedColor::FromHex(0x00fffful);
 
-	// const auto aquamarine = LedColor::FromHex(0x7fffd4ul);
-	// const auto cadetblue = LedColor::FromHex(0x5f9ea0ul);
-	// const auto cornflowerblue = LedColor::FromHex(0x6495edul);
-	// const auto darkblue = LedColor::FromHex(0x00008bul);
-	// const auto darkcyan = LedColor::FromHex(0x008b8bul);
-	// const auto darkslateblue = LedColor::FromHex(0x483d8bul);
-	// const auto lightblue = LedColor::FromHex(0xadd8e6ul);
-	// const auto lightcyan = LedColor::FromHex(0xe0fffful);
-	// const auto lightseagreen = LedColor::FromHex(0x20b2aaul);
-	// const auto lightskyblue = LedColor::FromHex(0x87cefaul);
-	// const auto midnightblue = LedColor::FromHex(0x191970ul);
-	// const auto powderblue = LedColor::FromHex(0xb0e0e6ul);
-	// const auto royalblue = LedColor::FromHex(0x4169e1ul);
-	// const auto seagreen = LedColor::FromHex(0x2e8b57ul);
-	// const auto steelblue = LedColor::FromHex(0x4682b4ul);
+	// constexpr auto aquamarine = LedColor::FromHex(0x7fffd4ul);
+	// constexpr auto cadetblue = LedColor::FromHex(0x5f9ea0ul);
+	// constexpr auto cornflowerblue = LedColor::FromHex(0x6495edul);
+	// constexpr auto darkblue = LedColor::FromHex(0x00008bul);
+	// constexpr auto darkcyan = LedColor::FromHex(0x008b8bul);
+	// constexpr auto darkslateblue = LedColor::FromHex(0x483d8bul);
+	// constexpr auto lightblue = LedColor::FromHex(0xadd8e6ul);
+	// constexpr auto lightcyan = LedColor::FromHex(0xe0fffful);
+	// constexpr auto lightseagreen = LedColor::FromHex(0x20b2aaul);
+	// constexpr auto lightskyblue = LedColor::FromHex(0x87cefaul);
+	// constexpr auto midnightblue = LedColor::FromHex(0x191970ul);
+	// constexpr auto powderblue = LedColor::FromHex(0xb0e0e6ul);
+	// constexpr auto royalblue = LedColor::FromHex(0x4169e1ul);
+	// constexpr auto seagreen = LedColor::FromHex(0x2e8b57ul);
+	// constexpr auto steelblue = LedColor::FromHex(0x4682b4ul);
 }
 
-const uint8_t frameSize = 32;
+constexpr uint8_t frameSize = 32;
 
 // LED Order
 // =========
@@ -854,9 +874,70 @@ const uint8_t frameSize = 32;
 // ThumbInner
 // ThumbOuter
 
+const LedColor layerColors[layerCount] = {
+	LedColors::green,
+	LedColors::blue,
+	LedColors::navy,
+	LedColors::teal,
+	LedColors::aqua
+};
+
+constexpr uint8_t loopIntervalMs = 100;
+constexpr uint8_t transitionStepCount = 15;
+constexpr uint8_t pulsateStepCount = 32;
+
 class LedDriver {
 public:
-	void SetUniformColor(const LedColor& color) {
+	LedDriver() {
+		layer = 0;
+		currentColor = layerColors[0];
+		transitionFromColor = layerColors[0];
+		nextLayer = 0;
+		step = 0;
+	}
+
+	void TransitionToLayer(uint8_t value) {
+		if (nextLayer != value) {
+			transitionFromColor = currentColor;
+			nextLayer = value;
+			step = 0;
+		}
+	}
+
+	void Step() {
+		if (IsTransitioningLayers()) {
+			TransitionLayerColor();
+			++step;
+			if (step == transitionStepCount) {
+				layer = nextLayer;
+				step = 0;
+			}
+		} else {
+			PulsateLayerColor();
+			step = (step + 1) % pulsateStepCount;
+		}
+	}
+
+private:
+	bool IsTransitioningLayers() const {
+		return nextLayer != layer;
+	}
+
+	void TransitionLayerColor() {
+		auto color = transitionFromColor.TransitionTo(layerColors[nextLayer], step, transitionStepCount);
+		TransmitUniformColor(color);
+	}
+
+	void PulsateLayerColor() {
+		auto layerColor = layerColors[layer];
+		layerColor.intensity = step < 16 ?
+			(fullIntensity - step) :
+			(fullIntensity + step - 32);
+		TransmitUniformColor(layerColor);
+	}
+
+	void TransmitUniformColor(const LedColor& color) {
+		currentColor = color;
 		TransmitStartFrame();
 		for (uint8_t key = 0; key < keyCount; ++key) {
 			TransmitLedColor(color, color);
@@ -864,9 +945,6 @@ public:
 		TransmitEndFrame();
 	}
 
-	// TODO: More advanced color algorithms
-
-private:
 	void PulseLedClock() {
 		digitalWrite(static_cast<uint8_t>(Pins::LedClock), HIGH);
 		digitalWrite(static_cast<uint8_t>(Pins::LedClock), LOW);
@@ -908,19 +986,20 @@ private:
 		TransmitByte(leftColor.blue, rightColor.blue);
 		TransmitByte(leftColor.green, rightColor.green);
 	}
-};
 
-const LedColor layerColors[layerCount] = {
-	LedColors::green,
-	LedColors::blue,
-	LedColors::navy,
-	LedColors::teal
+private:
+	uint8_t layer;
+	LedColor currentColor;
+	LedColor transitionFromColor;
+	uint8_t nextLayer;
+	uint8_t step;
 };
 
 void loop() {
 	static KeyboardDriver keyboardDriver;
 	static LedDriver ledDriver;
 	keyboardDriver.ScanAndTransmit();
-	ledDriver.SetUniformColor(layerColors[keyboardDriver.GetLayer()]);
-	delay(100);
+	ledDriver.TransitionToLayer(keyboardDriver.GetLayer());
+	ledDriver.Step();
+	delay(loopIntervalMs);
 }

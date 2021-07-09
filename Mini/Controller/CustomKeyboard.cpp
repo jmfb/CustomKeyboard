@@ -90,11 +90,9 @@ public:
 	}
 
 	void SetKey(uint8_t row, uint8_t column, bool pressed) {
-		if (pressed) {
-			auto position = scanPositions[row][column];
-			if (position != Positions::None) {
-				keys[static_cast<uint8_t>(position)] = true;
-			}
+		auto position = scanPositions[row][column];
+		if (position != Positions::None) {
+			keys[static_cast<uint8_t>(position)] = pressed;
 		}
 	}
 

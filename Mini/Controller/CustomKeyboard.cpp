@@ -357,7 +357,7 @@ public:
 constexpr uint8_t layerRowCount = 3;
 constexpr uint8_t layerColumnCount = 5;
 constexpr uint8_t layerSize = layerRowCount * layerColumnCount;
-constexpr uint8_t layerCount = 4;
+constexpr uint8_t layerCount = 5;
 
 constexpr LayerKey leftHandLayers[layerCount][layerSize] = {
 	{
@@ -382,6 +382,11 @@ constexpr LayerKey leftHandLayers[layerCount][layerSize] = {
 		H::K(),            H::K(),          H::VD(KEY_F4), H::K(),           H::K(),
 		H::CA(KEY_DELETE), H::VD(KEY_LEFT), H::VD(KEY_D),  H::VD(KEY_RIGHT), H::CS(KEY_ESC),
 		H::K(),            H::K(),          H::K(),        H::K(),           H::K()
+	},
+	{
+		H::K(KEY_BACKSPACE), H::K(KEY_HOME), H::K(KEY_UP),       H::K(KEY_END),       H::K(KEY_INSERT),
+		H::K(KEY_ENTER),     H::K(KEY_LEFT), H::K(KEY_DOWN),     H::K(KEY_RIGHT),     H::K(KEY_DELETE),
+		H::K(),              H::K(),         H::K(KEY_PAGE_UP),  H::K(KEY_PAGE_DOWN), H::K()
 	}
 };
 
@@ -408,6 +413,11 @@ constexpr LayerKey rightHandLayers[layerCount][layerSize] = {
 		H::K(KEY_INSERT), H::K(KEY_HOME),    H::K(KEY_UP),        H::K(KEY_END),   H::K(),
 		H::K(KEY_DELETE), H::K(KEY_LEFT),    H::K(KEY_DOWN),      H::K(KEY_RIGHT), H::K(),
 		H::K(),           H::K(KEY_PAGE_UP), H::K(KEY_PAGE_DOWN), H::K(),          H::K()
+	},
+	{
+		H::K(), H::K(), H::K(),  H::K(), H::K(),
+		H::K(), H::K(), H::K(),  H::K(), H::K(),
+		H::K(), H::K(), H::K(),  H::K(), H::K()
 	}
 };
 
@@ -572,6 +582,23 @@ public:
 constexpr auto layer1Shift = Helper::RightKey(Positions::ThumbOuter);
 constexpr auto layer2Shift = Helper::LeftKey(Positions::ThumbOuter);
 constexpr auto layer3Shift = Helper::RightKey(Positions::PinkyHome);
+constexpr auto layer4Shift = Helper::LeftKey(Positions::ThumbGridBottomSecond);
+
+constexpr uint8_t layerShifts[layerCount] = {
+	0,
+	layer1Shift,
+	layer2Shift,
+	layer3Shift,
+	layer4Shift
+};
+
+constexpr LayerKey layerShiftSyntheticKeys[layerCount] = {
+	H::K(),
+	H::RS(KEY_MINUS),
+	H::K(KEY_SPACE),
+	H::K(KEY_SEMICOLON),
+	H::K(KEY_MENU)
+};
 
 class KeyboardDriver {
 public:
@@ -612,45 +639,26 @@ private:
 		SendKeyReport(keyReport);
 	}
 
+	bool IsLayerShifted() const {
+		return layer != 0;
+	}
+
 	void DetectLayerUnshift(const PressedKeys& pressedKeys) {
-		switch (layer) {
-			case 1:
-				if (!pressedKeys.IsPressed(layer1Shift)) {
-					if (layerKeyCount == 0) {
-						SendSyntheticKey(H::RS(KEY_MINUS));
-					}
-					SwitchLayer(0);
-				}
-				break;
-
-			case 2:
-				if (!pressedKeys.IsPressed(layer2Shift)) {
-					if (layerKeyCount == 0) {
-						SendSyntheticKey(H::K(KEY_SPACE));
-					}
-					SwitchLayer(0);
-				}
-				break;
-
-			case 3:
-				if (!pressedKeys.IsPressed(layer3Shift)) {
-					if (layerKeyCount == 0) {
-						SendSyntheticKey(H::K(KEY_SEMICOLON));
-					}
-					SwitchLayer(0);
-				}
-				break;
+		if (IsLayerShifted() && !pressedKeys.IsPressed(layerShifts[layer])) {
+			if (layerKeyCount == 0) {
+				SendSyntheticKey(layerShiftSyntheticKeys[layer]);
+			}
+			SwitchLayer(0);
 		}
 	}
 
 	void DetectLayerShift(const PressedKeys& pressedKeys) {
-		if (layer == 0) {
-			if (pressedKeys.IsPressed(layer1Shift)) {
-				SwitchLayer(1);
-			} else if (pressedKeys.IsPressed(layer2Shift)) {
-				SwitchLayer(2);
-			} else if (pressedKeys.IsPressed(layer3Shift)) {
-				SwitchLayer(3);
+		if (!IsLayerShifted()) {
+			for (uint8_t newLayer = 1; newLayer < layerCount; ++newLayer) {
+				if (pressedKeys.IsPressed(layerShifts[newLayer])) {
+					SwitchLayer(newLayer);
+					break;
+				}
 			}
 		}
 	}
@@ -697,7 +705,7 @@ private:
 				keyReport.AddKey(KEY_LEFT_ALT);
 				break;
 			case Positions::ThumbGridBottomSecond:
-				keyReport.AddKey(KEY_MENU);
+				// Nothing (Layer 4 shift)
 				break;
 			case Positions::ThumbInner:
 				keyReport.AddKey(KEY_LEFT_SHIFT);

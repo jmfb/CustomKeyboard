@@ -125,4 +125,24 @@ TEST_METHOD(RetainKeyPressOrder) {
 	});
 }
 
+TEST_METHOD(Layer1Shift) {
+	PressKey(false, 0, 2);
+	PressKey(false, 3, 1);
+	ReleaseKey(false, 3, 1);
+	ReleaseKey(false, 0, 2);
+	mockArduino.AssertKeyboardReports({
+		{ 0, KEY_F5 },
+		{}
+	});
+}
+
+TEST_METHOD(Layer1SyntheticKey) {
+	PressKey(false, 0, 2);
+	ReleaseKey(false, 0, 2);
+	mockArduino.AssertKeyboardReports({
+		{ KEY_RIGHT_SHIFT, KEY_MINUS },
+		{}
+	});
+}
+
 END_TESTS()

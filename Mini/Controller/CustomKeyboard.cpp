@@ -1,5 +1,10 @@
 #include "Arduino.h"
 
+#if defined(TESTS)
+#include <iostream>
+using namespace std;
+#endif
+
 enum class Pins : uint8_t {
 	Select0LeftHand = 0,
 	LedDataLeftHand = 0,
@@ -156,7 +161,7 @@ public:
 			return leftHand.IsPressed(key);
 		}
 		auto rightHandKey = key - keyCount;
-		if (key < keyCount) {
+		if (rightHandKey < keyCount) {
 			return rightHand.IsPressed(rightHandKey);
 		}
 		return false;

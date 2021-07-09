@@ -8,7 +8,7 @@ try {
 	Write-Host $sourceFiles
 
 	Write-Host "[$(Get-Date)] Compiling tests..."
-	& g++ -std=c++2a -o $outputFile $sourceFiles
+	& g++ -std=c++2a -DTESTS -o $outputFile $sourceFiles
 	if ($lastexitcode -ne 0) {
 		exit -1
 	}

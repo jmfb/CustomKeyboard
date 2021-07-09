@@ -450,20 +450,21 @@ public:
 		}
 	}
 
-	void AddLayerKey(const LayerKey& layerKey) {
+	bool AddLayerKey(const LayerKey& layerKey) {
 		if (!layerKey.IsValid()) {
-			return;
+			return false;
 		}
 		modifiers |= layerKey.GetModifiers();
 		AddKey(layerKey.GetKeyCode());
+		return true;
 	}
 
-	void AddLeftLayerKey(uint8_t layer, uint8_t key) {
-		AddLayerKey(leftHandLayers[layer][GetLeftHandLayerIndex(key)]);
+	bool AddLeftLayerKey(uint8_t layer, uint8_t key) {
+		return AddLayerKey(leftHandLayers[layer][GetLeftHandLayerIndex(key)]);
 	}
 
-	void AddRightLayerKey(uint8_t layer, uint8_t key) {
-		AddLayerKey(rightHandLayers[layer][GetRightHandLayerIndex(key)]);
+	bool AddRightLayerKey(uint8_t layer, uint8_t key) {
+		return AddLayerKey(rightHandLayers[layer][GetRightHandLayerIndex(key)]);
 	}
 
 	void Transmit() const {
@@ -607,7 +608,7 @@ class KeyboardDriver {
 public:
 	KeyboardDriver() {
 		layer = 0;
-		layerKeyCount = 0;
+		layerUsed = false;
 	}
 
 	void ScanAndTransmit() {
@@ -648,7 +649,7 @@ private:
 
 	void DetectLayerUnshift(const PressedKeys& pressedKeys) {
 		if (IsLayerShifted() && !pressedKeys.IsPressed(layerShifts[layer])) {
-			if (layerKeyCount == 0) {
+			if (!layerUsed) {
 				SendSyntheticKey(layerShiftSyntheticKeys[layer]);
 			}
 			SwitchLayer(0);
@@ -668,7 +669,7 @@ private:
 
 	void SwitchLayer(int value) {
 		layer = value;
-		layerKeyCount = 0;
+		layerUsed = false;
 	}
 
 	void SendSyntheticKey(const LayerKey& layerKey) {
@@ -717,8 +718,9 @@ private:
 				// Nothing (layer 2 shift)
 				break;
 			default:
-				keyReport.AddLeftLayerKey(layer, key);
-				++layerKeyCount;
+				if (keyReport.AddLeftLayerKey(layer, key)) {
+					layerUsed = true;
+				}
 				break;
 		}
 	}
@@ -750,8 +752,9 @@ private:
 				// Nothing (layer 1 shift)
 				break;
 			default:
-				keyReport.AddRightLayerKey(layer, key);
-				++layerKeyCount;
+				if (keyReport.AddRightLayerKey(layer, key)) {
+					layerUsed = true;
+				}
 				break;
 		}
 	}
@@ -769,7 +772,7 @@ private:
 	PressedKeys previousPressedKeys;
 	KeyReport previousKeyReport;
 	uint8_t layer;
-	uint8_t layerKeyCount;
+	bool layerUsed;
 };
 
 constexpr uint8_t fullIntensity = 0b00011111;

@@ -21,6 +21,15 @@ void ReleaseKey(bool left, int row, int column) {
 	Loop(3);
 }
 
+void TestKey(bool left, int row, int column, unsigned int keyCode, unsigned int modifiers = 0) {
+	PressKey(left, row, column);
+	ReleaseKey(left, row, column);
+	mockArduino.AssertKeyboardReports({
+		{ modifiers, keyCode },
+		{}
+	});
+}
+
 class Test {
 public:
 	Test(const char* name, function<void()> testFunction)
@@ -30,14 +39,13 @@ public:
 
 	bool Run() const {
 		try {
-			cout << name << '\n';
 			mockArduino.ClearPressedKeys();
 			Loop(3);
 			mockArduino.Initialize();
 			testFunction();
 			return true;
 		} catch (const exception& error) {
-			cout << error.what() << '\n';
+			cout << name << ": " << error.what() << '\n';
 			return false;
 		}
 	}
@@ -96,20 +104,15 @@ TEST_METHOD(RegisterStableKey) {
 }
 
 TEST_METHOD(ReleaseKey) {
-	PressKey(true, 7, 0);
-	ReleaseKey(true, 7, 0);
-	mockArduino.AssertKeyboardReports({
-		{ 0, KEY_ESC },
-		{}
-	});
+	TestKey(true, 7, 0, KEY_ESC);
 }
 
 TEST_METHOD(RetainKeyPressOrder) {
-	PressKey(true, 7, 0); //Esc
-	PressKey(true, 6, 1); //A
-	PressKey(true, 2, 2); //B
+	PressKey(true, 7, 0);
+	PressKey(true, 6, 1);
+	PressKey(true, 2, 2);
 	ReleaseKey(true, 6, 1);
-	PressKey(true, 4, 2); //C
+	PressKey(true, 4, 2);
 	ReleaseKey(true, 7, 0);
 	ReleaseKey(true, 4, 2);
 	ReleaseKey(true, 2, 2);
@@ -137,12 +140,52 @@ TEST_METHOD(Layer1Shift) {
 }
 
 TEST_METHOD(Layer1SyntheticKey) {
-	PressKey(false, 0, 2);
-	ReleaseKey(false, 0, 2);
+	TestKey(false, 0, 2, KEY_MINUS, KEY_RIGHT_SHIFT);
+}
+
+TEST_METHOD(Layer2Shift) {
+	PressKey(true, 0, 2);
+	PressKey(false, 3, 1);
+	ReleaseKey(false, 3, 1);
+	ReleaseKey(true, 0, 2);
 	mockArduino.AssertKeyboardReports({
-		{ KEY_RIGHT_SHIFT, KEY_MINUS },
+		{ KEY_RIGHT_SHIFT, KEY_RIGHT_BRACE },
 		{}
 	});
+}
+
+TEST_METHOD(Layer2SyntheticKey) {
+	TestKey(true, 0, 2, KEY_SPACE);
+}
+
+TEST_METHOD(Layer3Shift) {
+	PressKey(false, 6, 1);
+	PressKey(false, 3, 1);
+	ReleaseKey(false, 3, 1);
+	ReleaseKey(false, 6, 1);
+	mockArduino.AssertKeyboardReports({
+		{ 0, KEY_LEFT },
+		{}
+	});
+}
+
+TEST_METHOD(Layer3SyntheticKey) {
+	TestKey(false, 6, 1, KEY_SEMICOLON);
+}
+
+TEST_METHOD(Layer4Shift) {
+	PressKey(true, 0, 3);
+	PressKey(true, 6, 1);
+	ReleaseKey(true, 6, 1);
+	ReleaseKey(true, 0, 3);
+	mockArduino.AssertKeyboardReports({
+		{ 0, KEY_ENTER },
+		{}
+	});
+}
+
+TEST_METHOD(Layer4SyntheticKey) {
+	TestKey(true, 0, 3, KEY_MENU);
 }
 
 END_TESTS()

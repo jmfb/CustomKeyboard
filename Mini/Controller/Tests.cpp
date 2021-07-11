@@ -180,7 +180,7 @@ TEST_METHOD(LayerKeysWithSameKeyCodeInRapidSuccession) {
 	});
 	mockArduino.AssertKeyboardReports({
 		{ KEY_RIGHT_SHIFT, KEY_RIGHT_BRACE },
-		{}, // Early release for first layer key sharing subsequent layer key keyCode
+		{ KEY_RIGHT_SHIFT }, // Early release for first layer key sharing subsequent layer key keyCode
 		{ 0, KEY_RIGHT_BRACE },
 		{}
 	});

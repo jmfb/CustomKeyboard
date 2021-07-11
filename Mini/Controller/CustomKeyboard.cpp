@@ -468,12 +468,27 @@ public:
 		return true;
 	}
 
-	bool AddLeftLayerKey(uint8_t layer, uint8_t key, bool wasHeld) {
-		return AddLayerKey(leftHandLayers[layer][GetLeftHandLayerIndex(key)], wasHeld);
+	void RemoveLayerKey(const LayerKey& layerKey) {
+		auto index = IndexOfKey(layerKey.GetKeyCode());
+		if (index < nextKey) {
+			for (auto next = index + 1; next < nextKey; ++next) {
+				keys[next - 1] = keys[next];
+			}
+			--nextKey;
+			keys[nextKey] = 0;
+		}
 	}
 
-	bool AddRightLayerKey(uint8_t layer, uint8_t key, bool wasHeld) {
-		return AddLayerKey(rightHandLayers[layer][GetRightHandLayerIndex(key)], wasHeld);
+	bool NeedSyntheticRelease(const LayerKey& layerKey) const {
+		return IsAlreadyAdded(layerKey.GetKeyCode());
+	}
+
+	static const LayerKey& GetLeftLayerKey(uint8_t layer, uint8_t key) {
+		return leftHandLayers[layer][GetLeftHandLayerIndex(key)];
+	}
+
+	static const LayerKey& GetRightLayerKey(uint8_t layer, uint8_t key) {
+		return rightHandLayers[layer][GetRightHandLayerIndex(key)];
 	}
 
 	void Transmit() const {
@@ -517,13 +532,17 @@ private:
 		return false;
 	}
 
-	bool IsAlreadyAdded(uint8_t value) {
+	uint8_t IndexOfKey(uint8_t value) const {
 		for (uint8_t key = 0; key < nextKey; ++key) {
 			if (keys[key] == value) {
-				return true;
+				return key;
 			}
 		}
-		return false;
+		return nextKey;
+	}
+
+	bool IsAlreadyAdded(uint8_t value) const {
+		return IndexOfKey(value) < nextKey;
 	}
 
 	static uint8_t GetLeftHandLayerIndex(uint8_t key) {
@@ -689,6 +708,12 @@ private:
 		SendKeyReport(release);
 	}
 
+	void SendSyntheticRelease(const LayerKey& layerKey) {
+		KeyReport release = previousKeyReport;
+		release.RemoveLayerKey(layerKey);
+		SendKeyReport(release);
+	}
+
 	void AddToReport(KeyReport& keyReport, uint8_t key, bool wasHeld) {
 		if (key < keyCount) {
 			AddLeftHandKey(keyReport, key, wasHeld);
@@ -727,9 +752,7 @@ private:
 				// Nothing (layer 2 shift)
 				break;
 			default:
-				if (keyReport.AddLeftLayerKey(layer, key, wasHeld)) {
-					layerUsed = true;
-				}
+				AddLayerKey(keyReport, KeyReport::GetLeftLayerKey(layer, key), wasHeld);
 				break;
 		}
 	}
@@ -761,10 +784,17 @@ private:
 				// Nothing (layer 1 shift)
 				break;
 			default:
-				if (keyReport.AddRightLayerKey(layer, key, wasHeld)) {
-					layerUsed = true;
-				}
+				AddLayerKey(keyReport, KeyReport::GetRightLayerKey(layer, key), wasHeld);
 				break;
+		}
+	}
+
+	void AddLayerKey(KeyReport& keyReport, const LayerKey& layerKey, bool wasHeld) {
+		if (keyReport.NeedSyntheticRelease(layerKey)) {
+			SendSyntheticRelease(layerKey);
+		}
+		if (keyReport.AddLayerKey(layerKey, wasHeld)) {
+			layerUsed = true;
 		}
 	}
 

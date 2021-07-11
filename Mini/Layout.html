@@ -1,0 +1,307 @@
+<html>
+	<head>
+		<title>Mini Keyboard Layout</title>
+		<style>
+			.layer {
+				margin-bottom: 1rem;
+			}
+
+			.title {
+				font-weight: bold;
+				margin-bottom: 4px;
+			}
+
+			.layouts {
+				display: flex;
+				flex-direction: row;
+			}
+
+			.layout {
+				border: 1px solid black;
+			}
+
+			.layout + .layout {
+				margin-left: 20px;
+			}
+
+			.row {
+				display: flex;
+				flex-direction: row;
+			}
+
+			.key {
+				border: 1px solid black;
+				width: 45px;
+				height: 20px;
+				text-align: center;
+				padding-top: 2px;
+				background-color: aliceblue;
+			}
+
+			.home {
+				background-color: darkseagreen;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="layer">
+			<div class="title">Layer 0</div>
+			<div class="layouts">
+				<div class="layout">
+					<div class="row">
+						<div class="key">Q</div>
+						<div class="key">W</div>
+						<div class="key">E</div>
+						<div class="key">R</div>
+						<div class="key">T</div>
+					</div>
+					<div class="row">
+						<div class="key home">A</div>
+						<div class="key home">S</div>
+						<div class="key home">D</div>
+						<div class="key home">F</div>
+						<div class="key">G</div>
+					</div>
+					<div class="row">
+						<div class="key">Z</div>
+						<div class="key">X</div>
+						<div class="key">C</div>
+						<div class="key">V</div>
+						<div class="key">B</div>
+					</div>
+				</div>
+				<div class="layout">
+					<div class="row">
+						<div class="key">Y</div>
+						<div class="key">U</div>
+						<div class="key">I</div>
+						<div class="key">O</div>
+						<div class="key">P</div>
+					</div>
+					<div class="row">
+						<div class="key">H</div>
+						<div class="key home">J</div>
+						<div class="key home">K</div>
+						<div class="key home">L</div>
+						<div class="key home">;</div>
+					</div>
+					<div class="row">
+						<div class="key">N</div>
+						<div class="key">M</div>
+						<div class="key">,</div>
+						<div class="key">.</div>
+						<div class="key">/</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="layer">
+			<div class="title">Layer 1</div>
+			<div class="layouts">
+				<div class="layout">
+					<div class="row">
+						<div class="key">*</div>
+						<div class="key">7</div>
+						<div class="key">8</div>
+						<div class="key">9</div>
+						<div class="key">+</div>
+					</div>
+					<div class="row">
+						<div class="key home">0</div>
+						<div class="key home">4</div>
+						<div class="key home">5</div>
+						<div class="key home">6</div>
+						<div class="key">.</div>
+					</div>
+					<div class="row">
+						<div class="key">/</div>
+						<div class="key">1</div>
+						<div class="key">2</div>
+						<div class="key">3</div>
+						<div class="key">-</div>
+					</div>
+				</div>
+				<div class="layout">
+					<div class="row">
+						<div class="key">PRT</div>
+						<div class="key">F1</div>
+						<div class="key">F2</div>
+						<div class="key">F3</div>
+						<div class="key">F4</div>
+					</div>
+					<div class="row">
+						<div class="key">SCR</div>
+						<div class="key home">F5</div>
+						<div class="key home">F6</div>
+						<div class="key home">F7</div>
+						<div class="key home">F8</div>
+					</div>
+					<div class="row">
+						<div class="key">PAU</div>
+						<div class="key">F9</div>
+						<div class="key">F10</div>
+						<div class="key">F11</div>
+						<div class="key">F12</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="layer">
+			<div class="title">Layer 2</div>
+			<div class="layouts">
+				<div class="layout">
+					<div class="row">
+						<div class="key">~</div>
+						<div class="key">!</div>
+						<div class="key">&amp;</div>
+						<div class="key">|</div>
+						<div class="key">#</div>
+					</div>
+					<div class="row">
+						<div class="key home">&lt;</div>
+						<div class="key home">[</div>
+						<div class="key home">(</div>
+						<div class="key home">{</div>
+						<div class="key">\</div>
+					</div>
+					<div class="row">
+						<div class="key">:</div>
+						<div class="key">^</div>
+						<div class="key">%</div>
+						<div class="key">*</div>
+						<div class="key">,</div>
+					</div>
+				</div>
+				<div class="layout">
+					<div class="row">
+						<div class="key">$</div>
+						<div class="key">"</div>
+						<div class="key">'</div>
+						<div class="key">`</div>
+						<div class="key">@</div>
+					</div>
+					<div class="row">
+						<div class="key">/</div>
+						<div class="key home">}</div>
+						<div class="key home">)</div>
+						<div class="key home">]</div>
+						<div class="key home">&gt;</div>
+					</div>
+					<div class="row">
+						<div class="key">.</div>
+						<div class="key">+</div>
+						<div class="key">-</div>
+						<div class="key">=</div>
+						<div class="key">?</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="layer">
+			<div class="title">Layer 3</div>
+			<div class="layouts">
+				<div class="layout">
+					<div class="row">
+						<div class="key"></div>
+						<div class="key"></div>
+						<div class="key">WDX</div>
+						<div class="key"></div>
+						<div class="key"></div>
+					</div>
+					<div class="row">
+						<div class="key home">LCK</div>
+						<div class="key home">WDL</div>
+						<div class="key home">WDN</div>
+						<div class="key home">WDR</div>
+						<div class="key">TSK</div>
+					</div>
+					<div class="row">
+						<div class="key"></div>
+						<div class="key"></div>
+						<div class="key"></div>
+						<div class="key"></div>
+						<div class="key"></div>
+					</div>
+				</div>
+				<div class="layout">
+					<div class="row">
+						<div class="key">INS</div>
+						<div class="key">HOM</div>
+						<div class="key">UP</div>
+						<div class="key">END</div>
+						<div class="key"></div>
+					</div>
+					<div class="row">
+						<div class="key">DEL</div>
+						<div class="key home">LFT</div>
+						<div class="key home">DWN</div>
+						<div class="key home">RGT</div>
+						<div class="key home"></div>
+					</div>
+					<div class="row">
+						<div class="key"></div>
+						<div class="key">PDN</div>
+						<div class="key">PUP</div>
+						<div class="key"></div>
+						<div class="key"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="layer">
+			<div class="title">Layer 4</div>
+			<div class="layouts">
+				<div class="layout">
+					<div class="row">
+						<div class="key">BCK</div>
+						<div class="key">HOM</div>
+						<div class="key">UP</div>
+						<div class="key">END</div>
+						<div class="key">INS</div>
+					</div>
+					<div class="row">
+						<div class="key home">ENT</div>
+						<div class="key home">LFT</div>
+						<div class="key home">DWN</div>
+						<div class="key home">RGT</div>
+						<div class="key">DEL</div>
+					</div>
+					<div class="row">
+						<div class="key"></div>
+						<div class="key"></div>
+						<div class="key">PUP</div>
+						<div class="key">PDN</div>
+						<div class="key"></div>
+					</div>
+				</div>
+				<div class="layout">
+					<div class="row">
+						<div class="key"></div>
+						<div class="key"></div>
+						<div class="key"></div>
+						<div class="key"></div>
+						<div class="key"></div>
+					</div>
+					<div class="row">
+						<div class="key"></div>
+						<div class="key home"></div>
+						<div class="key home"></div>
+						<div class="key home"></div>
+						<div class="key home"></div>
+					</div>
+					<div class="row">
+						<div class="key"></div>
+						<div class="key"></div>
+						<div class="key"></div>
+						<div class="key"></div>
+						<div class="key"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

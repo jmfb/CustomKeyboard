@@ -156,6 +156,36 @@ TEST_METHOD(Layer4SyntheticKey) {
 	TestKey(Hand::Left, Finger::ThumbGridBottomSecond, KEY_MENU);
 }
 
+TEST_METHOD(LayerKeyShiftPlusNonShiftInRapidSuccession) {
+	ClickKey(Hand::Left, Finger::ThumbOuter, [](){
+		PressKey(Hand::Right, Finger::MiddleHome);
+		PressKey(Hand::Right, Finger::RingHome);
+		ReleaseKey(Hand::Right, Finger::MiddleHome);
+		ReleaseKey(Hand::Right, Finger::RingHome);
+	});
+	mockArduino.AssertKeyboardReports({
+		{ KEY_RIGHT_SHIFT, KEY_0 },
+		{ 0, KEY_0, KEY_RIGHT_BRACE }, // Ignore shift for first layer key on subsequent layer keys
+		{ 0, KEY_RIGHT_BRACE },
+		{}
+	});
+}
+
+TEST_METHOD(LayerKeysWithSameKeyCodeInRapidSuccession) {
+	ClickKey(Hand::Left, Finger::ThumbOuter, [](){
+		PressKey(Hand::Right, Finger::IndexHome);
+		PressKey(Hand::Right, Finger::RingHome);
+		ReleaseKey(Hand::Right, Finger::IndexHome);
+		ReleaseKey(Hand::Right, Finger::RingHome);
+	});
+	mockArduino.AssertKeyboardReports({
+		{ KEY_RIGHT_SHIFT, KEY_RIGHT_BRACE },
+		{}, // Early release for first layer key sharing subsequent layer key keyCode
+		{ 0, KEY_RIGHT_BRACE },
+		{}
+	});
+}
+
 TEST_METHOD(AllLayerKeys) {
 	ClickKey(Hand::Left, Finger::PinkyExtraTop);
 	ClickKey(Hand::Left, Finger::PinkyExtraBottom);

@@ -245,6 +245,7 @@ public:
 		for (uint8_t key = 0; key < maxPressedKeys; ++key) {
 			keys[key] = 0;
 		}
+		heldKeys = 0;
 		overflow = false;
 	}
 
@@ -262,7 +263,7 @@ public:
 				return false;
 			}
 		}
-		return true;
+		return heldKeys == other.heldKeys;
 	}
 
 	bool operator!=(const PressedKeys& other) const {
@@ -275,6 +276,10 @@ public:
 
 	uint8_t Get(uint8_t index) const {
 		return index < nextKey ? keys[index] : 0;
+	}
+
+	bool WasHeld(uint8_t index) const {
+		return index < heldKeys;
 	}
 
 	bool IsPressed(uint8_t key) const {
@@ -292,6 +297,7 @@ private:
 			auto previousKey = previousPressedKeys.keys[key];
 			if (keyState.IsPressed(previousKey)) {
 				Press(previousKey);
+				++heldKeys;
 			}
 		}
 	}
@@ -315,6 +321,7 @@ private:
 private:
 	uint8_t nextKey;
 	uint8_t keys[maxPressedKeys];
+	uint8_t heldKeys;
 	bool overflow;
 };
 
@@ -450,21 +457,23 @@ public:
 		}
 	}
 
-	bool AddLayerKey(const LayerKey& layerKey) {
+	bool AddLayerKey(const LayerKey& layerKey, bool wasHeld) {
 		if (!layerKey.IsValid()) {
 			return false;
 		}
-		modifiers |= layerKey.GetModifiers();
+		if (!wasHeld) {
+			modifiers |= layerKey.GetModifiers();
+		}
 		AddKey(layerKey.GetKeyCode());
 		return true;
 	}
 
-	bool AddLeftLayerKey(uint8_t layer, uint8_t key) {
-		return AddLayerKey(leftHandLayers[layer][GetLeftHandLayerIndex(key)]);
+	bool AddLeftLayerKey(uint8_t layer, uint8_t key, bool wasHeld) {
+		return AddLayerKey(leftHandLayers[layer][GetLeftHandLayerIndex(key)], wasHeld);
 	}
 
-	bool AddRightLayerKey(uint8_t layer, uint8_t key) {
-		return AddLayerKey(rightHandLayers[layer][GetRightHandLayerIndex(key)]);
+	bool AddRightLayerKey(uint8_t layer, uint8_t key, bool wasHeld) {
+		return AddLayerKey(rightHandLayers[layer][GetRightHandLayerIndex(key)], wasHeld);
 	}
 
 	void Transmit() const {
@@ -638,7 +647,7 @@ private:
 		DetectLayerShift(pressedKeys);
 		KeyReport keyReport;
 		for (uint8_t index = 0; index < pressedKeys.GetCount(); ++index) {
-			AddToReport(keyReport, pressedKeys.Get(index));
+			AddToReport(keyReport, pressedKeys.Get(index), pressedKeys.WasHeld(index));
 		}
 		SendKeyReport(keyReport);
 	}
@@ -675,23 +684,23 @@ private:
 	void SendSyntheticKey(const LayerKey& layerKey) {
 		KeyReport release = previousKeyReport;
 		KeyReport press = previousKeyReport;
-		press.AddLayerKey(layerKey);
+		press.AddLayerKey(layerKey, false);
 		SendKeyReport(press);
 		SendKeyReport(release);
 	}
 
-	void AddToReport(KeyReport& keyReport, uint8_t key) {
+	void AddToReport(KeyReport& keyReport, uint8_t key, bool wasHeld) {
 		if (key < keyCount) {
-			AddLeftHandKey(keyReport, key);
+			AddLeftHandKey(keyReport, key, wasHeld);
 		} else {
 			auto rightHandKey = key - keyCount;
 			if (rightHandKey < keyCount) {
-				AddRightHandKey(keyReport, rightHandKey);
+				AddRightHandKey(keyReport, rightHandKey, wasHeld);
 			}
 		}
 	}
 
-	void AddLeftHandKey(KeyReport& keyReport, uint8_t key) {
+	void AddLeftHandKey(KeyReport& keyReport, uint8_t key, bool wasHeld) {
 		switch (static_cast<Positions>(key)) {
 			case Positions::PinkyExtraTop:
 				keyReport.AddKey(KEY_ESC);
@@ -718,14 +727,14 @@ private:
 				// Nothing (layer 2 shift)
 				break;
 			default:
-				if (keyReport.AddLeftLayerKey(layer, key)) {
+				if (keyReport.AddLeftLayerKey(layer, key, wasHeld)) {
 					layerUsed = true;
 				}
 				break;
 		}
 	}
 
-	void AddRightHandKey(KeyReport& keyReport, uint8_t key) {
+	void AddRightHandKey(KeyReport& keyReport, uint8_t key, bool wasHeld) {
 		switch (static_cast<Positions>(key)) {
 			case Positions::PinkyExtraTop:
 				keyReport.AddKey(KEY_BACKSPACE);
@@ -752,7 +761,7 @@ private:
 				// Nothing (layer 1 shift)
 				break;
 			default:
-				if (keyReport.AddRightLayerKey(layer, key)) {
+				if (keyReport.AddRightLayerKey(layer, key, wasHeld)) {
 					layerUsed = true;
 				}
 				break;

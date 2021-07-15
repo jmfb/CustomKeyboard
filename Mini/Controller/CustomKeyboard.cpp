@@ -1027,9 +1027,9 @@ private:
 
 	void TransmitLedColor(const LedColor& leftColor, const LedColor& rightColor) {
 		TransmitByte(leftColor.intensity | 0b11100000, rightColor.intensity | 0b11100000);
-		TransmitByte(leftColor.red, rightColor.red);
 		TransmitByte(leftColor.blue, rightColor.blue);
 		TransmitByte(leftColor.green, rightColor.green);
+		TransmitByte(leftColor.red, rightColor.red);
 	}
 
 private:

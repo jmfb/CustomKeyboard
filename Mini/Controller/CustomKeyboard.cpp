@@ -823,7 +823,7 @@ public:
 	uint8_t blue;
 	uint8_t green;
 
-	constexpr static LedColor FromHex(unsigned int value) {
+	constexpr static LedColor FromHex(unsigned long value) {
 		return {
 			fullIntensity,
 			static_cast<uint8_t>((value & 0xff0000) >> 16),
@@ -873,9 +873,12 @@ namespace LedColors {
 	constexpr auto blue = LedColor::FromHex(0x0000fful);
 	constexpr auto teal = LedColor::FromHex(0x008080ul);
 	constexpr auto aqua = LedColor::FromHex(0x00fffful);
+	constexpr auto crimson = LedColor::FromHex(0xdc143cul);
+	constexpr auto gold = LedColor::FromHex(0xffd700ul);
+	constexpr auto magenta = LedColor::FromHex(0xff00fful);
 
 	// constexpr auto aquamarine = LedColor::FromHex(0x7fffd4ul);
-	// constexpr auto cadetblue = LedColor::FromHex(0x5f9ea0ul);
+	// constexpr auto cadetblue = LedColor::FromHe;x(0x5f9ea0ul);
 	// constexpr auto cornflowerblue = LedColor::FromHex(0x6495edul);
 	// constexpr auto darkblue = LedColor::FromHex(0x00008bul);
 	// constexpr auto darkcyan = LedColor::FromHex(0x008b8bul);
@@ -922,8 +925,8 @@ constexpr uint8_t frameSize = 32;
 const LedColor layerColors[layerCount] = {
 	LedColors::green,
 	LedColors::blue,
-	LedColors::navy,
-	LedColors::teal,
+	LedColors::crimson,
+	LedColors::gold,
 	LedColors::aqua
 };
 

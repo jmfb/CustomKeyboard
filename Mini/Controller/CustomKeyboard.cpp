@@ -854,73 +854,93 @@ private:
 };
 
 namespace LedColors {
-	// constexpr auto black = LedColor::FromHex(0x000000ul);
-	// constexpr auto white = LedColor::FromHex(0xfffffful);
-	// constexpr auto silver = LedColor::FromHex(0xc0c0c0ul);
-	// constexpr auto gray = LedColor::FromHex(0x808080ul);
+	constexpr auto black = LedColor::FromHex(0x000000ul);
+	constexpr auto white = LedColor::FromHex(0xfffffful);
+	constexpr auto silver = LedColor::FromHex(0xc0c0c0ul);
+	constexpr auto gray = LedColor::FromHex(0x808080ul);
 
-	// constexpr auto maroon = LedColor::FromHex(0x800000ul);
-	// constexpr auto red = LedColor::FromHex(0xff0000ul);
-	// constexpr auto purple = LedColor::FromHex(0x800080ul);
-	// constexpr auto fuchsia = LedColor::FromHex(0xff00fful);
+	constexpr auto maroon = LedColor::FromHex(0x800000ul);
+	constexpr auto red = LedColor::FromHex(0xff0000ul);
+	constexpr auto purple = LedColor::FromHex(0x800080ul);
+	constexpr auto fuchsia = LedColor::FromHex(0xff00fful);
 
 	constexpr auto green = LedColor::FromHex(0x008000ul);
-	// constexpr auto lime = LedColor::FromHex(0x00ff00ul);
-	// constexpr auto olive = LedColor::FromHex(0x808000ul);
-	// constexpr auto yellow = LedColor::FromHex(0xffff00ul);
+	constexpr auto lime = LedColor::FromHex(0x00ff00ul);
+	constexpr auto olive = LedColor::FromHex(0x808000ul);
+	constexpr auto yellow = LedColor::FromHex(0xffff00ul);
+
+	constexpr auto chartreuse = LedColor::FromHex(0x7fff00ul);
+	constexpr auto darkgreen = LedColor::FromHex(0x006400ul);
+	constexpr auto darkolivegreen = LedColor::FromHex(0x556b2ful);
+	constexpr auto darkseagrean = LedColor::FromHex(0x8fbc8ful);
+	constexpr auto lightseagreen = LedColor::FromHex(0x20b2aaul);
+	constexpr auto mediumseagreen = LedColor::FromHex(0x3cb371ul);
+	constexpr auto seagreen = LedColor::FromHex(0x2e8b57ul);
+	constexpr auto darkslategray = LedColor::FromHex(0x2f4f4ful);
+	constexpr auto forestgreen = LedColor::FromHex(0x228b22ul);
+	constexpr auto greenyellow = LedColor::FromHex(0xadff2ful);
+	constexpr auto lawngreen = LedColor::FromHex(0x7cfc00ul);
+	constexpr auto lightgreen = LedColor::FromHex(0x90ee90ul);
+	constexpr auto limegreen = LedColor::FromHex(0x32cd32ul);
+	constexpr auto mediumspringgreen = LedColor::FromHex(0x00fa9aul);
+	constexpr auto olivedrab = LedColor::FromHex(0x6b8e23ul);
+	constexpr auto palegreen = LedColor::FromHex(0x98fb98ul);
+	constexpr auto springgreen = LedColor::FromHex(0x00ff7ful);
+	constexpr auto yellowgreen = LedColor::FromHex(0x9acd32ul);
 
 	constexpr auto navy = LedColor::FromHex(0x000080ul);
 	constexpr auto blue = LedColor::FromHex(0x0000fful);
 	constexpr auto teal = LedColor::FromHex(0x008080ul);
 	constexpr auto aqua = LedColor::FromHex(0x00fffful);
+
+	constexpr auto aquamarine = LedColor::FromHex(0x7fffd4ul);
+	constexpr auto cadetblue = LedColor::FromHex(0x5f9ea0ul);
+	constexpr auto cornflowerblue = LedColor::FromHex(0x6495edul);
+	constexpr auto darkblue = LedColor::FromHex(0x00008bul);
+	constexpr auto darkcyan = LedColor::FromHex(0x008b8bul);
+	constexpr auto darkslateblue = LedColor::FromHex(0x483d8bul);
+	constexpr auto lightblue = LedColor::FromHex(0xadd8e6ul);
+	constexpr auto lightcyan = LedColor::FromHex(0xe0fffful);
+	constexpr auto lightskyblue = LedColor::FromHex(0x87cefaul);
+	constexpr auto midnightblue = LedColor::FromHex(0x191970ul);
+	constexpr auto powderblue = LedColor::FromHex(0xb0e0e6ul);
+	constexpr auto royalblue = LedColor::FromHex(0x4169e1ul);
+	constexpr auto steelblue = LedColor::FromHex(0x4682b4ul);
+	constexpr auto skyblue = LedColor::FromHex(0x87ceebul);
+
 	constexpr auto crimson = LedColor::FromHex(0xdc143cul);
 	constexpr auto gold = LedColor::FromHex(0xffd700ul);
-	constexpr auto magenta = LedColor::FromHex(0xff00fful);
-
-	// constexpr auto aquamarine = LedColor::FromHex(0x7fffd4ul);
-	// constexpr auto cadetblue = LedColor::FromHe;x(0x5f9ea0ul);
-	// constexpr auto cornflowerblue = LedColor::FromHex(0x6495edul);
-	// constexpr auto darkblue = LedColor::FromHex(0x00008bul);
-	// constexpr auto darkcyan = LedColor::FromHex(0x008b8bul);
-	// constexpr auto darkslateblue = LedColor::FromHex(0x483d8bul);
-	// constexpr auto lightblue = LedColor::FromHex(0xadd8e6ul);
-	// constexpr auto lightcyan = LedColor::FromHex(0xe0fffful);
-	// constexpr auto lightseagreen = LedColor::FromHex(0x20b2aaul);
-	// constexpr auto lightskyblue = LedColor::FromHex(0x87cefaul);
-	// constexpr auto midnightblue = LedColor::FromHex(0x191970ul);
-	// constexpr auto powderblue = LedColor::FromHex(0xb0e0e6ul);
-	// constexpr auto royalblue = LedColor::FromHex(0x4169e1ul);
-	// constexpr auto seagreen = LedColor::FromHex(0x2e8b57ul);
-	// constexpr auto steelblue = LedColor::FromHex(0x4682b4ul);
+	constexpr auto khaki = LedColor::FromHex(0xf0e68cul);
+	constexpr auto goldenrod = LedColor::FromHex(0xdaa520ul);
 }
 
 constexpr uint8_t frameSize = 32;
 
-// LED Order
-// =========
-// PinkyExtraTop
-// PinkyTop
-// RingTop
-// MiddleTop
-// IndexTop
-// IndexExtraTop
-// IndexExtraHome
-// IndexHome
-// MiddleHome
-// RingHome
-// PinkyHome
-// PinkyExtraBottom
-// PinkyBottom
-// RingBottom
-// MiddleBottom
-// IndexBottom
-// IndexExtraBottom
-// ThumbGridTopFirst
-// ThumbGridTopSecond
-// ThumbGridBottomSecond
-// ThumbGridBottomFirst
-// ThumbInner
-// ThumbOuter
+enum class LedPosition {
+	PinkyExtraTop = 0,
+	PinkyTop,
+	RingTop,
+	MiddleTop,
+	IndexTop,
+	IndexExtraTop,
+	IndexExtraHome,
+	IndexHome,
+	MiddleHome,
+	RingHome,
+	PinkyHome,
+	PinkyExtraBottom,
+	PinkyBottom,
+	RingBottom,
+	MiddleBottom,
+	IndexBottom,
+	IndexExtraBottom,
+	ThumbGridTopFirst,
+	ThumbGridTopSecond,
+	ThumbGridBottomSecond,
+	ThumbGridBottomFirst,
+	ThumbInner,
+	ThumbOuter
+};
 
 const LedColor layerColors[layerCount] = {
 	LedColors::green,

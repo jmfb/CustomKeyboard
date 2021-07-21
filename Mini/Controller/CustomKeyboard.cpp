@@ -952,7 +952,7 @@ const LedColor layerColors[layerCount] = {
 
 constexpr uint8_t loopIntervalMs = 10;
 constexpr uint8_t transitionStepCount = 50;
-constexpr uint8_t pulsateStepCount = 100;
+constexpr uint8_t pulsateStepCount = 200;
 
 class LedDriver {
 public:

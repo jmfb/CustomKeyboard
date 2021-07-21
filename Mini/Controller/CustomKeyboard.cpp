@@ -191,7 +191,7 @@ private:
 		digitalWrite(static_cast<uint8_t>(Pins::Select0RightHand), select0);
 		digitalWrite(static_cast<uint8_t>(Pins::Select1), select1);
 		digitalWrite(static_cast<uint8_t>(Pins::Select2), select2);
-		delay(1);
+		delayMicroseconds(10);
 	}
 
 	void LoadRegister() {
@@ -500,7 +500,7 @@ public:
 		Keyboard.set_key5(keys[4]);
 		Keyboard.set_key6(keys[5]);
 		Keyboard.send_now();
-		delay(2);
+		delayMicroseconds(10);
 	}
 
 	bool operator==(const KeyReport& other) const {
@@ -950,9 +950,9 @@ const LedColor layerColors[layerCount] = {
 	LedColors::aqua
 };
 
-constexpr uint8_t loopIntervalMs = 100;
-constexpr uint8_t transitionStepCount = 15;
-constexpr uint8_t pulsateStepCount = 32;
+constexpr uint8_t loopIntervalMs = 10;
+constexpr uint8_t transitionStepCount = 50;
+constexpr uint8_t pulsateStepCount = 100;
 
 class LedDriver {
 public:
@@ -998,9 +998,10 @@ private:
 
 	void PulsateLayerColor() {
 		auto layerColor = layerColors[layer];
-		layerColor.intensity = step < 16 ?
-			(fullIntensity - step) :
-			(fullIntensity + step - 32);
+		auto increment = step * 32 / pulsateStepCount;
+		layerColor.intensity = step < (pulsateStepCount / 2) ?
+			(fullIntensity - increment) :
+			(fullIntensity + increment - 32);
 		TransmitUniformColor(layerColor);
 	}
 

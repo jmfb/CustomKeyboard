@@ -29,6 +29,10 @@ void delay(int milliseconds) {
 	mockArduino.Delay(milliseconds);
 }
 
+unsigned long millis() {
+	return 0;
+}
+
 void delayMicroseconds(int microseconds) {
 	mockArduino.DelayMicroseconds(microseconds);
 }

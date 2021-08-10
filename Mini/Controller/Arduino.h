@@ -157,6 +157,7 @@ const int HIGH = 1;
 //Teensy API
 void delay(int milliseconds);
 void delayMicroseconds(int microseconds);
+unsigned long millis();
 void pinMode(int pin, int mode);
 void digitalWrite(int pin, int signal);
 int digitalRead(int pin);

@@ -637,6 +637,7 @@ class KeyboardDriver {
 public:
 	KeyboardDriver() {
 		layer = 0;
+		layerStartMs = 0;
 		layerUsed = false;
 	}
 
@@ -679,7 +680,10 @@ private:
 	void DetectLayerUnshift(const PressedKeys& pressedKeys) {
 		if (IsLayerShifted() && !pressedKeys.IsPressed(layerShifts[layer])) {
 			if (!layerUsed) {
-				SendSyntheticKey(layerShiftSyntheticKeys[layer]);
+				auto heldMs = millis() - layerStartMs;
+				if (heldMs < 300) {
+					SendSyntheticKey(layerShiftSyntheticKeys[layer]);
+				}
 			}
 			SwitchLayer(0);
 		}
@@ -698,6 +702,7 @@ private:
 
 	void SwitchLayer(int value) {
 		layer = value;
+		layerStartMs = millis();
 		layerUsed = false;
 	}
 
@@ -816,6 +821,7 @@ private:
 	PressedKeys previousPressedKeys;
 	KeyReport previousKeyReport;
 	uint8_t layer;
+	unsigned long layerStartMs;
 	bool layerUsed;
 };
 

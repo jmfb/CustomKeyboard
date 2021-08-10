@@ -359,6 +359,7 @@ public:
 	constexpr static LayerKey RS(unsigned int keyCode) { return LayerKey(keyCode, KEY_RIGHT_SHIFT); }
 
 	constexpr static LayerKey VD(unsigned int keyCode) { return LayerKey(keyCode, KEY_LEFT_GUI | KEY_LEFT_CTRL); }
+	constexpr static LayerKey WS(unsigned int keyCode) { return LayerKey(keyCode, KEY_LEFT_GUI | KEY_LEFT_SHIFT); }
 
 	constexpr static LayerKey CA(unsigned int keyCode) { return LayerKey(keyCode, KEY_LEFT_CTRL | KEY_LEFT_ALT); }
 	constexpr static LayerKey CS(unsigned int keyCode) { return LayerKey(keyCode, KEY_LEFT_CTRL | KEY_LEFT_SHIFT); }
@@ -391,7 +392,7 @@ constexpr LayerKey leftHandLayers[layerCount][layerSize] = {
 	{
 		H::K(),            H::K(),          H::VD(KEY_F4), H::K(),           H::K(),
 		H::CA(KEY_DELETE), H::VD(KEY_LEFT), H::VD(KEY_D),  H::VD(KEY_RIGHT), H::CS(KEY_ESC),
-		H::K(),            H::K(),          H::K(),        H::K(),           H::K()
+		H::K(),            H::K(),          H::WS(KEY_S),        H::K(),           H::K()
 	},
 	{
 		H::K(KEY_BACKSPACE), H::K(KEY_HOME), H::K(KEY_UP),       H::K(KEY_END),       H::K(KEY_INSERT),

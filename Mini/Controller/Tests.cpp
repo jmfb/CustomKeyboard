@@ -472,10 +472,10 @@ TEST_METHOD(Layer3LeftHand) {
 		{ KEY_LEFT_CTRL | KEY_LEFT_GUI, KEY_LEFT }, {},
 		{ KEY_LEFT_CTRL | KEY_LEFT_GUI, KEY_D }, {},
 		{ KEY_LEFT_CTRL | KEY_LEFT_GUI, KEY_RIGHT }, {},
-		{ KEY_LEFT_CTRL | KEY_LEFT_SHIFT, KEY_ESC }, {}
+		{ KEY_LEFT_CTRL | KEY_LEFT_SHIFT, KEY_ESC }, {},
 		// Nothing
 		// Nothing
-		// Nothing
+		{ KEY_LEFT_SHIFT | KEY_LEFT_GUI, KEY_S }, {}
 		// Nothing
 		// Nothing
 	});

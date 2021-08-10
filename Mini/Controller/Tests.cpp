@@ -186,6 +186,19 @@ TEST_METHOD(LayerKeysWithSameKeyCodeInRapidSuccession) {
 	});
 }
 
+TEST_METHOD(SemicolonFollowedByRapidSpace) {
+	PressKey(Hand::Right, Finger::PinkyHome);
+	PressKey(Hand::Right, Finger::ThumbInner);
+	ReleaseKey(Hand::Right, Finger::PinkyHome);
+	ReleaseKey(Hand::Right, Finger::ThumbInner);
+	mockArduino.AssertKeyboardReports({
+		{ 0, KEY_SEMICOLON },
+		{},
+		{ 0, KEY_SPACE },
+		{}
+	});
+}
+
 TEST_METHOD(AllLayerKeys) {
 	ClickKey(Hand::Left, Finger::PinkyExtraTop);
 	ClickKey(Hand::Left, Finger::PinkyExtraBottom);

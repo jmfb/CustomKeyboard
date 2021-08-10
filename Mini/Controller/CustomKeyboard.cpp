@@ -779,6 +779,10 @@ private:
 				keyReport.AddKey(KEY_MENU);
 				break;
 			case Positions::ThumbInner:
+				if (layer == 3 && !layerUsed) {
+					SendSyntheticKey(layerShiftSyntheticKeys[layer]);
+					layerUsed = true;
+				}
 				keyReport.AddKey(KEY_SPACE);
 				break;
 			case Positions::ThumbOuter:

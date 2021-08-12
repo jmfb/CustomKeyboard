@@ -382,11 +382,11 @@ constexpr LayerKey leftHandLayers[layerCount][layerSize] = {
 		H::K(KEYPAD_SLASH),   H::K(KEYPAD_1), H::K(KEYPAD_2), H::K(KEYPAD_3), H::K(KEYPAD_MINUS)
 	},
 	// |~!&|#|
-	// |<[({\|
+	// |<[({ |
 	// | ^%* |
 	{
 		H::LS(KEY_TILDE),     H::LS(KEY_1),         H::RS(KEY_7), H::RS(KEY_BACKSLASH),  H::LS(KEY_3),
-		H::RS(KEY_COMMA),     H::K(KEY_LEFT_BRACE), H::RS(KEY_9), H::RS(KEY_LEFT_BRACE), H::K(KEY_BACKSLASH),
+		H::RS(KEY_COMMA),     H::K(KEY_LEFT_BRACE), H::RS(KEY_9), H::RS(KEY_LEFT_BRACE), H::K(),
 		H::K(),               H::LS(KEY_6),         H::LS(KEY_5), H::RS(KEY_8),          H::K()
 	},
 	{
@@ -418,12 +418,12 @@ constexpr LayerKey rightHandLayers[layerCount][layerSize] = {
 		H::K(KEY_PAUSE),       H::K(KEY_F9), H::K(KEY_F10), H::K(KEY_F11), H::K(KEY_F12)
 	},
 	// |$"'`@|
-	// |/})]>|
-	// | +-= |
+	// | })]>|
+	// | +-=\|
 	{
 		H::LS(KEY_4),     H::RS(KEY_QUOTE),       H::K(KEY_QUOTE), H::K(KEY_TILDE),       H::LS(KEY_2),
-		H::K(KEY_SLASH),  H::RS(KEY_RIGHT_BRACE), H::RS(KEY_0),    H::K(KEY_RIGHT_BRACE), H::RS(KEY_PERIOD),
-		H::K(),           H::RS(KEY_EQUAL),       H::K(KEY_MINUS), H::K(KEY_EQUAL),       H::K()
+		H::K(),           H::RS(KEY_RIGHT_BRACE), H::RS(KEY_0),    H::K(KEY_RIGHT_BRACE), H::RS(KEY_PERIOD),
+		H::K(),           H::RS(KEY_EQUAL),       H::K(KEY_MINUS), H::K(KEY_EQUAL),       H::K(KEY_BACKSLASH)
 	},
 	{
 		H::K(KEY_INSERT), H::K(KEY_HOME),    H::K(KEY_UP),        H::K(KEY_END),   H::K(),

@@ -411,7 +411,7 @@ TEST_METHOD(Layer2LeftHand) {
 		{ 0, KEY_LEFT_BRACE }, {},
 		{ KEY_RIGHT_SHIFT, KEY_9 }, {},
 		{ KEY_RIGHT_SHIFT, KEY_LEFT_BRACE }, {},
-		{ 0, KEY_BACKSLASH }, {},
+		// Nothing
 		// Nothing
 		{ KEY_LEFT_SHIFT, KEY_6 }, {},
 		{ KEY_LEFT_SHIFT, KEY_5 }, {},
@@ -444,7 +444,7 @@ TEST_METHOD(Layer2RightHand) {
 		{ 0, KEY_QUOTE }, {},
 		{ 0, KEY_TILDE }, {},
 		{ KEY_LEFT_SHIFT, KEY_2 }, {},
-		{ 0, KEY_SLASH }, {},
+		// Nothing
 		{ KEY_RIGHT_SHIFT, KEY_RIGHT_BRACE }, {},
 		{ KEY_RIGHT_SHIFT, KEY_0 }, {},
 		{ 0, KEY_RIGHT_BRACE }, {},
@@ -452,8 +452,8 @@ TEST_METHOD(Layer2RightHand) {
 		// Nothing
 		{ KEY_RIGHT_SHIFT, KEY_EQUAL }, {},
 		{ 0, KEY_MINUS }, {},
-		{ 0, KEY_EQUAL }, {}
-		// Nothing
+		{ 0, KEY_EQUAL }, {},
+		{ 0, KEY_BACKSLASH }, {}
 	});
 }
 

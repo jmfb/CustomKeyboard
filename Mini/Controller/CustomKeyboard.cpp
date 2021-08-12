@@ -694,7 +694,7 @@ private:
 		if (IsLayerShifted() && !pressedKeys.IsPressed(layerShifts[layer])) {
 			if (!layerUsed) {
 				auto heldMs = millis() - layerStartMs;
-				if (heldMs < 300) {
+				if (heldMs < 150) {
 					SendSyntheticKey(layerShiftSyntheticKeys[layer]);
 				}
 			}

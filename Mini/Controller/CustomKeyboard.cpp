@@ -368,7 +368,7 @@ public:
 constexpr uint8_t layerRowCount = 3;
 constexpr uint8_t layerColumnCount = 5;
 constexpr uint8_t layerSize = layerRowCount * layerColumnCount;
-constexpr uint8_t layerCount = 5;
+constexpr uint8_t layerCount = 6;
 
 constexpr LayerKey leftHandLayers[layerCount][layerSize] = {
 	{
@@ -383,21 +383,26 @@ constexpr LayerKey leftHandLayers[layerCount][layerSize] = {
 	},
 	// |~!&|#|
 	// |<[({\|
-	// |:^%*,|
+	// | ^%* |
 	{
 		H::LS(KEY_TILDE),     H::LS(KEY_1),         H::RS(KEY_7), H::RS(KEY_BACKSLASH),  H::LS(KEY_3),
 		H::RS(KEY_COMMA),     H::K(KEY_LEFT_BRACE), H::RS(KEY_9), H::RS(KEY_LEFT_BRACE), H::K(KEY_BACKSLASH),
-		H::RS(KEY_SEMICOLON), H::LS(KEY_6),         H::LS(KEY_5), H::RS(KEY_8),          H::K(KEY_COMMA)
+		H::K(),               H::LS(KEY_6),         H::LS(KEY_5), H::RS(KEY_8),          H::K()
+	},
+	{
+		H::K(), H::K(), H::K(),  H::K(), H::K(),
+		H::K(), H::K(), H::K(),  H::K(), H::K(),
+		H::K(), H::K(), H::K(),  H::K(), H::K()
+	},
+	{
+		H::K(KEY_BACKSPACE), H::K(), H::K(),  H::K(), H::K(),
+		H::K(KEY_ENTER),     H::K(), H::K(),  H::K(), H::K(),
+		H::K(),              H::K(), H::K(),  H::K(), H::K()
 	},
 	{
 		H::K(),            H::K(),          H::VD(KEY_F4), H::K(),           H::K(),
 		H::CA(KEY_DELETE), H::VD(KEY_LEFT), H::VD(KEY_D),  H::VD(KEY_RIGHT), H::CS(KEY_ESC),
-		H::K(),            H::K(),          H::WS(KEY_S),        H::K(),           H::K()
-	},
-	{
-		H::K(KEY_BACKSPACE), H::K(KEY_HOME), H::K(KEY_UP),       H::K(KEY_END),       H::K(KEY_INSERT),
-		H::K(KEY_ENTER),     H::K(KEY_LEFT), H::K(KEY_DOWN),     H::K(KEY_RIGHT),     H::K(KEY_DELETE),
-		H::K(),              H::K(),         H::K(KEY_PAGE_UP),  H::K(KEY_PAGE_DOWN), H::K()
+		H::K(),            H::K(),          H::WS(KEY_S),  H::K(),           H::K()
 	}
 };
 
@@ -414,16 +419,21 @@ constexpr LayerKey rightHandLayers[layerCount][layerSize] = {
 	},
 	// |$"'`@|
 	// |/})]>|
-	// |.+-=?|
+	// | +-= |
 	{
 		H::LS(KEY_4),     H::RS(KEY_QUOTE),       H::K(KEY_QUOTE), H::K(KEY_TILDE),       H::LS(KEY_2),
 		H::K(KEY_SLASH),  H::RS(KEY_RIGHT_BRACE), H::RS(KEY_0),    H::K(KEY_RIGHT_BRACE), H::RS(KEY_PERIOD),
-		H::K(KEY_PERIOD), H::RS(KEY_EQUAL),       H::K(KEY_MINUS), H::K(KEY_EQUAL),       H::RS(KEY_SLASH)
+		H::K(),           H::RS(KEY_EQUAL),       H::K(KEY_MINUS), H::K(KEY_EQUAL),       H::K()
 	},
 	{
 		H::K(KEY_INSERT), H::K(KEY_HOME),    H::K(KEY_UP),        H::K(KEY_END),   H::K(),
 		H::K(KEY_DELETE), H::K(KEY_LEFT),    H::K(KEY_DOWN),      H::K(KEY_RIGHT), H::K(),
 		H::K(),           H::K(KEY_PAGE_UP), H::K(KEY_PAGE_DOWN), H::K(),          H::K()
+	},
+	{
+		H::K(), H::K(), H::K(),  H::K(), H::K(),
+		H::K(), H::K(), H::K(),  H::K(), H::K(),
+		H::K(), H::K(), H::K(),  H::K(), H::K()
 	},
 	{
 		H::K(), H::K(), H::K(),  H::K(), H::K(),
@@ -616,13 +626,15 @@ constexpr auto layer1Shift = Helper::RightKey(Positions::ThumbOuter);
 constexpr auto layer2Shift = Helper::LeftKey(Positions::ThumbOuter);
 constexpr auto layer3Shift = Helper::RightKey(Positions::PinkyHome);
 constexpr auto layer4Shift = Helper::LeftKey(Positions::ThumbGridBottomSecond);
+constexpr auto layer5Shift = Helper::LeftKey(Positions::ThumbOuter);
 
 constexpr uint8_t layerShifts[layerCount] = {
 	0,
 	layer1Shift,
 	layer2Shift,
 	layer3Shift,
-	layer4Shift
+	layer4Shift,
+	layer5Shift
 };
 
 constexpr LayerKey layerShiftSyntheticKeys[layerCount] = {
@@ -630,7 +642,8 @@ constexpr LayerKey layerShiftSyntheticKeys[layerCount] = {
 	H::RS(KEY_MINUS),
 	H::K(KEY_SPACE),
 	H::K(KEY_SEMICOLON),
-	H::K(KEY_MENU)
+	H::K(KEY_MENU),
+	H::K()
 };
 
 class KeyboardDriver {
@@ -698,6 +711,11 @@ private:
 				}
 			}
 		}
+		if (IsLayerShifted() && pressedKeys.IsPressed(static_cast<uint8_t>(Positions::ThumbInner)) && !layerUsed) {
+			if (layer == 2) {
+				SwitchLayer(5);
+			}
+		}
 	}
 
 	void SwitchLayer(int value) {
@@ -752,7 +770,9 @@ private:
 				// Nothing (Layer 4 shift)
 				break;
 			case Positions::ThumbInner:
-				keyReport.AddKey(KEY_LEFT_SHIFT);
+				if (layer != 5) {
+					keyReport.AddKey(KEY_LEFT_SHIFT);
+				}
 				break;
 			case Positions::ThumbOuter:
 				// Nothing (layer 2 shift)
@@ -958,7 +978,8 @@ const LedColor layerColors[layerCount] = {
 	LedColors::blue,
 	LedColors::crimson,
 	LedColors::gold,
-	LedColors::aqua
+	LedColors::aqua,
+	LedColors::fuchsia
 };
 
 constexpr uint8_t loopIntervalMs = 10;

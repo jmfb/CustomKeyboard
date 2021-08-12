@@ -395,9 +395,9 @@ constexpr LayerKey leftHandLayers[layerCount][layerSize] = {
 		H::K(), H::K(), H::K(),  H::K(), H::K()
 	},
 	{
-		H::K(KEY_BACKSPACE), H::K(), H::K(),  H::K(), H::K(),
-		H::K(KEY_ENTER),     H::K(), H::K(),  H::K(), H::K(),
-		H::K(),              H::K(), H::K(),  H::K(), H::K()
+		H::K(KEY_F1), H::K(KEY_F2),  H::K(KEY_F3),  H::K(KEY_F4),  H::K(KEY_BACKSPACE),
+		H::K(KEY_F5), H::K(KEY_F6),  H::K(KEY_F7),  H::K(KEY_F8),  H::K(KEY_ENTER),
+		H::K(KEY_F9), H::K(KEY_F10), H::K(KEY_F11), H::K(KEY_F12), H::K()
 	},
 	{
 		H::K(),            H::K(),          H::VD(KEY_F4), H::K(),           H::K(),

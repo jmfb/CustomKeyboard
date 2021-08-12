@@ -147,7 +147,7 @@ TEST_METHOD(Layer4Shift) {
 		ClickKey(Hand::Left, Finger::PinkyHome);
 	});
 	mockArduino.AssertKeyboardReports({
-		{ 0, KEY_ENTER },
+		{ 0, KEY_F5 },
 		{}
 	});
 }
@@ -553,20 +553,20 @@ TEST_METHOD(Layer4LeftHand) {
 		ClickKey(Hand::Left, Finger::IndexExtraBottom);
 	});
 	mockArduino.AssertKeyboardReports({
+		{ 0, KEY_F1 }, {},
+		{ 0, KEY_F2 }, {},
+		{ 0, KEY_F3 }, {},
+		{ 0, KEY_F4 }, {},
 		{ 0, KEY_BACKSPACE }, {},
-		// Nothing
-		// Nothing
-		// Nothing
-		// Nothing
-		{ 0, KEY_ENTER }, {}
-		// Nothing
-		// Nothing
-		// Nothing
-		// Nothing
-		// Nothing
-		// Nothing
-		// Nothing
-		// Nothing
+		{ 0, KEY_F5 }, {},
+		{ 0, KEY_F6 }, {},
+		{ 0, KEY_F7 }, {},
+		{ 0, KEY_F8 }, {},
+		{ 0, KEY_ENTER }, {},
+		{ 0, KEY_F9 }, {},
+		{ 0, KEY_F10 }, {},
+		{ 0, KEY_F11 }, {},
+		{ 0, KEY_F12 }, {}
 		// Nothing
 	});
 }

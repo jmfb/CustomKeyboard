@@ -58,7 +58,7 @@ TEST_METHOD(InitializePinModesAndSignals) {
 		// First 7 pins marked as output
 		OUTPUT, OUTPUT, OUTPUT, OUTPUT, OUTPUT, OUTPUT, OUTPUT,
 		// Next 2 receive pins marked input
-		INPUT, INPUT
+		INPUT_PULLUP, INPUT_PULLUP
 	});
 }
 

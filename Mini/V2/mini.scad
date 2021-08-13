@@ -369,6 +369,12 @@ module mountingPlate() {
 		stabilizer(thumb2CenterX, thumb2CenterY, thumbAlpha + 270);
 		connectorNotch();
 		m4HexHoles();
+
+		// Dual inline microchips (demux and register)
+		translate([48, 68.5, 0])
+		cube([20, 10, basePlateDepth]);
+		translate([56, 82, 0])
+		cube([10, 20, basePlateDepth]);
 	}
 }
 

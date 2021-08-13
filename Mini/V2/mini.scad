@@ -252,7 +252,7 @@ module basePlate() {
 }
 
 module connectorNotch() {
-	translate([connectorLeft, facePlateHeight - washerSize - connectorEdgeSize - 2 * connectorPadding, 0])
+	translate([connectorLeft, facePlateHeight - washerSize - connectorEdgeSize - connectorPadding, 0])
 	cube([connectorLength + wallSpacing + connectorPadding, connectorEdgeSize + 2 * connectorPadding, basePlateDepth]);
 }
 
@@ -592,9 +592,10 @@ module controllerBase() {
 }
 
 module controllerFace() {
+	notchSize = controllerOverhang + controllerWallSize + pcbSpacing + connectorLength + connectorPadding;
 	module connector(x, y) {
 		translate([x, y, 0])
-		cube([connectorLength + connectorPadding, connectorEdgeSize + 2 * connectorPadding, basePlateDepth]);
+		cube([notchSize, connectorEdgeSize + 2 * connectorPadding, basePlateDepth]);
 	}
 
 	difference() {
@@ -602,7 +603,7 @@ module controllerFace() {
 
 		connectorTop = (controllerLength - connectorEdgeSize - 2 * connectorPadding) / 2;
 		connector(0, connectorTop);
-		connector(controllerWidth - connectorLength - connectorPadding, connectorTop);
+		connector(controllerWidth - notchSize, connectorTop);
 
 		translate([controllerWidth / 2, controllerOverhang + controllerWallSize + pcbSpacing + 24.94 + 1.27, 0])
 		cylinder(basePlateDepth, r = 1.5, $fn = circleFragments);
@@ -690,10 +691,10 @@ module controller() {
 
 module everything() {
 	// core();
-	basePlate();
+	// basePlate();
 	// facePlate();
 	// wristPad();
-	// mountingPlate();
+	mountingPlate();
 	// upperLayer();
 	// lowerLayer();
 	// pcb();

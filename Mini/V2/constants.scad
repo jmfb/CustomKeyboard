@@ -37,7 +37,7 @@ wristPadWidth = 6 * keySize - thumbGridOffset + pcbSpacing + rimSize;
 wristPadCornerRadius = 7;	// Radius of the thumb side bottom coner (only one rounded since other is cut)
 
 hexHeight = 6;		// Measured height (flat to flat) of M4 hex standoff
-hexPadding = 0.25;	// Padding between side and cutout (not too snug it gets stuck)
+hexPadding = 0;		// Padding between side and cutout (not too snug it gets stuck)
 screwDiameter = 4; 	// Diameter of screw threads (with sufficient padding)
 
 washerDiameter = 9;									// Diameter of the M4 washers
@@ -132,7 +132,8 @@ pegHoleSize = 3;									// Width and height of PCB to base peg holes
 halfPegHoleSize = pegHoleSize / 2;					// Half of the hole size (for centering)
 pegLipSize = 1;										// Size of lip on eithr side of peg notch
 pegWidth = pegHoleSize + 2 * pegLipSize;			// Total width of the peg
-pegInnerHeight = 2 * basePlateDepth - pcbDepth;		// Distance between bottom of PCB and top of base plate
+socketHeight = 1;									// Height of the keyswitch sockets above the PCB
+pegInnerHeight = 2 * basePlateDepth - pcbDepth - socketHeight; // Distance between bottom of PCB and top of base plate
 pegSpacing = 3;										// Min distance to edge of PCB from hole
 pegTopNotchHeight = pcbDepth;
 pegBottomNotchHeight = basePlateDepth;
@@ -165,7 +166,7 @@ controllerScrewDiameter = 2.4;
 controllerNotchSize = 5;
 controllerNotchOffset = 2;
 controllerBottomSpacing = 5;
-controllerTopSpacing = 8;
+controllerTopSpacing = 10;
 controllerHeight = basePlateDepth + controllerBottomSpacing + pcbDepth + controllerTopSpacing + basePlateDepth;
 
 // Controller notches to connect walls to base and face

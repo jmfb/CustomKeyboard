@@ -7,6 +7,7 @@ using uint8_t = unsigned char;
 //Teensy API Constants
 const int OUTPUT = 0;
 const int INPUT = 1;
+const int INPUT_PULLUP = 2;
 const int LOW = 0;
 const int HIGH = 1;
 

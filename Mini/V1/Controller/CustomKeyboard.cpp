@@ -25,7 +25,7 @@ void SetUpOutputPin(Pins pin) {
 }
 
 void SetUpInputPin(Pins pin) {
-	pinMode(static_cast<uint8_t>(pin), INPUT);
+	pinMode(static_cast<uint8_t>(pin), INPUT_PULLUP);
 }
 
 void setup() {
@@ -38,7 +38,7 @@ void setup() {
 	SetUpOutputPin(Pins::LedClock);
 	SetUpInputPin(Pins::ReceiveLeftHand);
 	SetUpInputPin(Pins::ReceiveRightHand);
-	delay(200);
+	delayMicroseconds(10);
 }
 
 enum class Positions : uint8_t {

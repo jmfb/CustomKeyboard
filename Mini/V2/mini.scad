@@ -697,10 +697,10 @@ module controller() {
 
 module everything() {
 	// core();
-	// basePlate();
+	basePlate();
 	// facePlate();
 	// wristPad();
-	mountingPlate();
+	// mountingPlate();
 	// upperLayer();
 	// lowerLayer();
 	// pcb();

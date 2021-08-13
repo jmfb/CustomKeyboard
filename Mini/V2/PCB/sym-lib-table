@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name Mini)(type Legacy)(uri ${KIPRJMOD}/Mini.lib)(options "")(descr ""))
+)

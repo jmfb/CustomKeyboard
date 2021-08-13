@@ -252,7 +252,7 @@ module basePlate() {
 }
 
 module connectorNotch() {
-	translate([connectorLeft, facePlateHeight - washerSize - connectorEdgeSize - connectorPadding, 0])
+	translate([connectorLeft, facePlateHeight - washerSize - connectorEdgeSize - 2 * connectorPadding, 0])
 	cube([connectorLength + wallSpacing + connectorPadding, connectorEdgeSize + 2 * connectorPadding, basePlateDepth]);
 }
 

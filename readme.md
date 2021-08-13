@@ -184,7 +184,7 @@ Cherry PCB mounted stabilizers were added.  Two sets of translucent keycaps were
 	- [LED Cutout Datasheet](https://drive.google.com/file/d/0B5JcED9YINdnNU1qajJmVmtEcUU/view?resourcekey=0-LZfcyjo3jcX8JEKJD6tRKA)
 	- [MechanicalKeyboards](https://mechanicalkeyboards.com/shop/index.php?l=product_detail&p=4451)
 	- $0.50 / switch @ 100 = $50.00 (bulk discount)
-- Pin Receptacle Connector (Maybe, adds height to key (might throw off 3mm spacing between PCB and mounting plate)
+- Pin Receptacle Connector (Maybe, adds height to key and might throw off 3mm spacing between PCB and mounting plate)
 	- 0305-2-15-15-47-27-10-0 (ED90333-ND)
 	- [Datasheet](https://www.mill-max.com/products/datasheet/pinsrecs/0305-2-15-80-47-80-10-0)
 	- [Digikey](https://www.digikey.com/en/products/detail/mill-max-manufacturing-corp/0305-2-15-15-47-27-10-0/1801940)
@@ -221,6 +221,22 @@ Cherry PCB mounted stabilizers were added.  Two sets of translucent keycaps were
 	- Pack of 100 (need 4 or 5 per board)
 	- [Amazon](https://www.amazon.com/gp/product/B009OK2KPU)
 	- $0.0827 / washer @ 100 = $8.27
+- M2 Brass F/M Standoff 5mm/4mm
+	- Pack of 100 (need 4 for controller)
+	- [Amazon](https://www.amazon.com/gp/product/B00REFG0TE/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1)
+	- $0.0949 / standoff @ 100 = $9.49
+- M2 Brass F/F Standoff 8mm (first controller)
+	- Pack of 50 (need 4 for controller)
+	- [Amazon](https://www.amazon.com/gp/product/B00BWLQYRY/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1)
+	- $0.226 / standoff @ 50 = $11.30
+- M2 Brass F/F Standoff 10mm (second controller)
+	- Pack of 100 (need 4 for controller)
+	- [Rakuten](https://www.rakuten.com/shop/unique-bargains/product/a14081400ux0120/)
+	- $0.0683 / standoff @ 100 = $6.83
+- M2 5mm Screws
+	- Pack of 60 (need 8 for controller)
+	- [Amazon](https://www.amazon.com/gp/product/B013T1U4LG/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1)
+	- $0.1195 / screw @ 60 = $7.17
 - Clear Soft Close Drawer Cabinet Door Bumpers (x6 x2 + connector x4)
 	- 9.5mm x 3.8mm, 72pc sheet
 	- [Amazon](https://www.amazon.com/dp/B06XCGM8JT)
@@ -290,3 +306,36 @@ Cherry PCB mounted stabilizers were added.  Two sets of translucent keycaps were
 	- Right Hand $6.486 @ 5 = $32.43
 	- Shipping (DHL from China) $30.19
 	- Total: $19.99 @ 5 = $99.95
+- Total cost of parts for a single keyboard: $313.34
+
+### Lessons Learned
+
+- Fitting 5x5mm LEDs not a perfect fit (could have made a tad wider for flush fit; would also fit rounded PCB cut corner issue too)
+- Soldering LEDs difficult.  Not sure what to do about this other than magnifying glass w/ light.
+- Chaining VCC/GND may have been a poor choice, still not sure.  Definitely problematic when attempting to remove an LED.
+- Socketing switches seems like a good idea (reduce switch cost for multiple prototypes, allow replacing switches in long-lived versions).  However, increases distance between mounting plate and PCB by ~1mm.  I think I can take that out on pegs.
+- With the surface mount pegs, the mounting plate does seem a little bit redundant.  Eliminating the mounting plate and the 1.5mm faceplate layer would reduce overall height by 3mm (shorter M4 scews) and allow for a completely 3mm layer construction.
+- Controller board; teensy height from PCB is slightly greater than the 8mm F/F standoffs (not sure how I missed that).  Damn, old controller used 10mm F/F standoff.
+- Well, it puts the previous lessons to shame, but the controller "lid" didn't go deep enough with the connector cutouts!  Missed "PCB spacing, wall depth, overhang" padding and just did connector size.
+- Tab being lower for the pinky takes getting used to (hit escape a lot).
+- Only using bottom half of 2-keys.  Possibly simplify down to 1u size?
+- Sometimes hit Win instead of Ctrl when reaching with thumb.  Could stagger keys for thumb; possibly get rid of one of grid keys and just have left hand Win and right hand Menu (or no Menu, I mean who uses that key?)
+- Had a few iterations of controller software.  Unit tests for expected key reports were vital (lots of bugs found that way and prevent breaking changes in the future).
+
+## Mini V2
+
+### Goals
+
+- Fix LED hole size to make assembly and soldering easier.
+	- Move cutout to keyswitch footprint (manually in file if IDE does not support it).
+	- Increase width of cutout to allow surface mount leads to fit inside PCB.
+	- Also increase width of peg cutout to account for rounded PCB cutout.
+- Fix all incorrect case measurements.
+	- 10mm standoffs for controller top.
+	- Fix controller lid cutouts for connectors.
+	- Reduce peg inner height by 1mm to account for keyswitch sockets.
+	- Adjust connector cutout (rubs on bottom).
+	- Add holes for demux and register to mounting plate.
+- Add hardware support for right or left hand detection.
+	- Hardwire first two register pins to 01 for left and 10 for right.  11 indicates disconnected.
+	- Software detection to read keyscan and switch LED output.

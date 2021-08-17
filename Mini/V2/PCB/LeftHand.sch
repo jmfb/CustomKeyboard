@@ -14,7 +14,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L Mini:MiniDINN9 UDINN9
+L LeftHand-rescue:MiniDINN9-Mini UDINN9
 U 1 1 60DBA7F6
 P 9950 5700
 F 0 "UDINN9" H 10000 6381 50  0000 C CNN
@@ -544,7 +544,7 @@ Connection ~ 9750 3200
 Wire Wire Line
 	9750 3200 9850 3200
 Wire Wire Line
-	9350 2650 9550 2650
+	9350 2650 9450 2650
 Wire Wire Line
 	9550 2650 9550 2500
 Wire Wire Line
@@ -587,16 +587,9 @@ Wire Wire Line
 Wire Wire Line
 	8800 1650 8900 1650
 Connection ~ 8800 1550
-Wire Wire Line
-	8800 1650 8800 1750
-Wire Wire Line
-	8800 1750 8900 1750
 Connection ~ 8800 1650
 Wire Wire Line
-	8800 1750 8800 1850
-Wire Wire Line
 	8800 1850 8900 1850
-Connection ~ 8800 1750
 NoConn ~ 10600 1450
 NoConn ~ 7550 5300
 NoConn ~ 7550 5400
@@ -1396,4 +1389,13 @@ Wire Wire Line
 	6600 2400 6600 2450
 Wire Wire Line
 	7650 1300 7650 2250
+Wire Wire Line
+	8800 1650 8800 1850
+Wire Wire Line
+	8900 1750 9450 1750
+Wire Wire Line
+	9450 1750 9450 2650
+Connection ~ 9450 2650
+Wire Wire Line
+	9450 2650 9550 2650
 $EndSCHEMATC

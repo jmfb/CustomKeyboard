@@ -14,7 +14,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L Mini:MiniDINN9 UD9
+L RightHand-rescue:MiniDINN9-Mini UD9
 U 1 1 60D91131
 P 9850 5850
 F 0 "UD9" H 9900 6531 50  0000 C CNN
@@ -33,17 +33,6 @@ F 1 "Demultiplexer" H 10175 4340 50  0000 C CNN
 F 2 "Mini:DualInlineMicrochip2x8" H 10250 3300 50  0001 C CNN
 F 3 "" H 10250 3300 50  0001 C CNN
 	1    10200 3550
-	1    0    0    -1  
-$EndComp
-$Comp
-L Mini:ParallelLoadShiftRegister UREG1
-U 1 1 60D92831
-P 10250 1250
-F 0 "UREG1" H 10200 111 50  0000 C CNN
-F 1 "ParallelLoadShiftRegister" H 10200 20  50  0000 C CNN
-F 2 "Mini:DualInlineMicrochip2x8" H 10250 1250 50  0001 C CNN
-F 3 "" H 10250 1250 50  0001 C CNN
-	1    10250 1250
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -595,7 +584,7 @@ Wire Wire Line
 	10200 2700 10200 2850
 Connection ~ 10100 2700
 Wire Wire Line
-	9800 2400 10000 2400
+	9800 2400 9900 2400
 Wire Wire Line
 	10000 2400 10000 2300
 Wire Wire Line
@@ -1033,11 +1022,6 @@ Wire Wire Line
 Wire Wire Line
 	9300 1550 9350 1550
 Connection ~ 9300 1450
-Wire Wire Line
-	9300 1550 9300 1650
-Wire Wire Line
-	9300 1650 9350 1650
-Connection ~ 9300 1550
 Text GLabel 9100 1150 0    50   Input ~ 0
 SH_LD
 Text GLabel 9100 1250 0    50   Input ~ 0
@@ -1451,4 +1435,22 @@ Wire Wire Line
 Wire Wire Line
 	4200 2250 4200 3400
 Connection ~ 4200 3400
+$Comp
+L Mini:ParallelLoadShiftRegister UREG1
+U 1 1 60D92831
+P 10250 1250
+F 0 "UREG1" H 10200 111 50  0000 C CNN
+F 1 "ParallelLoadShiftRegister" H 10200 20  50  0000 C CNN
+F 2 "Mini:DualInlineMicrochip2x8" H 10250 1250 50  0001 C CNN
+F 3 "" H 10250 1250 50  0001 C CNN
+	1    10250 1250
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9350 1650 9900 1650
+Wire Wire Line
+	9900 1650 9900 2400
+Connection ~ 9900 2400
+Wire Wire Line
+	9900 2400 10000 2400
 $EndSCHEMATC

@@ -199,6 +199,20 @@ TEST_METHOD(SemicolonFollowedByRapidSpace) {
 	});
 }
 
+TEST_METHOD(RapidUnshiftLayer) {
+	PressKey(Hand::Right, Finger::ThumbOuter);
+	PressKey(Hand::Left, Finger::PinkyHome);
+	ReleaseKey(Hand::Right, Finger::ThumbOuter);
+	PressKey(Hand::Left, Finger::RingHome);
+	ReleaseKey(Hand::Left, Finger::PinkyHome);
+	ReleaseKey(Hand::Left, Finger::RingHome);
+	mockArduino.AssertKeyboardReports({
+		{ 0, KEYPAD_0 },
+		{ 0, KEY_S },	// Never recieve a key report for 'a' (unshifted pinky home still pressed here)
+		{}
+	});
+}
+
 TEST_METHOD(AllLayerKeys) {
 	ClickKey(Hand::Left, Finger::PinkyExtraTop);
 	ClickKey(Hand::Left, Finger::PinkyExtraBottom);

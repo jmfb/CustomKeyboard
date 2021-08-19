@@ -39,6 +39,7 @@ public:
 	void Initialize();
 
 	void Delay(int milliseconds);
+	void DelayMicroseconds(int microseconds);
 	void PinMode(int pin, int mode);
 	void DigitalWrite(int pin, int signal);
 	int DigitalRead(int pin);
@@ -51,7 +52,6 @@ public:
 		uint8_t key5,
 		uint8_t key6);
 
-	void AssertDelays(const vector<int>& expected);
 	void AssertPinModes(const vector<int>& expected);
 	void AssertKeyboardReports(const vector<KeyboardReport>& expected);
 
@@ -63,7 +63,6 @@ public:
 	int GetSelectedRow();
 
 private:
-	vector<int> delays;
 	map<int, int> pinModes;
 	map<int, int> pinSignals;
 	queue<bool> leftShiftRegister;

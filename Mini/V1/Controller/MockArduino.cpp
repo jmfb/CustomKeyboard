@@ -29,6 +29,14 @@ void delay(int milliseconds) {
 	mockArduino.Delay(milliseconds);
 }
 
+unsigned long millis() {
+	return 0;
+}
+
+void delayMicroseconds(int microseconds) {
+	mockArduino.DelayMicroseconds(microseconds);
+}
+
 void pinMode(int pin, int mode) {
 	mockArduino.PinMode(pin, mode);
 }
@@ -107,14 +115,15 @@ string to_string(const KeyboardReport& keyboardReport) {
 }
 
 void MockArduino::Initialize() {
-	delays.clear();
 	pinModes.clear();
 	keyboardReports.clear();
 	pressedKeys.clear();
 }
 
 void MockArduino::Delay(int milliseconds) {
-	delays.push_back(milliseconds);
+}
+
+void MockArduino::DelayMicroseconds(int microseconds) {
 }
 
 void MockArduino::PinMode(int pin, int mode) {
@@ -167,13 +176,6 @@ void MockArduino::KeyboardCallback(
 	uint8_t key6
 ) {
 	keyboardReports.emplace_back(modifiers, key1, key2, key3, key4, key5, key6);
-}
-
-void MockArduino::AssertDelays(const vector<int>& expected) {
-	AreEqual(expected.size(), delays.size(), "Delay Count");
-	for (auto index = 0; index < expected.size(); ++index) {
-		AreEqual(expected[index], delays[index], "Delay[" + to_string(index) + "]");
-	}
 }
 
 void MockArduino::AssertPinModes(const vector<int>& expected) {

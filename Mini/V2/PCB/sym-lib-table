@@ -1,0 +1,5 @@
+(sym_lib_table
+  (lib (name Mini)(type Legacy)(uri ${KIPRJMOD}/Mini.lib)(options "")(descr ""))
+  (lib (name LeftHand-rescue)(type Legacy)(uri ${KIPRJMOD}/LeftHand-rescue.lib)(options "")(descr ""))
+  (lib (name RightHand-rescue)(type Legacy)(uri ${KIPRJMOD}/RightHand-rescue.lib)(options "")(descr ""))
+)

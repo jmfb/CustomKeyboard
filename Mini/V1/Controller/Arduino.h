@@ -7,6 +7,7 @@ using uint8_t = unsigned char;
 //Teensy API Constants
 const int OUTPUT = 0;
 const int INPUT = 1;
+const int INPUT_PULLUP = 2;
 const int LOW = 0;
 const int HIGH = 1;
 
@@ -156,6 +157,8 @@ const int HIGH = 1;
 
 //Teensy API
 void delay(int milliseconds);
+void delayMicroseconds(int microseconds);
+unsigned long millis();
 void pinMode(int pin, int mode);
 void digitalWrite(int pin, int signal);
 int digitalRead(int pin);

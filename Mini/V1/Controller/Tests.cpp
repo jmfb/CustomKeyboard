@@ -58,7 +58,7 @@ TEST_METHOD(InitializePinModesAndSignals) {
 		// First 7 pins marked as output
 		OUTPUT, OUTPUT, OUTPUT, OUTPUT, OUTPUT, OUTPUT, OUTPUT,
 		// Next 2 receive pins marked input
-		INPUT, INPUT
+		INPUT_PULLUP, INPUT_PULLUP
 	});
 }
 
@@ -147,7 +147,7 @@ TEST_METHOD(Layer4Shift) {
 		ClickKey(Hand::Left, Finger::PinkyHome);
 	});
 	mockArduino.AssertKeyboardReports({
-		{ 0, KEY_ENTER },
+		{ 0, KEY_F5 },
 		{}
 	});
 }
@@ -182,6 +182,19 @@ TEST_METHOD(LayerKeysWithSameKeyCodeInRapidSuccession) {
 		{ KEY_RIGHT_SHIFT, KEY_RIGHT_BRACE },
 		{ KEY_RIGHT_SHIFT }, // Early release for first layer key sharing subsequent layer key keyCode
 		{ 0, KEY_RIGHT_BRACE },
+		{}
+	});
+}
+
+TEST_METHOD(SemicolonFollowedByRapidSpace) {
+	PressKey(Hand::Right, Finger::PinkyHome);
+	PressKey(Hand::Right, Finger::ThumbInner);
+	ReleaseKey(Hand::Right, Finger::PinkyHome);
+	ReleaseKey(Hand::Right, Finger::ThumbInner);
+	mockArduino.AssertKeyboardReports({
+		{ 0, KEY_SEMICOLON },
+		{},
+		{ 0, KEY_SPACE },
 		{}
 	});
 }
@@ -398,12 +411,12 @@ TEST_METHOD(Layer2LeftHand) {
 		{ 0, KEY_LEFT_BRACE }, {},
 		{ KEY_RIGHT_SHIFT, KEY_9 }, {},
 		{ KEY_RIGHT_SHIFT, KEY_LEFT_BRACE }, {},
-		{ 0, KEY_BACKSLASH }, {},
-		{ KEY_RIGHT_SHIFT, KEY_SEMICOLON }, {},
+		// Nothing
+		// Nothing
 		{ KEY_LEFT_SHIFT, KEY_6 }, {},
 		{ KEY_LEFT_SHIFT, KEY_5 }, {},
-		{ KEY_RIGHT_SHIFT, KEY_8 }, {},
-		{ 0, KEY_COMMA }, {}
+		{ KEY_RIGHT_SHIFT, KEY_8 }, {}
+		// Nothing
 	});
 }
 
@@ -431,16 +444,16 @@ TEST_METHOD(Layer2RightHand) {
 		{ 0, KEY_QUOTE }, {},
 		{ 0, KEY_TILDE }, {},
 		{ KEY_LEFT_SHIFT, KEY_2 }, {},
-		{ 0, KEY_SLASH }, {},
+		// Nothing
 		{ KEY_RIGHT_SHIFT, KEY_RIGHT_BRACE }, {},
 		{ KEY_RIGHT_SHIFT, KEY_0 }, {},
 		{ 0, KEY_RIGHT_BRACE }, {},
 		{ KEY_RIGHT_SHIFT, KEY_PERIOD }, {},
-		{ 0, KEY_PERIOD }, {},
+		// Nothing
 		{ KEY_RIGHT_SHIFT, KEY_EQUAL }, {},
 		{ 0, KEY_MINUS }, {},
 		{ 0, KEY_EQUAL }, {},
-		{ KEY_RIGHT_SHIFT, KEY_SLASH }, {}
+		{ 0, KEY_BACKSLASH }, {}
 	});
 }
 
@@ -465,19 +478,22 @@ TEST_METHOD(Layer3LeftHand) {
 	mockArduino.AssertKeyboardReports({
 		// Nothing
 		// Nothing
-		{ KEY_LEFT_CTRL | KEY_LEFT_GUI, KEY_F4 }, {},
-		// Nothing
-		// Nothing
-		{ KEY_LEFT_CTRL | KEY_LEFT_ALT, KEY_DELETE }, {},
-		{ KEY_LEFT_CTRL | KEY_LEFT_GUI, KEY_LEFT }, {},
-		{ KEY_LEFT_CTRL | KEY_LEFT_GUI, KEY_D }, {},
-		{ KEY_LEFT_CTRL | KEY_LEFT_GUI, KEY_RIGHT }, {},
-		{ KEY_LEFT_CTRL | KEY_LEFT_SHIFT, KEY_ESC }, {}
 		// Nothing
 		// Nothing
 		// Nothing
 		// Nothing
 		// Nothing
+		// Nothing
+		// Nothing
+		// Nothing
+		// Nothing
+		// Nothing
+		// Nothing
+		// Nothing
+		// Nothing
+
+		// NOTE: Since there are not currently any L.H. Layer 3 key mappings, this test will produce SEMICOLON
+		{ 0, KEY_SEMICOLON }, {}
 	});
 }
 
@@ -537,20 +553,20 @@ TEST_METHOD(Layer4LeftHand) {
 		ClickKey(Hand::Left, Finger::IndexExtraBottom);
 	});
 	mockArduino.AssertKeyboardReports({
+		{ 0, KEY_F1 }, {},
+		{ 0, KEY_F2 }, {},
+		{ 0, KEY_F3 }, {},
+		{ 0, KEY_F4 }, {},
 		{ 0, KEY_BACKSPACE }, {},
-		{ 0, KEY_HOME }, {},
-		{ 0, KEY_UP }, {},
-		{ 0, KEY_END }, {},
-		{ 0, KEY_INSERT }, {},
+		{ 0, KEY_F5 }, {},
+		{ 0, KEY_F6 }, {},
+		{ 0, KEY_F7 }, {},
+		{ 0, KEY_F8 }, {},
 		{ 0, KEY_ENTER }, {},
-		{ 0, KEY_LEFT }, {},
-		{ 0, KEY_DOWN }, {},
-		{ 0, KEY_RIGHT }, {},
-		{ 0, KEY_DELETE }, {},
-		// Nothing
-		// Nothing
-		{ 0, KEY_PAGE_UP }, {},
-		{ 0, KEY_PAGE_DOWN }, {},
+		{ 0, KEY_F9 }, {},
+		{ 0, KEY_F10 }, {},
+		{ 0, KEY_F11 }, {},
+		{ 0, KEY_F12 }, {}
 		// Nothing
 	});
 }
@@ -592,6 +608,90 @@ TEST_METHOD(Layer4RightHand) {
 
 		// NOTE: Since there are not currently any R.H. Layer 4 key mappings, this test will produce MENU
 		{ 0, KEY_MENU }, {}
+	});
+}
+
+TEST_METHOD(Layer5LeftHand) {
+	ClickKey(Hand::Left, Finger::ThumbInner, [](){
+		ClickKey(Hand::Left, Finger::ThumbOuter, [](){
+			ClickKey(Hand::Left, Finger::PinkyTop);
+			ClickKey(Hand::Left, Finger::RingTop);
+			ClickKey(Hand::Left, Finger::MiddleTop);
+			ClickKey(Hand::Left, Finger::IndexTop);
+			ClickKey(Hand::Left, Finger::IndexExtraTop);
+			ClickKey(Hand::Left, Finger::PinkyHome);
+			ClickKey(Hand::Left, Finger::RingHome);
+			ClickKey(Hand::Left, Finger::MiddleHome);
+			ClickKey(Hand::Left, Finger::IndexHome);
+			ClickKey(Hand::Left, Finger::IndexExtraHome);
+			ClickKey(Hand::Left, Finger::PinkyBottom);
+			ClickKey(Hand::Left, Finger::RingBottom);
+			ClickKey(Hand::Left, Finger::MiddleBottom);
+			ClickKey(Hand::Left, Finger::IndexBottom);
+			ClickKey(Hand::Left, Finger::IndexExtraBottom);
+		});
+	});
+	mockArduino.AssertKeyboardReports({
+		{ KEY_LEFT_SHIFT }, {},
+		// Nothing
+		// Nothing
+		{ KEY_LEFT_CTRL | KEY_LEFT_GUI, KEY_F4 }, {},
+		// Nothing
+		// Nothing
+		{ KEY_LEFT_CTRL | KEY_LEFT_ALT, KEY_DELETE }, {},
+		{ KEY_LEFT_CTRL | KEY_LEFT_GUI, KEY_LEFT }, {},
+		{ KEY_LEFT_CTRL | KEY_LEFT_GUI, KEY_D }, {},
+		{ KEY_LEFT_CTRL | KEY_LEFT_GUI, KEY_RIGHT }, {},
+		{ KEY_LEFT_CTRL | KEY_LEFT_SHIFT, KEY_ESC }, {},
+		// Nothing
+		// Nothing
+		{ KEY_LEFT_SHIFT | KEY_LEFT_GUI, KEY_S }, {},
+		// Nothing
+		// Nothing
+		{ KEY_LEFT_SHIFT }, {}
+	});
+}
+
+TEST_METHOD(Layer5RightHand) {
+	ClickKey(Hand::Left, Finger::ThumbInner, [](){
+		ClickKey(Hand::Left, Finger::ThumbOuter, [](){
+			ClickKey(Hand::Right, Finger::IndexExtraTop);
+			ClickKey(Hand::Right, Finger::IndexTop);
+			ClickKey(Hand::Right, Finger::MiddleTop);
+			ClickKey(Hand::Right, Finger::RingTop);
+			ClickKey(Hand::Right, Finger::PinkyTop);
+			ClickKey(Hand::Right, Finger::IndexExtraHome);
+			ClickKey(Hand::Right, Finger::IndexHome);
+			ClickKey(Hand::Right, Finger::MiddleHome);
+			ClickKey(Hand::Right, Finger::RingHome);
+			ClickKey(Hand::Right, Finger::PinkyHome);
+			ClickKey(Hand::Right, Finger::IndexExtraBottom);
+			ClickKey(Hand::Right, Finger::IndexBottom);
+			ClickKey(Hand::Right, Finger::MiddleBottom);
+			ClickKey(Hand::Right, Finger::RingBottom);
+			ClickKey(Hand::Right, Finger::PinkyBottom);
+		});
+	});
+	mockArduino.AssertKeyboardReports({
+		// Nothing
+		// Nothing
+		// Nothing
+		// Nothing
+		// Nothing
+		// Nothing
+		// Nothing
+		// Nothing
+		// Nothing
+		// Nothing
+		// Nothing
+		// Nothing
+		// Nothing
+		// Nothing
+		// Nothing
+
+		// NOTE: Since there are not currently any R.H. Layer 5 key mappings, this test will produce SHIFT/SHIFT
+		{ KEY_LEFT_SHIFT }, {},
+		{ KEY_LEFT_SHIFT }, {}
 	});
 }
 

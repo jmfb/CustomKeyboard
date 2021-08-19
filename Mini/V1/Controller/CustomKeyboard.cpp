@@ -25,7 +25,7 @@ void SetUpOutputPin(Pins pin) {
 }
 
 void SetUpInputPin(Pins pin) {
-	pinMode(static_cast<uint8_t>(pin), INPUT);
+	pinMode(static_cast<uint8_t>(pin), INPUT_PULLUP);
 }
 
 void setup() {
@@ -38,7 +38,7 @@ void setup() {
 	SetUpOutputPin(Pins::LedClock);
 	SetUpInputPin(Pins::ReceiveLeftHand);
 	SetUpInputPin(Pins::ReceiveRightHand);
-	delay(200);
+	delayMicroseconds(10);
 }
 
 enum class Positions : uint8_t {
@@ -191,7 +191,7 @@ private:
 		digitalWrite(static_cast<uint8_t>(Pins::Select0RightHand), select0);
 		digitalWrite(static_cast<uint8_t>(Pins::Select1), select1);
 		digitalWrite(static_cast<uint8_t>(Pins::Select2), select2);
-		delay(1);
+		delayMicroseconds(10);
 	}
 
 	void LoadRegister() {
@@ -359,6 +359,7 @@ public:
 	constexpr static LayerKey RS(unsigned int keyCode) { return LayerKey(keyCode, KEY_RIGHT_SHIFT); }
 
 	constexpr static LayerKey VD(unsigned int keyCode) { return LayerKey(keyCode, KEY_LEFT_GUI | KEY_LEFT_CTRL); }
+	constexpr static LayerKey WS(unsigned int keyCode) { return LayerKey(keyCode, KEY_LEFT_GUI | KEY_LEFT_SHIFT); }
 
 	constexpr static LayerKey CA(unsigned int keyCode) { return LayerKey(keyCode, KEY_LEFT_CTRL | KEY_LEFT_ALT); }
 	constexpr static LayerKey CS(unsigned int keyCode) { return LayerKey(keyCode, KEY_LEFT_CTRL | KEY_LEFT_SHIFT); }
@@ -367,7 +368,7 @@ public:
 constexpr uint8_t layerRowCount = 3;
 constexpr uint8_t layerColumnCount = 5;
 constexpr uint8_t layerSize = layerRowCount * layerColumnCount;
-constexpr uint8_t layerCount = 5;
+constexpr uint8_t layerCount = 6;
 
 constexpr LayerKey leftHandLayers[layerCount][layerSize] = {
 	{
@@ -381,22 +382,27 @@ constexpr LayerKey leftHandLayers[layerCount][layerSize] = {
 		H::K(KEYPAD_SLASH),   H::K(KEYPAD_1), H::K(KEYPAD_2), H::K(KEYPAD_3), H::K(KEYPAD_MINUS)
 	},
 	// |~!&|#|
-	// |<[({\|
-	// |:^%*,|
+	// |<[({ |
+	// | ^%* |
 	{
 		H::LS(KEY_TILDE),     H::LS(KEY_1),         H::RS(KEY_7), H::RS(KEY_BACKSLASH),  H::LS(KEY_3),
-		H::RS(KEY_COMMA),     H::K(KEY_LEFT_BRACE), H::RS(KEY_9), H::RS(KEY_LEFT_BRACE), H::K(KEY_BACKSLASH),
-		H::RS(KEY_SEMICOLON), H::LS(KEY_6),         H::LS(KEY_5), H::RS(KEY_8),          H::K(KEY_COMMA)
+		H::RS(KEY_COMMA),     H::K(KEY_LEFT_BRACE), H::RS(KEY_9), H::RS(KEY_LEFT_BRACE), H::K(),
+		H::K(),               H::LS(KEY_6),         H::LS(KEY_5), H::RS(KEY_8),          H::K()
+	},
+	{
+		H::K(), H::K(), H::K(),  H::K(), H::K(),
+		H::K(), H::K(), H::K(),  H::K(), H::K(),
+		H::K(), H::K(), H::K(),  H::K(), H::K()
+	},
+	{
+		H::K(KEY_F1), H::K(KEY_F2),  H::K(KEY_F3),  H::K(KEY_F4),  H::K(KEY_BACKSPACE),
+		H::K(KEY_F5), H::K(KEY_F6),  H::K(KEY_F7),  H::K(KEY_F8),  H::K(KEY_ENTER),
+		H::K(KEY_F9), H::K(KEY_F10), H::K(KEY_F11), H::K(KEY_F12), H::K()
 	},
 	{
 		H::K(),            H::K(),          H::VD(KEY_F4), H::K(),           H::K(),
 		H::CA(KEY_DELETE), H::VD(KEY_LEFT), H::VD(KEY_D),  H::VD(KEY_RIGHT), H::CS(KEY_ESC),
-		H::K(),            H::K(),          H::K(),        H::K(),           H::K()
-	},
-	{
-		H::K(KEY_BACKSPACE), H::K(KEY_HOME), H::K(KEY_UP),       H::K(KEY_END),       H::K(KEY_INSERT),
-		H::K(KEY_ENTER),     H::K(KEY_LEFT), H::K(KEY_DOWN),     H::K(KEY_RIGHT),     H::K(KEY_DELETE),
-		H::K(),              H::K(),         H::K(KEY_PAGE_UP),  H::K(KEY_PAGE_DOWN), H::K()
+		H::K(),            H::K(),          H::WS(KEY_S),  H::K(),           H::K()
 	}
 };
 
@@ -412,17 +418,22 @@ constexpr LayerKey rightHandLayers[layerCount][layerSize] = {
 		H::K(KEY_PAUSE),       H::K(KEY_F9), H::K(KEY_F10), H::K(KEY_F11), H::K(KEY_F12)
 	},
 	// |$"'`@|
-	// |/})]>|
-	// |.+-=?|
+	// | })]>|
+	// | +-=\|
 	{
 		H::LS(KEY_4),     H::RS(KEY_QUOTE),       H::K(KEY_QUOTE), H::K(KEY_TILDE),       H::LS(KEY_2),
-		H::K(KEY_SLASH),  H::RS(KEY_RIGHT_BRACE), H::RS(KEY_0),    H::K(KEY_RIGHT_BRACE), H::RS(KEY_PERIOD),
-		H::K(KEY_PERIOD), H::RS(KEY_EQUAL),       H::K(KEY_MINUS), H::K(KEY_EQUAL),       H::RS(KEY_SLASH)
+		H::K(),           H::RS(KEY_RIGHT_BRACE), H::RS(KEY_0),    H::K(KEY_RIGHT_BRACE), H::RS(KEY_PERIOD),
+		H::K(),           H::RS(KEY_EQUAL),       H::K(KEY_MINUS), H::K(KEY_EQUAL),       H::K(KEY_BACKSLASH)
 	},
 	{
 		H::K(KEY_INSERT), H::K(KEY_HOME),    H::K(KEY_UP),        H::K(KEY_END),   H::K(),
 		H::K(KEY_DELETE), H::K(KEY_LEFT),    H::K(KEY_DOWN),      H::K(KEY_RIGHT), H::K(),
 		H::K(),           H::K(KEY_PAGE_UP), H::K(KEY_PAGE_DOWN), H::K(),          H::K()
+	},
+	{
+		H::K(), H::K(), H::K(),  H::K(), H::K(),
+		H::K(), H::K(), H::K(),  H::K(), H::K(),
+		H::K(), H::K(), H::K(),  H::K(), H::K()
 	},
 	{
 		H::K(), H::K(), H::K(),  H::K(), H::K(),
@@ -500,7 +511,7 @@ public:
 		Keyboard.set_key5(keys[4]);
 		Keyboard.set_key6(keys[5]);
 		Keyboard.send_now();
-		delay(2);
+		delayMicroseconds(10);
 	}
 
 	bool operator==(const KeyReport& other) const {
@@ -615,13 +626,15 @@ constexpr auto layer1Shift = Helper::RightKey(Positions::ThumbOuter);
 constexpr auto layer2Shift = Helper::LeftKey(Positions::ThumbOuter);
 constexpr auto layer3Shift = Helper::RightKey(Positions::PinkyHome);
 constexpr auto layer4Shift = Helper::LeftKey(Positions::ThumbGridBottomSecond);
+constexpr auto layer5Shift = Helper::LeftKey(Positions::ThumbOuter);
 
 constexpr uint8_t layerShifts[layerCount] = {
 	0,
 	layer1Shift,
 	layer2Shift,
 	layer3Shift,
-	layer4Shift
+	layer4Shift,
+	layer5Shift
 };
 
 constexpr LayerKey layerShiftSyntheticKeys[layerCount] = {
@@ -629,13 +642,15 @@ constexpr LayerKey layerShiftSyntheticKeys[layerCount] = {
 	H::RS(KEY_MINUS),
 	H::K(KEY_SPACE),
 	H::K(KEY_SEMICOLON),
-	H::K(KEY_MENU)
+	H::K(KEY_MENU),
+	H::K()
 };
 
 class KeyboardDriver {
 public:
 	KeyboardDriver() {
 		layer = 0;
+		layerStartMs = 0;
 		layerUsed = false;
 	}
 
@@ -678,7 +693,10 @@ private:
 	void DetectLayerUnshift(const PressedKeys& pressedKeys) {
 		if (IsLayerShifted() && !pressedKeys.IsPressed(layerShifts[layer])) {
 			if (!layerUsed) {
-				SendSyntheticKey(layerShiftSyntheticKeys[layer]);
+				auto heldMs = millis() - layerStartMs;
+				if (heldMs < 150) {
+					SendSyntheticKey(layerShiftSyntheticKeys[layer]);
+				}
 			}
 			SwitchLayer(0);
 		}
@@ -693,10 +711,16 @@ private:
 				}
 			}
 		}
+		if (IsLayerShifted() && pressedKeys.IsPressed(static_cast<uint8_t>(Positions::ThumbInner)) && !layerUsed) {
+			if (layer == 2) {
+				SwitchLayer(5);
+			}
+		}
 	}
 
 	void SwitchLayer(int value) {
 		layer = value;
+		layerStartMs = millis();
 		layerUsed = false;
 	}
 
@@ -746,7 +770,9 @@ private:
 				// Nothing (Layer 4 shift)
 				break;
 			case Positions::ThumbInner:
-				keyReport.AddKey(KEY_LEFT_SHIFT);
+				if (layer != 5) {
+					keyReport.AddKey(KEY_LEFT_SHIFT);
+				}
 				break;
 			case Positions::ThumbOuter:
 				// Nothing (layer 2 shift)
@@ -778,6 +804,10 @@ private:
 				keyReport.AddKey(KEY_MENU);
 				break;
 			case Positions::ThumbInner:
+				if (layer == 3 && !layerUsed) {
+					SendSyntheticKey(layerShiftSyntheticKeys[layer]);
+					layerUsed = true;
+				}
 				keyReport.AddKey(KEY_SPACE);
 				break;
 			case Positions::ThumbOuter:
@@ -811,6 +841,7 @@ private:
 	PressedKeys previousPressedKeys;
 	KeyReport previousKeyReport;
 	uint8_t layer;
+	unsigned long layerStartMs;
 	bool layerUsed;
 };
 
@@ -947,12 +978,13 @@ const LedColor layerColors[layerCount] = {
 	LedColors::blue,
 	LedColors::crimson,
 	LedColors::gold,
-	LedColors::aqua
+	LedColors::aqua,
+	LedColors::fuchsia
 };
 
-constexpr uint8_t loopIntervalMs = 100;
-constexpr uint8_t transitionStepCount = 15;
-constexpr uint8_t pulsateStepCount = 32;
+constexpr uint8_t loopIntervalMs = 10;
+constexpr uint8_t transitionStepCount = 50;
+constexpr uint8_t pulsateStepCount = 200;
 
 class LedDriver {
 public:
@@ -998,9 +1030,10 @@ private:
 
 	void PulsateLayerColor() {
 		auto layerColor = layerColors[layer];
-		layerColor.intensity = step < 16 ?
-			(fullIntensity - step) :
-			(fullIntensity + step - 32);
+		auto increment = step * 32 / pulsateStepCount;
+		layerColor.intensity = step < (pulsateStepCount / 2) ?
+			(fullIntensity - increment) :
+			(fullIntensity + increment - 32);
 		TransmitUniformColor(layerColor);
 	}
 

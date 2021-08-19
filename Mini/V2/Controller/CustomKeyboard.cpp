@@ -291,6 +291,18 @@ public:
 		return false;
 	}
 
+	void Remove(uint8_t key) {
+		for (uint8_t index = 0; index < nextKey; ++index) {
+			if (keys[index] == key) {
+				for (uint8_t nextIndex = index + 1; nextIndex < nextKey; ++nextIndex) {
+					keys[nextIndex - 1] = keys[nextIndex];
+				}
+				--nextKey;
+				break;
+			}
+		}
+	}
+
 private:
 	void HoldPreviousKeys(const PressedKeys& previousPressedKeys, const KeyState& keyState) {
 		for (uint8_t key = 0; key < previousPressedKeys.nextKey; ++key) {
@@ -679,9 +691,12 @@ private:
 	void GenerateKeyReports(const PressedKeys& pressedKeys) {
 		DetectLayerUnshift(pressedKeys);
 		DetectLayerShift(pressedKeys);
+		RemoveDeadLayerKeys(pressedKeys);
 		KeyReport keyReport;
 		for (uint8_t index = 0; index < pressedKeys.GetCount(); ++index) {
-			AddToReport(keyReport, pressedKeys.Get(index), pressedKeys.WasHeld(index));
+			if (!deadLayerKeys.IsPressed(pressedKeys.Get(index))) {
+				AddToReport(keyReport, pressedKeys.Get(index), pressedKeys.WasHeld(index));
+			}
 		}
 		SendKeyReport(keyReport);
 	}
@@ -699,6 +714,17 @@ private:
 				}
 			}
 			SwitchLayer(0);
+			deadLayerKeys = previousPressedKeys;
+		}
+	}
+
+	void RemoveDeadLayerKeys(const PressedKeys& pressedKeys) {
+		for (uint8_t index = 0; index < deadLayerKeys.GetCount(); ) {
+			if (pressedKeys.IsPressed(deadLayerKeys.Get(index))) {
+				++index;
+			} else {
+				deadLayerKeys.Remove(deadLayerKeys.Get(index));
+			}
 		}
 	}
 
@@ -839,6 +865,7 @@ private:
 	KeyState previousKeyState;
 	StableScanner stableScanner;
 	PressedKeys previousPressedKeys;
+	PressedKeys deadLayerKeys;
 	KeyReport previousKeyReport;
 	uint8_t layer;
 	unsigned long layerStartMs;

@@ -7,14 +7,14 @@
       "Application": "Pcbnew",
       "Version":     "(5.1.10)-1"
     },
-    "CreationDate":  "2021-06-29T07:08:46-05:00"
+    "CreationDate":  "2021-08-19T22:55:08-05:00"
   },
   "GeneralSpecs":
   {
     "ProjectId":
     {
       "Name": "RightHand",
-      "GUID": "4d696e69-2e6b-4696-9361-645f70636258",
+      "GUID": "52696768-7448-4616-9e64-2e6b69636164",
       "Revision": "rev?"
     },
     "Size":

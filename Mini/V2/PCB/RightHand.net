@@ -1,7 +1,7 @@
 (export (version D)
   (design
     (source C:\Save\Code\git\CustomKeyboard\Mini\V2\PCB\RightHand.sch)
-    (date "8/16/2021 10:21:52 PM")
+    (date "8/19/2021 10:30:56 PM")
     (tool "Eeschema (5.1.10)-1")
     (sheet (number 1) (name /) (tstamps /)
       (title_block

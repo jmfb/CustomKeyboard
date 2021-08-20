@@ -118,6 +118,7 @@ void MockArduino::Initialize() {
 	pinModes.clear();
 	keyboardReports.clear();
 	pressedKeys.clear();
+	handConfiguration = HandConfiguration::Standard;
 }
 
 void MockArduino::Delay(int milliseconds) {
@@ -143,6 +144,28 @@ void MockArduino::DigitalWrite(int pin, int signal) {
 		for (auto column = 0; column < 4; ++column) {
 			leftShiftRegister.push(IsPressed(true, row, column));
 			rightShiftRegister.push(IsPressed(false, row, column));
+		}
+		switch (handConfiguration) {
+			case HandConfiguration::V1:
+				leftShiftRegister.push(false);
+				leftShiftRegister.push(false);
+				rightShiftRegister.push(false);
+				rightShiftRegister.push(false);
+				break;
+
+			case HandConfiguration::Standard:
+				leftShiftRegister.push(false);
+				leftShiftRegister.push(true);
+				rightShiftRegister.push(true);
+				rightShiftRegister.push(false);
+				break;
+
+			case HandConfiguration::Inverted:
+				leftShiftRegister.push(true);
+				leftShiftRegister.push(false);
+				rightShiftRegister.push(false);
+				rightShiftRegister.push(true);
+				break;
 		}
 	} else if (pin == 5 && signal == HIGH && pinSignals[4] == HIGH) { // Shift
 		Assert(!leftShiftRegister.empty(), "Attempt to shift past left register end");
@@ -223,4 +246,8 @@ int MockArduino::GetSelectedRow() {
 	auto row = s2 << 2 | s1 << 1 | s0;
 	Assert(row >= 0 && row <= 7, "Only row 0-7 are valid.");
 	return row;
+}
+
+void MockArduino::ConfigureHands(HandConfiguration value) {
+	handConfiguration = value;
 }

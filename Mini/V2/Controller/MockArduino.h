@@ -34,6 +34,12 @@ public:
 
 string to_string(const KeyboardReport& keyboardReport);
 
+enum class HandConfiguration {
+	V1,
+	Standard,
+	Inverted
+};
+
 class MockArduino {
 public:
 	void Initialize();
@@ -62,6 +68,8 @@ public:
 	bool IsPressed(bool left, int row, int column);
 	int GetSelectedRow();
 
+	void ConfigureHands(HandConfiguration value);
+
 private:
 	map<int, int> pinModes;
 	map<int, int> pinSignals;
@@ -69,6 +77,7 @@ private:
 	queue<bool> rightShiftRegister;
 	vector<KeyboardReport> keyboardReports;
 	set<tuple<bool, int, int>> pressedKeys;
+	HandConfiguration handConfiguration = HandConfiguration::Standard;
 };
 
 extern MockArduino mockArduino;

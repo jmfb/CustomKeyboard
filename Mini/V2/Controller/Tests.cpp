@@ -233,6 +233,26 @@ TEST_METHOD(RapidUnshiftLayerWithRegularShift) {
 	});
 }
 
+TEST_METHOD(V1HardwareBackwardCompatibility) {
+	mockArduino.ConfigureHands(HandConfiguration::V1);
+	ClickKey(Hand::Left, Finger::IndexHome);
+	ClickKey(Hand::Right, Finger::IndexHome);
+	mockArduino.AssertKeyboardReports({
+		{ 0, KEY_F }, {},
+		{ 0, KEY_J }, {}
+	});
+}
+
+TEST_METHOD(InvertedHardwareMode) {
+	mockArduino.ConfigureHands(HandConfiguration::Inverted);
+	ClickKey(Hand::Left, Finger::IndexHome);
+	ClickKey(Hand::Right, Finger::IndexHome);
+	mockArduino.AssertKeyboardReports({
+		{ 0, KEY_J }, {},
+		{ 0, KEY_F }, {}
+	});
+}
+
 TEST_METHOD(AllLayerKeys) {
 	ClickKey(Hand::Left, Finger::PinkyExtraTop);
 	ClickKey(Hand::Left, Finger::PinkyExtraBottom);

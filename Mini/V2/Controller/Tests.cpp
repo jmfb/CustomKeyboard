@@ -214,6 +214,25 @@ TEST_METHOD(RapidUnshiftLayer) {
 	});
 }
 
+TEST_METHOD(RapidUnshiftLayerWithRegularShift) {
+	PressKey(Hand::Left, Finger::ThumbInner);
+	PressKey(Hand::Right, Finger::PinkyHome);
+	PressKey(Hand::Right, Finger::RingHome);
+	ReleaseKey(Hand::Right, Finger::PinkyHome);
+	PressKey(Hand::Right, Finger::MiddleHome);
+	ReleaseKey(Hand::Right, Finger::RingHome);
+	ReleaseKey(Hand::Right, Finger::MiddleHome);
+	ReleaseKey(Hand::Left, Finger::ThumbInner);
+	mockArduino.AssertKeyboardReports({
+		{ KEY_LEFT_SHIFT },
+		{ KEY_LEFT_SHIFT, KEY_RIGHT },
+		{ KEY_LEFT_SHIFT },
+		{ KEY_LEFT_SHIFT, KEY_K },
+		{ KEY_LEFT_SHIFT },
+		{}
+	});
+}
+
 TEST_METHOD(AllLayerKeys) {
 	ClickKey(Hand::Left, Finger::PinkyExtraTop);
 	ClickKey(Hand::Left, Finger::PinkyExtraBottom);
@@ -660,9 +679,10 @@ TEST_METHOD(Layer5LeftHand) {
 		{ KEY_LEFT_CTRL | KEY_LEFT_SHIFT, KEY_ESC }, {},
 		// Nothing
 		// Nothing
-		{ KEY_LEFT_SHIFT | KEY_LEFT_GUI, KEY_S }, {}
+		{ KEY_LEFT_SHIFT | KEY_LEFT_GUI, KEY_S }, {},
 		// Nothing
 		// Nothing
+		{ KEY_LEFT_SHIFT }, {}
 	});
 }
 
@@ -703,7 +723,8 @@ TEST_METHOD(Layer5RightHand) {
 		// Nothing
 		// Nothing
 
-		// NOTE: Since there are not currently any R.H. Layer 5 key mappings, this test will produce SHIFT
+		// NOTE: Since there are not currently any R.H. Layer 5 key mappings, this test will produce SHIFT/SHIFT
+		{ KEY_LEFT_SHIFT }, {},
 		{ KEY_LEFT_SHIFT }, {}
 	});
 }

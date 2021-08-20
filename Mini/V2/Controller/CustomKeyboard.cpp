@@ -694,9 +694,7 @@ private:
 		RemoveDeadLayerKeys(pressedKeys);
 		KeyReport keyReport;
 		for (uint8_t index = 0; index < pressedKeys.GetCount(); ++index) {
-			if (!deadLayerKeys.IsPressed(pressedKeys.Get(index))) {
-				AddToReport(keyReport, pressedKeys.Get(index), pressedKeys.WasHeld(index));
-			}
+			AddToReport(keyReport, pressedKeys.Get(index), pressedKeys.WasHeld(index));
 		}
 		SendKeyReport(keyReport);
 	}
@@ -804,7 +802,9 @@ private:
 				// Nothing (layer 2 shift)
 				break;
 			default:
-				AddLayerKey(keyReport, KeyReport::GetLeftLayerKey(layer, key), wasHeld);
+				if (!deadLayerKeys.IsPressed(key)) {
+					AddLayerKey(keyReport, KeyReport::GetLeftLayerKey(layer, key), wasHeld);
+				}
 				break;
 		}
 	}
@@ -840,7 +840,9 @@ private:
 				// Nothing (layer 1 shift)
 				break;
 			default:
-				AddLayerKey(keyReport, KeyReport::GetRightLayerKey(layer, key), wasHeld);
+				if (!deadLayerKeys.IsPressed(key + keyCount)) {
+					AddLayerKey(keyReport, KeyReport::GetRightLayerKey(layer, key), wasHeld);
+				}
 				break;
 		}
 	}

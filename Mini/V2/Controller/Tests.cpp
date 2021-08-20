@@ -199,6 +199,21 @@ TEST_METHOD(SemicolonFollowedByRapidSpace) {
 	});
 }
 
+TEST_METHOD(RapidUnshiftLayer) {
+	PressKey(Hand::Right, Finger::ThumbOuter);
+	PressKey(Hand::Left, Finger::PinkyHome);
+	ReleaseKey(Hand::Right, Finger::ThumbOuter);
+	PressKey(Hand::Left, Finger::RingHome);
+	ReleaseKey(Hand::Left, Finger::PinkyHome);
+	ReleaseKey(Hand::Left, Finger::RingHome);
+	mockArduino.AssertKeyboardReports({
+		{ 0, KEYPAD_0 },
+		{}, // Never recieve a key report for 'a' (unshifted pinky home still pressed here)
+		{ 0, KEY_S },
+		{}
+	});
+}
+
 TEST_METHOD(AllLayerKeys) {
 	ClickKey(Hand::Left, Finger::PinkyExtraTop);
 	ClickKey(Hand::Left, Finger::PinkyExtraBottom);
@@ -645,10 +660,9 @@ TEST_METHOD(Layer5LeftHand) {
 		{ KEY_LEFT_CTRL | KEY_LEFT_SHIFT, KEY_ESC }, {},
 		// Nothing
 		// Nothing
-		{ KEY_LEFT_SHIFT | KEY_LEFT_GUI, KEY_S }, {},
+		{ KEY_LEFT_SHIFT | KEY_LEFT_GUI, KEY_S }, {}
 		// Nothing
 		// Nothing
-		{ KEY_LEFT_SHIFT }, {}
 	});
 }
 
@@ -689,8 +703,7 @@ TEST_METHOD(Layer5RightHand) {
 		// Nothing
 		// Nothing
 
-		// NOTE: Since there are not currently any R.H. Layer 5 key mappings, this test will produce SHIFT/SHIFT
-		{ KEY_LEFT_SHIFT }, {},
+		// NOTE: Since there are not currently any R.H. Layer 5 key mappings, this test will produce SHIFT
 		{ KEY_LEFT_SHIFT }, {}
 	});
 }

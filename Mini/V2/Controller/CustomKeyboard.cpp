@@ -133,11 +133,24 @@ private:
 	bool keys[keyCount];
 };
 
+enum class HardwareConfiguration {
+	V1,
+	LeftHand,
+	RightHand,
+	Unplugged
+};
+
 class KeyState {
 public:
 	void Scan() {
 		for (uint8_t row = 0; row < rowCount; ++row) {
 			ScanRow(row);
+			if (row == 0) {
+				ScanHardwareConfiguration();
+			}
+		}
+		if (areHandsInverted) {
+			SwapScans();
 		}
 	}
 
@@ -145,11 +158,14 @@ public:
 		KeyState result;
 		result.leftHand = leftHand && other.leftHand;
 		result.rightHand = rightHand && other.rightHand;
+		result.areHandsInverted = areHandsInverted && other.areHandsInverted;
 		return result;
 	}
 
 	bool operator==(const KeyState& other) const {
-		return leftHand == other.leftHand && rightHand == other.rightHand;
+		return leftHand == other.leftHand &&
+			rightHand == other.rightHand &&
+			areHandsInverted == other.areHandsInverted;
 	}
 
 	bool operator!=(const KeyState& other) const {
@@ -167,7 +183,46 @@ public:
 		return false;
 	}
 
+	bool AreHandsInverted() const {
+		return areHandsInverted;
+	}
+
 private:
+	void ScanHardwareConfiguration() {
+		auto leftConfiguration1 = ReadColumn(Pins::ReceiveLeftHand);
+		auto rightConfiguration1 = ReadColumn(Pins::ReceiveRightHand);
+		PulseColumnClock();
+		auto leftConfiguration2 = ReadColumn(Pins::ReceiveLeftHand);
+		auto rightConfiguration2 = ReadColumn(Pins::ReceiveRightHand);
+		PulseColumnClock();
+
+		auto leftPlugConfiguration = GetHandConfiguration(leftConfiguration1, leftConfiguration2);
+		auto rightPlugConfiguration = GetHandConfiguration(rightConfiguration1, rightConfiguration2);
+		auto isRightPluggedIntoLeft = leftPlugConfiguration == HardwareConfiguration::RightHand;
+		auto isLeftPluggedIntoRight = rightPlugConfiguration == HardwareConfiguration::LeftHand;
+
+		areHandsInverted = isRightPluggedIntoLeft || isLeftPluggedIntoRight;
+	}
+
+	static HardwareConfiguration GetHandConfiguration(bool configuration1, bool configuration2) {
+		if (!configuration1 && !configuration2) {
+			return HardwareConfiguration::V1;
+		}
+		if (!configuration1 && configuration2) {
+			return HardwareConfiguration::LeftHand;
+		}
+		if (configuration1 && !configuration2) {
+			return HardwareConfiguration::RightHand;
+		}
+		return HardwareConfiguration::Unplugged;
+	}
+
+	void SwapScans() {
+		HandKeyState temp = leftHand;
+		leftHand = rightHand;
+		rightHand = temp;
+	}
+
 	void ScanRow(uint8_t row) {
 		SelectRow(row);
 		LoadRegister();
@@ -214,6 +269,7 @@ private:
 private:
 	HandKeyState leftHand;
 	HandKeyState rightHand;
+	bool areHandsInverted = false;
 };
 
 constexpr uint8_t debounceCount = 3;
@@ -660,12 +716,6 @@ constexpr LayerKey layerShiftSyntheticKeys[layerCount] = {
 
 class KeyboardDriver {
 public:
-	KeyboardDriver() {
-		layer = 0;
-		layerStartMs = 0;
-		layerUsed = false;
-	}
-
 	void ScanAndTransmit() {
 		auto keyState = stableScanner.Scan();
 		if (keyState == previousKeyState) {
@@ -685,6 +735,10 @@ public:
 
 	uint8_t GetLayer() const {
 		return layer;
+	}
+
+	bool AreHandsInverted() const {
+		return previousKeyState.AreHandsInverted();
 	}
 
 private:
@@ -869,9 +923,9 @@ private:
 	PressedKeys previousPressedKeys;
 	PressedKeys deadLayerKeys;
 	KeyReport previousKeyReport;
-	uint8_t layer;
-	unsigned long layerStartMs;
-	bool layerUsed;
+	uint8_t layer = 0;
+	unsigned long layerStartMs = 0;
+	bool layerUsed = false;
 };
 
 constexpr uint8_t fullIntensity = 0b00011111;
@@ -1023,6 +1077,17 @@ public:
 		transitionFromColor = layerColors[0];
 		nextLayer = 0;
 		step = 0;
+		SetAreHandsInverted(false);
+	}
+
+	void SetAreHandsInverted(bool areHandsInverted) {
+		if (areHandsInverted) {
+			leftDataPin = static_cast<uint8_t>(Pins::LedDataRightHand);
+			rightDataPin = static_cast<uint8_t>(Pins::LedDataLeftHand);
+		} else {
+			leftDataPin = static_cast<uint8_t>(Pins::LedDataLeftHand);
+			rightDataPin = static_cast<uint8_t>(Pins::LedDataRightHand);
+		}
 	}
 
 	void TransitionToLayer(uint8_t value) {
@@ -1082,8 +1147,8 @@ private:
 
 	void TransmitBit(bool left, bool right) {
 		// Dual transmit LED data to each hand using a single clock
-		digitalWrite(static_cast<uint8_t>(Pins::LedDataLeftHand), left ? HIGH : LOW);
-		digitalWrite(static_cast<uint8_t>(Pins::LedDataRightHand), right ? HIGH : LOW);
+		digitalWrite(leftDataPin, left ? HIGH : LOW);
+		digitalWrite(rightDataPin, right ? HIGH : LOW);
 		PulseLedClock();
 	}
 
@@ -1123,12 +1188,15 @@ private:
 	LedColor transitionFromColor;
 	uint8_t nextLayer;
 	uint8_t step;
+	uint8_t leftDataPin;
+	uint8_t rightDataPin;
 };
 
 void loop() {
 	static KeyboardDriver keyboardDriver;
 	static LedDriver ledDriver;
 	keyboardDriver.ScanAndTransmit();
+	ledDriver.SetAreHandsInverted(keyboardDriver.AreHandsInverted());
 	ledDriver.TransitionToLayer(keyboardDriver.GetLayer());
 	ledDriver.Step();
 	delay(loopIntervalMs);

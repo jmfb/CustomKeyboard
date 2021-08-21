@@ -4,3 +4,4 @@
 *.sch-bak
 *.zip
 node_modules/
+dist/

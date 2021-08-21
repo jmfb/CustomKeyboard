@@ -4,7 +4,8 @@ import Application from './Application';
 
 function initializeApplication() {
 	const rootElement = document.getElementById('root');
-	render(<Application />, rootElement);
+	const application = <Application />;
+	render(application, rootElement);
 }
 
 initializeApplication();

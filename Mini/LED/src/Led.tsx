@@ -1,19 +1,16 @@
 import React from 'react';
-import { ledWidth, ledHeight } from './constants';
+import { ILedPosition, ledWidth, ledHeight } from './constants';
 
 export interface ILedProps {
-	x: number;
-	y: number;
-	rotation?: number;
+	position: ILedPosition;
 	color: string;
 }
 
 export default function Led({
-	x,
-	y,
-	rotation,
+	position,
 	color
 }: ILedProps) {
+	const { x, y, rotation } = position;
 	return (
 		<rect
 			{...{x, y}}
@@ -23,7 +20,7 @@ export default function Led({
 			fill={color}
 			transform={rotation === undefined ?
 				undefined :
-				`rotate(${rotation} ${x + ledWidth / 2} ${y + ledHeight / 2})`}
+				`rotate(${rotation},${x + ledWidth / 2},${y + ledHeight / 2})`}
 			/>
 	);
 }

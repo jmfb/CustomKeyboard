@@ -1,16 +1,26 @@
-import React from 'react';
-import Led from './Led';
+import React, { useState, useEffect } from 'react';
+import Keyboard from './Keyboard';
+import { ledCount } from './constants';
+
+const allBlack = Array.from({ length: ledCount }).map(index => 'black');
+const intervalMs = 20;
 
 export default function Application() {
+	const [leftHandColors, setLeftHandColors] = useState(allBlack);
+	const [rightHandColors, setRightHandColors] = useState(allBlack);
+
+	useEffect(() => {
+		const intervalId = window.setInterval(() => {
+			setLeftHandColors(Array.from({ length: ledCount }).map(index => '#' + Math.floor(Math.random() * 256 * 256 * 256).toString(16)));
+			setRightHandColors(Array.from({ length: ledCount }).map(index => '#' + Math.floor(Math.random() * 256 * 256 * 256).toString(16)));
+		}, intervalMs);
+		return () => window.clearInterval(intervalId);
+	}, []);
+
 	return (
-		<>
-			<div>Hello World!</div>
-			<svg viewbox='0 0 1000 1000' xmlns='http://www.w3.org/2000/svg'>
-				<Led x={0} y={0} color='red' />
-				<Led x={20} y={0} color='blue' />
-				<Led x={0} y={20} color='green' />
-				<Led x={20} y={20} color='black' />
-			</svg>
-		</>
+		<Keyboard
+			scaleFactor={3}
+			{...{leftHandColors, rightHandColors}}
+			/>
 	);
 }

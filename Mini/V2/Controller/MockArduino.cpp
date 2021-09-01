@@ -154,17 +154,17 @@ void MockArduino::DigitalWrite(int pin, int signal) {
 				break;
 
 			case HandConfiguration::Standard:
-				leftShiftRegister.push(false);
 				leftShiftRegister.push(true);
-				rightShiftRegister.push(true);
+				leftShiftRegister.push(false);
 				rightShiftRegister.push(false);
+				rightShiftRegister.push(true);
 				break;
 
 			case HandConfiguration::Inverted:
-				leftShiftRegister.push(true);
 				leftShiftRegister.push(false);
-				rightShiftRegister.push(false);
+				leftShiftRegister.push(true);
 				rightShiftRegister.push(true);
+				rightShiftRegister.push(false);
 				break;
 		}
 	} else if (pin == 5 && signal == HIGH && pinSignals[4] == HIGH) { // Shift

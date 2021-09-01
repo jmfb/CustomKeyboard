@@ -209,10 +209,10 @@ private:
 			return HardwareConfiguration::V1;
 		}
 		if (!configuration1 && configuration2) {
-			return HardwareConfiguration::LeftHand;
+			return HardwareConfiguration::RightHand;
 		}
 		if (configuration1 && !configuration2) {
-			return HardwareConfiguration::RightHand;
+			return HardwareConfiguration::LeftHand;
 		}
 		return HardwareConfiguration::Unplugged;
 	}

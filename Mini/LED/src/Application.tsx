@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Keyboard from './Keyboard';
-import { ledCount } from './constants';
+import { ledCount, distanceFromThumb } from './constants';
 import { hslToRgb } from './colors';
 
 const allBlack = Array.from({ length: ledCount }).map(index => 'black');
-const intervalMs = 20;
+const intervalMs = 40;
 
 export default function Application() {
 	const [leftHandColors, setLeftHandColors] = useState(allBlack);
@@ -14,10 +14,9 @@ export default function Application() {
 	useEffect(() => {
 		const intervalId = window.setInterval(() => {
 			hueRef.current = (hueRef.current + 1) % 360;
-			const color = hslToRgb(hueRef.current);
-			console.log(color);
-			setLeftHandColors(Array.from({ length: ledCount }).map(index => color));
-			setRightHandColors(Array.from({ length: ledCount }).map(index => color));
+			const colors = Array.from({ length: ledCount }).map((_, index) => hslToRgb((hueRef.current + 2 * distanceFromThumb[index]) % 360));
+			setLeftHandColors(colors);
+			setRightHandColors(colors);
 		}, intervalMs);
 		return () => window.clearInterval(intervalId);
 	}, []);

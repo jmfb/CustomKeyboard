@@ -89,4 +89,30 @@ export const rightHandPositions: ILedPosition[] = [
 	{ x: width - ledWidth - 130, y: 76, rotation: 45 }
 ];
 
+export const distanceFromThumb = [
+	13,
+	13,
+	12,
+	11,
+	9,
+	7,
+	6,
+	7,
+	9,
+	10,
+	11,
+	11,
+	9,
+	8,
+	7,
+	6,
+	4,
+	3,
+	5,
+	3,
+	1,
+	2,
+	0
+];
+
 export const ledCount = leftHandPositions.length;

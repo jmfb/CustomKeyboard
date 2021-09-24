@@ -937,6 +937,30 @@ public:
 	uint8_t blue;
 	uint8_t green;
 
+	constexpr static uint8_t HueToRgb(uint8_t hue) {
+		return static_cast<uint8_t>(
+			hue < 60 ? (6 * static_cast<unsigned int>(hue) * 255 / 360) :
+			hue < 180 ? 255 :
+			hue < 240 ? ((240 - static_cast<unsigned int>(hue)) * 6 * 255 / 360) :
+			0);
+	}
+
+	constexpr static LedColor FromHue(uint8_t hue) {
+		return FromRgb(
+			HueToRgb(static_cast<uint8_t>((static_cast<unsigned int>(hue) + 120) % 360)),
+			HueToRgb(hue),
+			HueToRgb(static_cast<uint8_t>((static_cast<unsigned int>(hue) + 240) % 360)));
+	}
+
+	constexpr static LedColor FromRgb(uint8_t red, uint8_t blue, uint8_t green) {
+		return {
+			fullIntensity,
+			red,
+			blue,
+			green
+		};
+	}
+
 	constexpr static LedColor FromHex(unsigned long value) {
 		return {
 			fullIntensity,
@@ -1069,9 +1093,30 @@ constexpr uint8_t loopIntervalMs = 10;
 constexpr uint8_t transitionStepCount = 50;
 constexpr uint8_t pulsateStepCount = 200;
 
+const uint8_t distanceFromThumb[keyCount] = { 13, 13, 12, 11, 9, 7, 6, 7, 9, 10, 11, 11, 9, 8, 7, 6, 4, 3, 5, 3, 1, 2, 0 };
+
+enum class LedMode {
+	Pulsate,
+	Polar
+};
+
 class LedDriver {
+	LedMode ledMode;
+	uint8_t hue;
+	uint8_t hueStep;
+	uint8_t layer;
+	LedColor currentColor;
+	LedColor transitionFromColor;
+	uint8_t nextLayer;
+	uint8_t step;
+	uint8_t leftDataPin;
+	uint8_t rightDataPin;
+
 public:
 	LedDriver() {
+		ledMode = LedMode::Pulsate;
+		hue = 0;
+		hueStep = 0;
 		layer = 0;
 		currentColor = layerColors[0];
 		transitionFromColor = layerColors[0];
@@ -1099,6 +1144,27 @@ public:
 	}
 
 	void Step() {
+		switch (ledMode) {
+			case LedMode::Pulsate:
+				StepPulsate();
+				break;
+			case LedMode::Polar:
+				StepPolar();
+				break;
+		}
+	}
+
+private:
+	void StepPolar() {
+		TransmitPolar();
+		++hueStep;
+		if (hueStep == 4) {
+			hueStep = 0;
+			hue = (hue + 1) % 360;
+		}
+	}
+
+	void StepPulsate() {
 		if (IsTransitioningLayers()) {
 			TransitionLayerColor();
 			++step;
@@ -1112,9 +1178,17 @@ public:
 		}
 	}
 
-private:
 	bool IsTransitioningLayers() const {
 		return nextLayer != layer;
+	}
+
+	void TransmitPolar() {
+		TransmitStartFrame();
+		for (uint8_t key = 0; key < keyCount; ++key) {
+			auto color = LedColor::FromHue(static_cast<uint8_t>((static_cast<unsigned int>(hue) + 0 * static_cast<unsigned int>(distanceFromThumb[key])) % 360));
+			TransmitLedColor(color, color);
+		}
+		TransmitEndFrame();
 	}
 
 	void TransitionLayerColor() {
@@ -1181,15 +1255,6 @@ private:
 		TransmitByte(leftColor.green, rightColor.green);
 		TransmitByte(leftColor.red, rightColor.red);
 	}
-
-private:
-	uint8_t layer;
-	LedColor currentColor;
-	LedColor transitionFromColor;
-	uint8_t nextLayer;
-	uint8_t step;
-	uint8_t leftDataPin;
-	uint8_t rightDataPin;
 };
 
 void loop() {

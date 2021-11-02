@@ -95,11 +95,3 @@ void ClickKey(Hand hand, Finger finger, function<void()> actionWhilePressed) {
 	actionWhilePressed();
 	ReleaseKey(hand, finger);
 }
-
-void TestKey(Hand hand, Finger finger, unsigned int keyCode, unsigned int modifiers) {
-	ClickKey(hand, finger);
-	mockArduino.AssertKeyboardReports({
-		{ modifiers, keyCode },
-		{}
-	});
-}

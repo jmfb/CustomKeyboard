@@ -36,4 +36,3 @@ void Loop(int count);
 void PressKey(Hand hand, Finger finger, int loopCount = 3);
 void ReleaseKey(Hand hand, Finger finger, int loopCount = 3);
 void ClickKey(Hand hand, Finger finger, function<void()> actionWhilePressed = [](){});
-void TestKey(Hand hand, Finger finger, unsigned int keyCode, unsigned int modifiers = 0);

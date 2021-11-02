@@ -76,7 +76,11 @@ TEST_METHOD(RegisterStableKey) {
 }
 
 TEST_METHOD(ReleaseKey) {
-	TestKey(Hand::Left, Finger::PinkyExtraTop, KEY_ESC);
+	ClickKey(Hand::Left, Finger::PinkyExtraTop);
+	mockArduino.AssertKeyboardReports({
+		{ 0, KEY_ESC },
+		{}
+	});
 }
 
 TEST_METHOD(RetainKeyPressOrder) {
@@ -111,7 +115,11 @@ TEST_METHOD(Layer1Shift) {
 }
 
 TEST_METHOD(Layer1SyntheticKey) {
-	TestKey(Hand::Right, Finger::ThumbOuter, KEY_MINUS, KEY_RIGHT_SHIFT);
+	ClickKey(Hand::Right, Finger::ThumbOuter);
+	mockArduino.AssertKeyboardReports({
+		{ KEY_RIGHT_SHIFT, KEY_MINUS },
+		{}
+	});
 }
 
 TEST_METHOD(Layer2Shift) {
@@ -125,7 +133,11 @@ TEST_METHOD(Layer2Shift) {
 }
 
 TEST_METHOD(Layer2SyntheticKey) {
-	TestKey(Hand::Left, Finger::ThumbOuter, KEY_SPACE);
+	ClickKey(Hand::Left, Finger::ThumbOuter);
+	mockArduino.AssertKeyboardReports({
+		{ 0, KEY_SPACE },
+		{}
+	});
 }
 
 TEST_METHOD(Layer3Shift) {
@@ -139,7 +151,11 @@ TEST_METHOD(Layer3Shift) {
 }
 
 TEST_METHOD(Layer3SyntheticKey) {
-	TestKey(Hand::Right, Finger::PinkyHome, KEY_SEMICOLON);
+	ClickKey(Hand::Right, Finger::PinkyHome);
+	mockArduino.AssertKeyboardReports({
+		{ 0, KEY_SEMICOLON },
+		{}
+	});
 }
 
 TEST_METHOD(Layer4Shift) {
@@ -153,7 +169,11 @@ TEST_METHOD(Layer4Shift) {
 }
 
 TEST_METHOD(Layer4SyntheticKey) {
-	TestKey(Hand::Left, Finger::ThumbGridBottomSecond, KEY_MENU);
+	ClickKey(Hand::Left, Finger::ThumbGridBottomSecond);
+	mockArduino.AssertKeyboardReports({
+		{ 0, KEY_MENU },
+		{}
+	});
 }
 
 TEST_METHOD(LayerKeyShiftPlusNonShiftInRapidSuccession) {

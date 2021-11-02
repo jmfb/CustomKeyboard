@@ -117,6 +117,7 @@ TEST_METHOD(Layer1Shift) {
 TEST_METHOD(Layer1SyntheticKey) {
 	ClickKey(Hand::Right, Finger::ThumbOuter);
 	mockArduino.AssertKeyboardReports({
+		{ KEY_RIGHT_SHIFT },
 		{ KEY_RIGHT_SHIFT, KEY_MINUS },
 		{}
 	});
@@ -127,6 +128,7 @@ TEST_METHOD(Layer2Shift) {
 		ClickKey(Hand::Right, Finger::IndexHome);
 	});
 	mockArduino.AssertKeyboardReports({
+		{ KEY_RIGHT_SHIFT },
 		{ KEY_RIGHT_SHIFT, KEY_RIGHT_BRACE },
 		{}
 	});
@@ -184,6 +186,7 @@ TEST_METHOD(LayerKeyShiftPlusNonShiftInRapidSuccession) {
 		ReleaseKey(Hand::Right, Finger::RingHome);
 	});
 	mockArduino.AssertKeyboardReports({
+		{ KEY_RIGHT_SHIFT },
 		{ KEY_RIGHT_SHIFT, KEY_0 },
 		{ 0, KEY_0, KEY_RIGHT_BRACE }, // Ignore shift for first layer key on subsequent layer keys
 		{ 0, KEY_RIGHT_BRACE },
@@ -199,6 +202,7 @@ TEST_METHOD(LayerKeysWithSameKeyCodeInRapidSuccession) {
 		ReleaseKey(Hand::Right, Finger::RingHome);
 	});
 	mockArduino.AssertKeyboardReports({
+		{ KEY_RIGHT_SHIFT },
 		{ KEY_RIGHT_SHIFT, KEY_RIGHT_BRACE },
 		{ KEY_RIGHT_SHIFT }, // Early release for first layer key sharing subsequent layer key keyCode
 		{ 0, KEY_RIGHT_BRACE },
@@ -305,7 +309,7 @@ TEST_METHOD(AllLayerKeys) {
 		{ 0, KEY_BACKSPACE }, {},
 		{ 0, KEY_ENTER }, {},
 		{ 0, KEY_SPACE }, {},
-		{ KEY_RIGHT_SHIFT, KEY_MINUS }, {},
+		{ KEY_RIGHT_SHIFT }, { KEY_RIGHT_SHIFT, KEY_MINUS }, {},
 		{ KEY_RIGHT_CTRL }, {},
 		{ KEY_RIGHT_GUI }, {},
 		{ KEY_RIGHT_ALT }, {},
@@ -476,20 +480,20 @@ TEST_METHOD(Layer2LeftHand) {
 		ClickKey(Hand::Left, Finger::IndexExtraBottom);
 	});
 	mockArduino.AssertKeyboardReports({
-		{ KEY_LEFT_SHIFT, KEY_TILDE }, {},
-		{ KEY_LEFT_SHIFT, KEY_1 }, {},
-		{ KEY_RIGHT_SHIFT, KEY_7 }, {},
-		{ KEY_RIGHT_SHIFT, KEY_BACKSLASH }, {},
-		{ KEY_LEFT_SHIFT, KEY_3 }, {},
-		{ KEY_RIGHT_SHIFT, KEY_COMMA }, {},
+		{ KEY_LEFT_SHIFT }, { KEY_LEFT_SHIFT, KEY_TILDE }, {},
+		{ KEY_LEFT_SHIFT }, { KEY_LEFT_SHIFT, KEY_1 }, {},
+		{ KEY_RIGHT_SHIFT }, { KEY_RIGHT_SHIFT, KEY_7 }, {},
+		{ KEY_RIGHT_SHIFT }, { KEY_RIGHT_SHIFT, KEY_BACKSLASH }, {},
+		{ KEY_LEFT_SHIFT }, { KEY_LEFT_SHIFT, KEY_3 }, {},
+		{ KEY_RIGHT_SHIFT }, { KEY_RIGHT_SHIFT, KEY_COMMA }, {},
 		{ 0, KEY_LEFT_BRACE }, {},
-		{ KEY_RIGHT_SHIFT, KEY_9 }, {},
-		{ KEY_RIGHT_SHIFT, KEY_LEFT_BRACE }, {},
+		{ KEY_RIGHT_SHIFT }, { KEY_RIGHT_SHIFT, KEY_9 }, {},
+		{ KEY_RIGHT_SHIFT }, { KEY_RIGHT_SHIFT, KEY_LEFT_BRACE }, {},
 		// Nothing
 		// Nothing
-		{ KEY_LEFT_SHIFT, KEY_6 }, {},
-		{ KEY_LEFT_SHIFT, KEY_5 }, {},
-		{ KEY_RIGHT_SHIFT, KEY_8 }, {}
+		{ KEY_LEFT_SHIFT }, { KEY_LEFT_SHIFT, KEY_6 }, {},
+		{ KEY_LEFT_SHIFT }, { KEY_LEFT_SHIFT, KEY_5 }, {},
+		{ KEY_RIGHT_SHIFT }, { KEY_RIGHT_SHIFT, KEY_8 }, {}
 		// Nothing
 	});
 }
@@ -513,18 +517,18 @@ TEST_METHOD(Layer2RightHand) {
 		ClickKey(Hand::Right, Finger::PinkyBottom);
 	});
 	mockArduino.AssertKeyboardReports({
-		{ KEY_LEFT_SHIFT, KEY_4 }, {},
-		{ KEY_RIGHT_SHIFT, KEY_QUOTE }, {},
+		{ KEY_LEFT_SHIFT }, { KEY_LEFT_SHIFT, KEY_4 }, {},
+		{ KEY_RIGHT_SHIFT }, { KEY_RIGHT_SHIFT, KEY_QUOTE }, {},
 		{ 0, KEY_QUOTE }, {},
 		{ 0, KEY_TILDE }, {},
-		{ KEY_LEFT_SHIFT, KEY_2 }, {},
+		{ KEY_LEFT_SHIFT }, { KEY_LEFT_SHIFT, KEY_2 }, {},
 		// Nothing
-		{ KEY_RIGHT_SHIFT, KEY_RIGHT_BRACE }, {},
-		{ KEY_RIGHT_SHIFT, KEY_0 }, {},
+		{ KEY_RIGHT_SHIFT }, { KEY_RIGHT_SHIFT, KEY_RIGHT_BRACE }, {},
+		{ KEY_RIGHT_SHIFT }, { KEY_RIGHT_SHIFT, KEY_0 }, {},
 		{ 0, KEY_RIGHT_BRACE }, {},
-		{ KEY_RIGHT_SHIFT, KEY_PERIOD }, {},
+		{ KEY_RIGHT_SHIFT }, { KEY_RIGHT_SHIFT, KEY_PERIOD }, {},
 		// Nothing
-		{ KEY_RIGHT_SHIFT, KEY_EQUAL }, {},
+		{ KEY_RIGHT_SHIFT }, { KEY_RIGHT_SHIFT, KEY_EQUAL }, {},
 		{ 0, KEY_MINUS }, {},
 		{ 0, KEY_EQUAL }, {},
 		{ 0, KEY_BACKSLASH }, {}
@@ -709,17 +713,17 @@ TEST_METHOD(Layer5LeftHand) {
 		{ KEY_LEFT_SHIFT }, {},
 		// Nothing
 		// Nothing
-		{ KEY_LEFT_CTRL | KEY_LEFT_GUI, KEY_F4 }, {},
+		{ KEY_LEFT_CTRL }, { KEY_LEFT_CTRL | KEY_LEFT_GUI }, { KEY_LEFT_CTRL | KEY_LEFT_GUI, KEY_F4 }, {},
 		// Nothing
 		// Nothing
-		{ KEY_LEFT_CTRL | KEY_LEFT_ALT, KEY_DELETE }, {},
-		{ KEY_LEFT_CTRL | KEY_LEFT_GUI, KEY_LEFT }, {},
-		{ KEY_LEFT_CTRL | KEY_LEFT_GUI, KEY_D }, {},
-		{ KEY_LEFT_CTRL | KEY_LEFT_GUI, KEY_RIGHT }, {},
-		{ KEY_LEFT_CTRL | KEY_LEFT_SHIFT, KEY_ESC }, {},
+		{ KEY_LEFT_CTRL }, { KEY_LEFT_CTRL | KEY_LEFT_ALT }, { KEY_LEFT_CTRL | KEY_LEFT_ALT, KEY_DELETE }, {},
+		{ KEY_LEFT_CTRL }, { KEY_LEFT_CTRL | KEY_LEFT_GUI }, { KEY_LEFT_CTRL | KEY_LEFT_GUI, KEY_LEFT }, {},
+		{ KEY_LEFT_CTRL }, { KEY_LEFT_CTRL | KEY_LEFT_GUI }, { KEY_LEFT_CTRL | KEY_LEFT_GUI, KEY_D }, {},
+		{ KEY_LEFT_CTRL }, { KEY_LEFT_CTRL | KEY_LEFT_GUI }, { KEY_LEFT_CTRL | KEY_LEFT_GUI, KEY_RIGHT }, {},
+		{ KEY_LEFT_CTRL }, { KEY_LEFT_CTRL | KEY_LEFT_SHIFT }, { KEY_LEFT_CTRL | KEY_LEFT_SHIFT, KEY_ESC }, {},
 		// Nothing
 		// Nothing
-		{ KEY_LEFT_SHIFT | KEY_LEFT_GUI, KEY_S }, {},
+		{ KEY_LEFT_SHIFT }, { KEY_LEFT_SHIFT | KEY_LEFT_GUI }, { KEY_LEFT_SHIFT | KEY_LEFT_GUI, KEY_S }, {},
 		// Nothing
 		// Nothing
 		{ KEY_LEFT_SHIFT }, {}

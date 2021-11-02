@@ -536,6 +536,10 @@ public:
 		}
 	}
 
+	void AddModifier(uint8_t modifier) {
+		modifiers |= modifier;
+	}
+
 	bool AddLayerKey(const LayerKey& layerKey, bool wasHeld) {
 		if (!layerKey.IsValid()) {
 			return false;
@@ -714,6 +718,17 @@ constexpr LayerKey layerShiftSyntheticKeys[layerCount] = {
 	H::K()
 };
 
+constexpr uint8_t modifierKeys[] = {
+	static_cast<uint8_t>(MODIFIERKEY_LEFT_CTRL),
+	static_cast<uint8_t>(MODIFIERKEY_LEFT_SHIFT),
+	static_cast<uint8_t>(MODIFIERKEY_LEFT_ALT),
+	static_cast<uint8_t>(MODIFIERKEY_LEFT_GUI),
+	static_cast<uint8_t>(MODIFIERKEY_RIGHT_CTRL),
+	static_cast<uint8_t>(MODIFIERKEY_RIGHT_SHIFT),
+	static_cast<uint8_t>(MODIFIERKEY_RIGHT_ALT),
+	static_cast<uint8_t>(MODIFIERKEY_RIGHT_GUI)
+};
+
 class KeyboardDriver {
 public:
 	void ScanAndTransmit() {
@@ -803,9 +818,18 @@ private:
 	}
 
 	void SendSyntheticKey(const LayerKey& layerKey) {
+		if (!layerKey.IsValid()) {
+			return;
+		}
 		KeyReport release = previousKeyReport;
 		KeyReport press = previousKeyReport;
-		press.AddLayerKey(layerKey, false);
+		for (auto modifierKey : modifierKeys) {
+			if (layerKey.GetModifiers() & modifierKey) {
+				press.AddModifier(modifierKey);
+				SendKeyReport(press);
+			}
+		}
+		press.AddKey(layerKey.GetKeyCode());
 		SendKeyReport(press);
 		SendKeyReport(release);
 	}
@@ -905,7 +929,16 @@ private:
 		if (keyReport.NeedSyntheticRelease(layerKey)) {
 			SendSyntheticRelease(layerKey);
 		}
-		if (keyReport.AddLayerKey(layerKey, wasHeld)) {
+		if (layerKey.IsValid()) {
+			if (!wasHeld) {
+				for (auto modifierKey : modifierKeys) {
+					if (layerKey.GetModifiers() & modifierKey) {
+						keyReport.AddModifier(modifierKey);
+						SendKeyReport(keyReport);
+					}
+				}
+			}
+			keyReport.AddKey(layerKey.GetKeyCode());
 			layerUsed = true;
 		}
 	}

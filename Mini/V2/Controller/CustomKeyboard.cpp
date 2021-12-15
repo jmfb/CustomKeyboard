@@ -798,7 +798,8 @@ private:
 	void DetectLayerShift(const PressedKeys& pressedKeys) {
 		if (!IsLayerShifted()) {
 			for (uint8_t newLayer = 1; newLayer < layerCount; ++newLayer) {
-				if (pressedKeys.IsPressed(layerShifts[newLayer])) {
+				if (pressedKeys.IsPressed(layerShifts[newLayer]) &&
+					!deadLayerKeys.IsPressed(layerShifts[newLayer])) {
 					SwitchLayer(newLayer);
 					break;
 				}

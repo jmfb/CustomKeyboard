@@ -277,6 +277,21 @@ TEST_METHOD(InvertedHardwareMode) {
 	});
 }
 
+TEST_METHOD(RapidLambda) {
+	PressKey(Hand::Left, Finger::ThumbOuter);
+	PressKey(Hand::Right, Finger::RingBottom);
+	PressKey(Hand::Right, Finger::PinkyHome);
+	ReleaseKey(Hand::Left, Finger::ThumbOuter);
+	ReleaseKey(Hand::Right, Finger::RingBottom);
+	ReleaseKey(Hand::Right, Finger::PinkyHome);
+	mockArduino.AssertKeyboardReports({
+		{ 0, KEY_EQUAL },
+		{ KEY_RIGHT_SHIFT, KEY_EQUAL },
+		{ KEY_RIGHT_SHIFT, KEY_EQUAL, KEY_PERIOD },
+		{}
+	});
+}
+
 TEST_METHOD(AllLayerKeys) {
 	ClickKey(Hand::Left, Finger::PinkyExtraTop);
 	ClickKey(Hand::Left, Finger::PinkyExtraBottom);

@@ -292,6 +292,19 @@ TEST_METHOD(RapidLambda) {
 	});
 }
 
+TEST_METHOD(RapidNumber) {
+	PressKey(Hand::Left, Finger::IndexTop);
+	PressKey(Hand::Right, Finger::ThumbOuter);
+	PressKey(Hand::Left, Finger::RingBottom);
+	ReleaseKey(Hand::Left, Finger::IndexTop);
+	ReleaseKey(Hand::Right, Finger::ThumbOuter);
+	ReleaseKey(Hand::Left, Finger::RingBottom);
+	mockArduino.AssertKeyboardReports({
+		{ 0, KEY_R }, {},
+		{ 0, KEYPAD_1 }, {}
+	});
+}
+
 TEST_METHOD(AllLayerKeys) {
 	ClickKey(Hand::Left, Finger::PinkyExtraTop);
 	ClickKey(Hand::Left, Finger::PinkyExtraBottom);

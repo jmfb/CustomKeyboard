@@ -801,6 +801,7 @@ private:
 				if (pressedKeys.IsPressed(layerShifts[newLayer]) &&
 					!deadLayerKeys.IsPressed(layerShifts[newLayer])) {
 					SwitchLayer(newLayer);
+					deadLayerKeys = previousPressedKeys;
 					break;
 				}
 			}

@@ -14,4 +14,17 @@ module keySwitch() {
 	}
 }
 
-keySwitch();
+module homeRow() {
+	keySwitch();
+
+	translate([keySize, middleYOffset, middleZOffset])
+	keySwitch();
+
+	translate([2 * keySize, ringYOffset, ringZOffset])
+	keySwitch();
+
+	translate([3 * keySize, pinkyYOffset, pinkyZOffset])
+	keySwitch();
+}
+
+homeRow();

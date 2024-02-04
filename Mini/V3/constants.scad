@@ -21,3 +21,11 @@ pcbBottomSpaceUnderHome = 4;		// Distance below home row PCB before bend
 pcbBottomSpaceAboveHome = 3;		// Distance above home row PCB before bend
 pcbBottomSpaceAfterLowerBend = 7;	// Distance after lower bend before bottom row PCB
 pcbBottomSpaceAfterUpperBend = 5;	// Distance after upper bend before upper row PCB
+
+// Offsets of fingers on home row relative to index finger
+middleYOffset = 4;	// Vertical shift of middle finger
+ringYOffset = 0;	// None
+pinkyYOffset = -4;	// Vertical shift of pinky finger
+middleZOffset = -1;	// Z-offset of middle finger
+ringZOffset = -2;	// Z-offset of ring finger
+pinkyZOffset = 6;	// Z-offset of pinky finger

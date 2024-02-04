@@ -15,12 +15,17 @@ module keySwitch(extraTop, extraBottom) {
 }
 
 module keyColumn() {
-	keySwitch(0, homeToBottomRowExtension);
+	keySwitch(homeToTopRowExtension, homeToBottomRowExtension);
 
 	translate([0, keySize + pcbBottomSpaceUnderHome, 0])
 	rotate([lowerRowAngle, 0, 0])
 	translate([0, pcbBottomSpaceAfterLowerBend, 0])
 	keySwitch(bottomRowToHomeExtension, 0);
+
+	translate([0, -pcbBottomSpaceAboveHome, 0])
+	rotate([-upperRowAngle, 0, 0])
+	translate([0, -(keySize + pcbBottomSpaceAfterUpperBend), 0])
+	keySwitch(0, topRowToHomeExtension);
 }
 
 module homeRow() {

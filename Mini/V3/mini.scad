@@ -1,30 +1,39 @@
 include <constants.scad>
 
-module keySwitch() {
+module keySwitch(extraTop, extraBottom) {
 	color("green")
 	translate([keyPcbXOffset, 0, 0])
 	cube([keyPcbWidth, keyPcbHeight, pcbDepth]);
 
-	translate([0, 0, pcbDepth + pcbMountSpacing])
+	translate([0, -extraTop, pcbDepth + pcbMountSpacing])
 	difference() {
-		cube([keySize, keySize, mountingPlateDepth]);
+		cube([keySize, keySize + extraTop + extraBottom, mountingPlateDepth]);
 
-		translate([mountingHoleOffset, mountingHoleOffset, -1])
+		translate([mountingHoleOffset, extraTop + mountingHoleOffset, -1])
 		cube([keyHoleSize, keyHoleSize, mountingPlateDepth + 2]);
 	}
 }
 
+module keyColumn() {
+	keySwitch(0, bottomRowToHomeExtension);
+
+	translate([0, keySize + pcbBottomSpaceUnderHome, 0])
+	rotate([lowerRowAngle, 0, 0])
+	translate([0, pcbBottomSpaceAfterLowerBend, 0])
+	keySwitch(homeToBottomRowExtension, 0);
+}
+
 module homeRow() {
-	keySwitch();
+	keyColumn();
 
 	translate([keySize, middleYOffset, middleZOffset])
-	keySwitch();
+	keyColumn();
 
 	translate([2 * keySize, ringYOffset, ringZOffset])
-	keySwitch();
+	keyColumn();
 
 	translate([3 * keySize, pinkyYOffset, pinkyZOffset])
-	keySwitch();
+	keyColumn();
 }
 
 homeRow();

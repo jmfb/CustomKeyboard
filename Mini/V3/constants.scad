@@ -29,3 +29,18 @@ pinkyYOffset = -4;	// Vertical shift of pinky finger
 middleZOffset = -1;	// Z-offset of middle finger
 ringZOffset = -2;	// Z-offset of ring finger
 pinkyZOffset = 6;	// Z-offset of pinky finger
+
+// Extensions of mounting plate to meet at home row bends
+distanceToMountingPlaceBottom = pcbMountSpacing + pcbDepth;	// Distance from bottom of PCB to bottom of mounting plate
+// Amount the home row mounting plate extends to meet the bottom row
+homeToBottomRowExtension = (
+	pcbBottomSpaceAfterLowerBend * sin(lowerRowAngle) +
+	distanceToMountingPlaceBottom * cos(lowerRowAngle) -
+	distanceToMountingPlaceBottom
+) / sin(lowerRowAngle);
+// Amount the bottom row mounting plate extends to meet the home row
+bottomRowToHomeExtension =
+	pcbBottomSpaceUnderHome +
+	pcbBottomSpaceAfterLowerBend * cos(lowerRowAngle) -
+	distanceToMountingPlaceBottom * sin(lowerRowAngle) -
+	homeToBottomRowExtension * cos(lowerRowAngle);

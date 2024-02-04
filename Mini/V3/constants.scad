@@ -32,15 +32,15 @@ pinkyZOffset = 6;	// Z-offset of pinky finger
 
 // Extensions of mounting plate to meet at home row bends
 distanceToMountingPlaceBottom = pcbMountSpacing + pcbDepth;	// Distance from bottom of PCB to bottom of mounting plate
-// Amount the home row mounting plate extends to meet the bottom row
-homeToBottomRowExtension = (
+// Amount the bottom row mounting plate extends to meet the home row
+bottomRowToHomeExtension = (
 	pcbBottomSpaceAfterLowerBend * sin(lowerRowAngle) +
 	distanceToMountingPlaceBottom * cos(lowerRowAngle) -
 	distanceToMountingPlaceBottom
 ) / sin(lowerRowAngle);
-// Amount the bottom row mounting plate extends to meet the home row
-bottomRowToHomeExtension =
+// Amount the home row mounting plate extends to meet the bottom row
+homeToBottomRowExtension =
 	pcbBottomSpaceUnderHome +
 	pcbBottomSpaceAfterLowerBend * cos(lowerRowAngle) -
 	distanceToMountingPlaceBottom * sin(lowerRowAngle) -
-	homeToBottomRowExtension * cos(lowerRowAngle);
+	bottomRowToHomeExtension * cos(lowerRowAngle);

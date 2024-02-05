@@ -31,14 +31,15 @@ module keyColumn() {
 module homeRow() {
 	keyColumn();
 
-	translate([keySize, middleYOffset, middleZOffset])
+	translate([keySize, -middleYOffset, middleZOffset])
 	keyColumn();
 
-	translate([2 * keySize, ringYOffset, ringZOffset])
+	translate([2 * keySize, -ringYOffset, ringZOffset])
 	keyColumn();
 
-	translate([3 * keySize, pinkyYOffset, pinkyZOffset])
+	translate([3 * keySize, -pinkyYOffset, pinkyZOffset])
 	keyColumn();
 }
 
+// Left hand (invert x for Right Hand)
 homeRow();

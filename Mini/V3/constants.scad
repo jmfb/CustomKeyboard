@@ -1,6 +1,7 @@
 keySize = 19;				// Size of a keyswitch (a perfect square)
 halfKeySize = keySize / 2;	// Distance from center of keyswitch to each side
 keyHoleSize = 14;			// Size of a keyswitch mounting hole (a perfect square)
+epsilon = 0.1;				// Small value used to get around OpenScad difference issues
 
 pcbDepth = 1.6;				// Thickness of the PCB (average measured value)
 modelWallDepth = 1.5;		// Thickness of the vertical walls of the model
@@ -56,3 +57,6 @@ homeToTopRowExtension =
 	pcbBottomSpaceAfterUpperBend * cos(upperRowAngle) -
 	distanceToMountingPlateBottom * sin(upperRowAngle) -
 	topRowToHomeExtension * cos(upperRowAngle);
+
+// Arbitrary extra extension past top and bottom rows
+extraRowExtension = 5;

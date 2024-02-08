@@ -61,6 +61,12 @@ module homeRow() {
 	// Pinky finger
 	translate([3 * keySize, -pinkyYOffset, pinkyZOffset])
 	keyColumn();
+
+	// Pinky finger bottom row wall
+	translate([0, bottomRowWallDistance + modelWallDepth, -minDepthBelowPcb])
+	// TODO: Y appears to be off by a tad (join is not perfect)
+	translate([3 * keySize, 0, pinkyZOffset])
+	cube([keySize, modelWallDepth, bottomRowWallHeight]);
 }
 
 // Left hand (invert x for Right Hand)

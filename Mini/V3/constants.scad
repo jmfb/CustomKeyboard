@@ -60,3 +60,18 @@ homeToTopRowExtension =
 
 extraRowExtension = 5;	// Arbitrary extra extension past top and bottom rows
 minDepthBelowPcb = 5;	// Extra spacing below PCB to make room for wiring, etc.
+
+// Length of the bottom row from diagonal wall to home row
+bottomRowLength = keySize + bottomRowToHomeExtension + extraRowExtension;
+// Diagonal length of shortest wall (pinky for bottom row)
+minH = distanceToMountingPlateBottom + minDepthBelowPcb + mountingPlateDepth;
+
+// TODO: Verify both of these (and come up with better name for minH)
+bottomRowWallHeight =
+	minH +
+	bottomRowLength * sin(lowerRowAngle) -
+	minH * cos(lowerRowAngle);
+bottomRowWallDistance =
+	keySize + homeToBottomRowExtension +
+	bottomRowLength * cos(lowerRowAngle) +
+	minH * sin(lowerRowAngle);

@@ -29,8 +29,8 @@ module keyColumn() {
 		keySwitch(bottomRowToHomeExtension, extraRowExtension);
 
 		// Diagonal wall to vertical edge
-		translate([0, keySize + extraRowExtension - modelWallDepth, 0])
-		cube([keySize, modelWallDepth, distanceToMountingPlateBottom]);
+		translate([0, keySize + extraRowExtension - modelWallDepth, -minDepthBelowPcb])
+		cube([keySize, modelWallDepth, distanceToMountingPlateBottom + minDepthBelowPcb]);
 	}
 
 	// Top row
@@ -41,8 +41,8 @@ module keyColumn() {
 		keySwitch(extraRowExtension, topRowToHomeExtension);
 
 		// Diagonal wall to vertical edge
-		translate([0, -extraRowExtension, 0])
-		cube([keySize, modelWallDepth, distanceToMountingPlateBottom]);
+		translate([0, -extraRowExtension, -minDepthBelowPcb])
+		cube([keySize, modelWallDepth, distanceToMountingPlateBottom + minDepthBelowPcb]);
 	}
 }
 

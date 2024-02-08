@@ -58,5 +58,5 @@ homeToTopRowExtension =
 	distanceToMountingPlateBottom * sin(upperRowAngle) -
 	topRowToHomeExtension * cos(upperRowAngle);
 
-// Arbitrary extra extension past top and bottom rows
-extraRowExtension = 5;
+extraRowExtension = 5;	// Arbitrary extra extension past top and bottom rows
+minDepthBelowPcb = 5;	// Extra spacing below PCB to make room for wiring, etc.

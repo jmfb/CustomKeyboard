@@ -74,3 +74,17 @@ bottomRowWallDistancePinky =
 	keySize + homeToBottomRowExtension +
 	bottomRowLength * cos(lowerRowAngle) +
 	mountHeight * sin(lowerRowAngle);
+
+bottomRowWallDistanceRing =
+	bottomRowWallDistancePinky -
+	(ringYOffset + pinkyYOffset);
+bottomRowWallMountHeightRing =
+	(
+		bottomRowWallDistanceRing -
+		keySize - homeToBottomRowExtension -
+		bottomRowLength * cos(lowerRowAngle)
+	) / sin(lowerRowAngle);
+bottomRowWallHeightRing =
+	mountHeight +
+	bottomRowLength * sin(lowerRowAngle) -
+	bottomRowWallMountHeightRing * cos(lowerRowAngle);

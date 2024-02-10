@@ -137,6 +137,32 @@ topRowWallHeightIndex =
 	topRowLength * sin(upperRowAngle) -
 	topRowWallMountHeightIndex * cos(upperRowAngle);
 
+topRowWallDistanceRing =
+	topRowWallDistanceMiddle + middleYOffset;
+topRowWallMountHeightRing =
+	(
+		topRowWallDistanceRing -
+		homeToTopRowExtension -
+		topRowLength * cos(upperRowAngle)
+	) / sin(upperRowAngle);
+topRowWallHeightRing =
+	mountHeight +
+	topRowLength * sin(upperRowAngle) -
+	topRowWallMountHeightRing * cos(upperRowAngle);
+
+topRowWallDistancePinky =
+	topRowWallDistanceMiddle + middleYOffset - pinkyYOffset;
+topRowWallMountHeightPinky =
+	(
+		topRowWallDistancePinky -
+		homeToTopRowExtension -
+		topRowLength * cos(upperRowAngle)
+	) / sin(upperRowAngle);
+topRowWallHeightPinky =
+	mountHeight +
+	topRowLength * sin(upperRowAngle) -
+	topRowWallMountHeightPinky * cos(upperRowAngle);
+
 pinkyRowAngle = atan2(37, 50);			// Angle between top and bottom rows of pinky plus one row
 halfPinkyRowAngle = pinkyRowAngle / 2;	// Top and bottom row each tilted half of angle
 pinkyColumnAngle = atan2(41, 40);		// Angle the pinky plus one column is tilted towards the pinky column

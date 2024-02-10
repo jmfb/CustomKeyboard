@@ -94,11 +94,15 @@ module homeRow() {
 	union() {
 		keyColumn(
 			bottomRowWallMountHeightRing,
-			mountHeight);
+			topRowWallMountHeightRing);
 
 		// Bottom row wall
 		translate([0, bottomRowWallDistanceRing - modelWallDepth, -minDepthBelowPcb])
 		cube([keySize, modelWallDepth, bottomRowWallHeightRing]);
+
+		// Top row wall
+		translate([0, -topRowWallDistanceRing, -minDepthBelowPcb])
+		cube([keySize, modelWallDepth, topRowWallHeightRing]);
 	}
 
 	// Pinky finger
@@ -106,11 +110,15 @@ module homeRow() {
 	union() {
 		keyColumn(
 			mountHeight,
-			mountHeight);
+			topRowWallMountHeightPinky);
 
 		// Bottom row wall
 		translate([0, bottomRowWallDistancePinky - modelWallDepth, -minDepthBelowPcb + ringZOffset - pinkyZOffset])
 		cube([keySize, modelWallDepth, bottomRowWallHeightPinky - ringZOffset + pinkyZOffset]);
+
+		// Top row wall
+		translate([0, -topRowWallDistancePinky, -minDepthBelowPcb + ringZOffset - pinkyZOffset])
+		cube([keySize, modelWallDepth, topRowWallHeightPinky - ringZOffset + pinkyZOffset]);
 	}
 
 	//Pinky plus one column

@@ -52,7 +52,13 @@ module homeRow() {
 
 	// Middle finger
 	translate([keySize, -middleYOffset, middleZOffset])
-	keyColumn(mountHeight);
+	union() {
+		keyColumn(bottomRowWallMountHeightMiddle);
+
+		// Bottom row wall
+		translate([0, bottomRowWallDistanceMiddle - modelWallDepth, -minDepthBelowPcb + middleZOffset])
+		cube([keySize, modelWallDepth, bottomRowWallHeightMiddle - middleZOffset]);
+	}
 
 	// Ring finger
 	translate([2 * keySize, -ringYOffset, ringZOffset])

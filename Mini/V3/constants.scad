@@ -63,6 +63,8 @@ minDepthBelowPcb = 5;	// Extra spacing below PCB to make room for wiring, etc.
 
 // Length of the bottom row from diagonal wall to home row
 bottomRowLength = keySize + bottomRowToHomeExtension + extraRowExtension;
+// Lenght of the top row from diagnonal wall to home row
+topRowLength = keySize + topRowToHomeExtension + extraRowExtension;
 // Height from "bottom of model" to bottom of mounting plate for home row
 mountHeight = distanceToMountingPlateBottom + minDepthBelowPcb;
 
@@ -112,6 +114,17 @@ bottomRowWallHeightIndex =
 	mountHeight +
 	bottomRowLength * sin(lowerRowAngle) -
 	bottomRowWallMountHeightIndex * cos(lowerRowAngle);
+
+topRowWallHeightMiddle =
+	mountHeight +
+	topRowLength * sin(upperRowAngle) -
+	mountHeight * cos(upperRowAngle);
+topRowWallDistanceMiddle =
+	homeToTopRowExtension +
+	topRowLength * cos(upperRowAngle) +
+	mountHeight * sin(upperRowAngle);
+
+
 
 pinkyRowAngle = atan2(37, 50);			// Angle between top and bottom rows of pinky plus one row
 halfPinkyRowAngle = pinkyRowAngle / 2;	// Top and bottom row each tilted half of angle

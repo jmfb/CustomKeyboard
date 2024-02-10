@@ -64,6 +64,10 @@ module homeRow() {
 		// Bottom row wall
 		translate([0, bottomRowWallDistanceMiddle - modelWallDepth, -minDepthBelowPcb + middleZOffset])
 		cube([keySize, modelWallDepth, bottomRowWallHeightMiddle - middleZOffset]);
+
+		// Top row wall
+		translate([0, -topRowWallDistanceMiddle, -minDepthBelowPcb + middleZOffset])
+		cube([keySize, modelWallDepth, topRowWallHeightMiddle - middleZOffset]);
 	}
 
 	// Ring finger

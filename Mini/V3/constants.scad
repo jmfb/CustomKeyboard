@@ -112,3 +112,9 @@ bottomRowWallHeightIndex =
 	mountHeight +
 	bottomRowLength * sin(lowerRowAngle) -
 	bottomRowWallMountHeightIndex * cos(lowerRowAngle);
+
+pinkyRowAngle = atan2(37, 50);			// Angle between top and bottom rows of pinky plus one row
+halfPinkyRowAngle = pinkyRowAngle / 2;	// Top and bottom row each tilted half of angle
+pinkyColumnAngle = atan2(41, 40);		// Angle the pinky plus one column is tilted towards the pinky column
+// Extra x offset for pinky plus one column to account for rotation inwards
+pp1XOffset = keySize * sin(halfPinkyRowAngle) * cos(pinkyColumnAngle);

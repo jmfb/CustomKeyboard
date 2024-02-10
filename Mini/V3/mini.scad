@@ -85,6 +85,20 @@ module homeRow() {
 		translate([0, bottomRowWallDistancePinky - modelWallDepth, -minDepthBelowPcb + ringZOffset - pinkyZOffset])
 		cube([keySize, modelWallDepth, bottomRowWallHeightPinky - ringZOffset + pinkyZOffset]);
 	}
+
+	//Pinky plus one column
+	translate([4 * keySize + pp1XOffset, -pinkyYOffset, pinkyZOffset])
+	union() {
+		translate([0, halfKeySize, distanceToMountingPlateBottom + mountingPlateDepth])
+		rotate([halfPinkyRowAngle, -pinkyColumnAngle, 0])
+		translate([0, 0, -distanceToMountingPlateBottom - mountingPlateDepth])
+		keySwitch(0, 0);
+
+		translate([0, halfKeySize, distanceToMountingPlateBottom + mountingPlateDepth])
+		rotate([-halfPinkyRowAngle, -pinkyColumnAngle, 0])
+		translate([0, -keySize, -distanceToMountingPlateBottom - mountingPlateDepth])
+		keySwitch(0, 0);
+	}
 }
 
 // Left hand (invert x for Right Hand)

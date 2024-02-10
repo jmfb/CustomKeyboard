@@ -17,7 +17,10 @@ module keySwitch(extraTop, extraBottom) {
 	}
 }
 
-module keyColumn(lowerRowMountHeight) {
+module keyColumn(
+	lowerRowMountHeight,
+	topRowMountHeight
+) {
 	// Home row
 	keySwitch(homeToTopRowExtension, homeToBottomRowExtension);
 
@@ -29,7 +32,11 @@ module keyColumn(lowerRowMountHeight) {
 		keySwitch(bottomRowToHomeExtension, extraRowExtension);
 
 		// Diagonal wall to vertical edge
-		translate([0, keySize + extraRowExtension - modelWallDepth, -minDepthBelowPcb - lowerRowMountHeight + mountHeight])
+		translate([
+			0,
+			keySize + extraRowExtension - modelWallDepth,
+			-minDepthBelowPcb - lowerRowMountHeight + mountHeight
+		])
 		cube([keySize, modelWallDepth, lowerRowMountHeight]);
 	}
 
@@ -41,25 +48,37 @@ module keyColumn(lowerRowMountHeight) {
 		keySwitch(extraRowExtension, topRowToHomeExtension);
 
 		// Diagonal wall to vertical edge
-		translate([0, -extraRowExtension, -minDepthBelowPcb])
-		cube([keySize, modelWallDepth, mountHeight]);
+		translate([
+			0,
+			-extraRowExtension,
+			-minDepthBelowPcb - topRowMountHeight + mountHeight
+		])
+		cube([keySize, modelWallDepth, topRowMountHeight]);
 	}
 }
 
 module homeRow() {
 	// Index finger
 	union() {
-		keyColumn(bottomRowWallMountHeightIndex);
+		keyColumn(
+			bottomRowWallMountHeightIndex,
+			topRowWallMountHeightIndex);
 
 		// Bottom row wall
 		translate([0, bottomRowWallDistanceIndex - modelWallDepth, -minDepthBelowPcb + ringZOffset])
 		cube([keySize, modelWallDepth, bottomRowWallHeightIndex - ringZOffset]);
+
+		// Top row wall
+		translate([0, -topRowWallDistanceIndex, -minDepthBelowPcb + ringZOffset])
+		cube([keySize, modelWallDepth, topRowWallHeightIndex - ringZOffset]);
 	}
 
 	// Middle finger
 	translate([keySize, -middleYOffset, middleZOffset])
 	union() {
-		keyColumn(bottomRowWallMountHeightMiddle);
+		keyColumn(
+			bottomRowWallMountHeightMiddle,
+			mountHeight);
 
 		// Bottom row wall
 		translate([0, bottomRowWallDistanceMiddle - modelWallDepth, -minDepthBelowPcb + middleZOffset])
@@ -73,7 +92,9 @@ module homeRow() {
 	// Ring finger
 	translate([2 * keySize, -ringYOffset, ringZOffset])
 	union() {
-		keyColumn(bottomRowWallMountHeightRing);
+		keyColumn(
+			bottomRowWallMountHeightRing,
+			mountHeight);
 
 		// Bottom row wall
 		translate([0, bottomRowWallDistanceRing - modelWallDepth, -minDepthBelowPcb])
@@ -83,7 +104,9 @@ module homeRow() {
 	// Pinky finger
 	translate([3 * keySize, -pinkyYOffset, pinkyZOffset])
 	union() {
-		keyColumn(mountHeight);
+		keyColumn(
+			mountHeight,
+			mountHeight);
 
 		// Bottom row wall
 		translate([0, bottomRowWallDistancePinky - modelWallDepth, -minDepthBelowPcb + ringZOffset - pinkyZOffset])

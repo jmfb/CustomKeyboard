@@ -63,15 +63,14 @@ minDepthBelowPcb = 5;	// Extra spacing below PCB to make room for wiring, etc.
 
 // Length of the bottom row from diagonal wall to home row
 bottomRowLength = keySize + bottomRowToHomeExtension + extraRowExtension;
-// Diagonal length of shortest wall (pinky for bottom row)
-minH = distanceToMountingPlateBottom + minDepthBelowPcb + mountingPlateDepth;
+// Height from "bottom of model" to bottom of mounting plate for home row
+mountHeight = distanceToMountingPlateBottom + minDepthBelowPcb;
 
-// TODO: Verify both of these (and come up with better name for minH)
-bottomRowWallHeight =
-	minH +
+bottomRowWallHeightPinky =
+	mountHeight +
 	bottomRowLength * sin(lowerRowAngle) -
-	minH * cos(lowerRowAngle);
-bottomRowWallDistance =
+	mountHeight * cos(lowerRowAngle);
+bottomRowWallDistancePinky =
 	keySize + homeToBottomRowExtension +
 	bottomRowLength * cos(lowerRowAngle) +
-	minH * sin(lowerRowAngle);
+	mountHeight * sin(lowerRowAngle);

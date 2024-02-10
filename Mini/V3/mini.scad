@@ -60,13 +60,13 @@ module homeRow() {
 
 	// Pinky finger
 	translate([3 * keySize, -pinkyYOffset, pinkyZOffset])
-	keyColumn();
+	union() {
+		keyColumn();
 
-	// Pinky finger bottom row wall
-	translate([0, bottomRowWallDistance + modelWallDepth, -minDepthBelowPcb])
-	// TODO: Y appears to be off by a tad (join is not perfect)
-	translate([3 * keySize, 0, pinkyZOffset])
-	cube([keySize, modelWallDepth, bottomRowWallHeight]);
+		// Pinky finger bottom row wall
+		translate([0, bottomRowWallDistancePinky - modelWallDepth, -minDepthBelowPcb])
+		cube([keySize, modelWallDepth, bottomRowWallHeightPinky]);
+	}
 }
 
 // Left hand (invert x for Right Hand)

@@ -48,7 +48,13 @@ module keyColumn(lowerRowMountHeight) {
 
 module homeRow() {
 	// Index finger
-	keyColumn(mountHeight);
+	union() {
+		keyColumn(bottomRowWallMountHeightIndex);
+
+		// Bottom row wall
+		translate([0, bottomRowWallDistanceIndex - modelWallDepth, -minDepthBelowPcb + ringZOffset])
+		cube([keySize, modelWallDepth, bottomRowWallHeightIndex - ringZOffset]);
+	}
 
 	// Middle finger
 	translate([keySize, -middleYOffset, middleZOffset])

@@ -100,3 +100,15 @@ bottomRowWallHeightMiddle =
 	mountHeight +
 	bottomRowLength * sin(lowerRowAngle) -
 	bottomRowWallMountHeightMiddle * cos(lowerRowAngle);
+
+bottomRowWallDistanceIndex = bottomRowWallDistanceMiddle - middleYOffset;
+bottomRowWallMountHeightIndex =
+	(
+		bottomRowWallDistanceIndex -
+		keySize - homeToBottomRowExtension -
+		bottomRowLength * cos(lowerRowAngle)
+	) / sin(lowerRowAngle);
+bottomRowWallHeightIndex =
+	mountHeight +
+	bottomRowLength * sin(lowerRowAngle) -
+	bottomRowWallMountHeightIndex * cos(lowerRowAngle);

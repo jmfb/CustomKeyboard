@@ -63,8 +63,10 @@ minDepthBelowPcb = 5;	// Extra spacing below PCB to make room for wiring, etc.
 
 // Length of the bottom row from diagonal wall to home row
 bottomRowLength = keySize + bottomRowToHomeExtension + extraRowExtension;
-// Lenght of the top row from diagnonal wall to home row
+// Length of the top row from diagnonal wall to home row
 topRowLength = keySize + topRowToHomeExtension + extraRowExtension;
+// Length of the home row
+homeRowLength = keySize + homeToTopRowExtension + homeToBottomRowExtension;
 // Height from "bottom of model" to bottom of mounting plate for home row
 mountHeight = distanceToMountingPlateBottom + minDepthBelowPcb;
 

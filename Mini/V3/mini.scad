@@ -57,7 +57,11 @@ module keyColumn(
 	}
 }
 
-module columnWall(topDepth) {
+module columnWall(
+	topDepth,
+	bottomRowWallDistance,
+	topRowWallDistance,
+	zOffset) {
 	largeValue = 100;
 	hugeValue = 1000;
 	overlap = keySize + halfKeySize;
@@ -65,7 +69,11 @@ module columnWall(topDepth) {
 	difference() {
 		union() {
 			translate([0, -overlap, -largeValue])
-			cube([modelWallDepth, homeRowLength + 2 * overlap, largeValue + topDepth]);
+			cube([
+				modelWallDepth,
+				homeRowLength + 2 * overlap,
+				largeValue + topDepth
+			]);
 
 			translate([0, homeRowLength, 0])
 			rotate([lowerRowAngle, 0, 0])
@@ -81,15 +89,18 @@ module columnWall(topDepth) {
 		cube([
 			modelWallDepth + 2 * epsilon,
 			hugeValue,
-			largeValue - distanceToMountingPlateBottom - pinkyZOffset - minDepthBelowPcb - mountingPlateDepth - epsilon - 0.3
+			largeValue - distanceToMountingPlateBottom - zOffset + epsilon
 		]);
 
-		translate([-epsilon, bottomRowWallDistancePinky + modelWallDepth, -largeValue - epsilon])
+		translate([
+			-epsilon,
+			bottomRowWallDistance + homeToTopRowExtension,
+			-largeValue - epsilon])
 		cube([modelWallDepth + 2 * epsilon, largeValue, 2 * largeValue]);
 
 		translate([
 			-epsilon,
-			-topRowWallDistancePinky + homeToTopRowExtension - largeValue,
+			-topRowWallDistance + homeToTopRowExtension - largeValue,
 			-largeValue - epsilon
 		])
 		cube([modelWallDepth + 2 * epsilon, largeValue, 2 * largeValue]);
@@ -178,6 +189,9 @@ module homeRow() {
 // Left hand (invert x for Right Hand)
 homeRow();
 
-// TODO: Still working on this wall
-// translate([3 * keySize - modelWallDepth / 2, -pinkyYOffset - homeToTopRowExtension, pinkyZOffset + distanceToMountingPlateBottom])
-columnWall(mountingPlateDepth);
+translate([3 * keySize - modelWallDepth / 2, -pinkyYOffset - homeToTopRowExtension, pinkyZOffset + distanceToMountingPlateBottom])
+columnWall(
+	mountingPlateDepth,
+	bottomRowWallDistancePinky,
+	topRowWallDistancePinky,
+	pinkyZOffset - ringZOffset + minDepthBelowPcb);

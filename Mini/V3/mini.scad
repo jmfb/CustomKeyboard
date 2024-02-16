@@ -1,10 +1,15 @@
 include <constants.scad>
 
+// Toggle this to include/exclude PCB from model
+includePcb = true;
+
 module keySwitch(extraTop, extraBottom) {
-	// PCB footprint
-	color("green")
-	translate([keyPcbXOffset, 0, 0])
-	cube([keyPcbWidth, keyPcbHeight, pcbDepth]);
+	if (includePcb) {
+		// PCB footprint
+		color("green")
+		translate([keyPcbXOffset, 0, 0])
+		cube([keyPcbWidth, keyPcbHeight, pcbDepth]);
+	}
 
 	translate([0, -extraTop, pcbDepth + pcbMountSpacing])
 	difference() {
@@ -225,4 +230,5 @@ module ringPinkyWall() {
 
 // Left hand (invert x for Right Hand)
 homeRow();
+// TODO: This is missing the "diagonal" walls.
 ringPinkyWall();

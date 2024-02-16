@@ -186,12 +186,43 @@ module homeRow() {
 	}
 }
 
+module ringPinkyWallCutout() {
+	translate([
+		3 * keySize - modelWallDepth / 2,
+		-ringYOffset - homeToTopRowExtension,
+		ringZOffset + distanceToMountingPlateBottom
+	])
+	columnWall(
+		0,
+		bottomRowWallDistanceRing,
+		topRowWallDistanceRing,
+		minDepthBelowPcb);
+}
+
+module ringPinkyWall() {
+	difference() {
+		translate([
+			3 * keySize - modelWallDepth / 2,
+			-pinkyYOffset - homeToTopRowExtension,
+			pinkyZOffset + distanceToMountingPlateBottom
+		])
+		columnWall(
+			mountingPlateDepth,
+			bottomRowWallDistancePinky,
+			topRowWallDistancePinky,
+			pinkyZOffset - ringZOffset + minDepthBelowPcb);
+
+		translate([-epsilon, 0, 0])
+		ringPinkyWallCutout();
+
+		translate([epsilon, 0, 0])
+		ringPinkyWallCutout();
+
+		translate([0, 0, -epsilon])
+		ringPinkyWallCutout();
+	}
+}
+
 // Left hand (invert x for Right Hand)
 homeRow();
-
-translate([3 * keySize - modelWallDepth / 2, -pinkyYOffset - homeToTopRowExtension, pinkyZOffset + distanceToMountingPlateBottom])
-columnWall(
-	mountingPlateDepth,
-	bottomRowWallDistancePinky,
-	topRowWallDistancePinky,
-	pinkyZOffset - ringZOffset + minDepthBelowPcb);
+ringPinkyWall();
